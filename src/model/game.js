@@ -3,7 +3,9 @@ class Game {
     // todo
   }
   lock (board, unit) {
-    // todo
+    for (var i = 0; i < unit.cells.length; i++) {
+      board.fill(unit.cells[i].x, unit.cells[i].y);
+    }
   }
 }
 
