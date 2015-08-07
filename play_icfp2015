@@ -57,6 +57,8 @@ parsed.file.forEach(function(fileName, i, arr) {
       //console.log(unit);
       game.unit = game.spawn(game.board, unit);    
 
+      //game.display();
+
       // check for endgame
       if(!game.isValidPosition(game.board, game.unit))
         break;
@@ -73,6 +75,7 @@ parsed.file.forEach(function(fileName, i, arr) {
       game.board.fillByUnit(game.unit);
       game.unit = undefined;
       game.display();
+      console.log(" ");
     }
 
     var entry = {
