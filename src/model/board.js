@@ -1,12 +1,3 @@
-class Game {
-  isValidPosition (board, unit) {
-    // todo
-  }
-  lock (board, unit) {
-    // todo
-  }
-}
-
 class Board {
   constructor (width, height) {
     this.width = width;
