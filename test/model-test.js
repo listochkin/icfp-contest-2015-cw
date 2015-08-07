@@ -2,7 +2,7 @@ const chai = require('chai'),
   assert = chai.assert,
   expect = chai.expect;
 
-const { Board, Unit } = require('../src/model');
+const { Board, Unit, Game } = require('../src/model');
 
 describe('Model Tests', () => {
   const asyncTest = f => done => f().then(done).catch(done);
@@ -86,4 +86,24 @@ describe('Model Tests', () => {
       assert.fail();
     });
   });
+
+  describe('Game Functions', () => {
+    describe('is valid position', () => {
+      // TODO
+
+      it('should not overlap filled cells', () => {
+        const game = new Game;
+        const board = new Board(5, 6);
+        const unit = new Unit();
+
+        game.isValidPosition(board, unit);
+        assert.fail();
+      });
+
+      it('should not leave the board', () => {
+
+      })
+    });
+  });
+
 });

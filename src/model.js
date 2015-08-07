@@ -1,3 +1,9 @@
+class Game {
+  isValidPosition (board, unit) {
+    // todo
+  }
+}
+
 class Board {
   constructor (width, height) {
     this.width = width;
@@ -75,5 +81,5 @@ class Unit {
 }
 
 module.exports = {
-  Board, Unit
+  Board, Unit, Game
 }
