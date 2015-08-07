@@ -57,6 +57,10 @@ parsed.file.forEach(function(fileName, i, arr) {
       //console.log(unit);
       game.unit = game.spawn(game.board, unit);    
 
+      // check for endgame
+      if(!game.isValidPosition(game.board, game.unit))
+        break;
+
       // TODO: solve problem here
       while(1) {
         var moved = game.unit.move("SW");
