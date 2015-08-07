@@ -5,7 +5,7 @@ const chai = require('chai'),
 describe('Simple Tests', () => {
   const asyncTest = f => done => f().then(done).catch(done);
 
-  it('should pass', () => {
+  it('should pass', () =>  {
     expect(1 + '').to.equal(`1`);
   });
 
