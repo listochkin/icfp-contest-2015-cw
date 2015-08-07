@@ -51,6 +51,18 @@ describe('Game Functions', () => {
       expect(newBoard.get(2, 0)).to.equal(1);
       expect(newBoard.get(3, 3)).to.equal(1);
     });
+    it('should lock several unit', () => {
+      const game = new Game;
+      const boardA = new Board(5, 6);
+      const boardB = new Board(5, 6);
+      const unit1 = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}]);
+      const unit2 = new Unit({ x: 1, y: 0}, [                {x: 2, y: 0}, {x: 3, y: 3}]);
+      const unit3 = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}, {x: 3, y: 3}]);
+
+      const newBoardA = game.lock(game.lock(boardA, unit1), unit2);
+      const newBoardB = game.lock(boardB, unit3);
+      expect(newBoardA).to.deep.equal(newBoardB);
+    });
   });
 
   describe('spawn a new unit on a board', () => {
