@@ -39,6 +39,10 @@ class Unit {
     // TODO:
     return new Unit();
   }
+  rotate (direction) {
+    // TODO:
+    return new Unit();
+  }
 }
 
 module.exports = {

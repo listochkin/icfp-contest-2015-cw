@@ -30,7 +30,7 @@ describe('Model Tests', () => {
     });
   });
 
-  describe('Unit', () => {
+  describe('Unit Movement', () => {
     it('should move east and west', () => { // TODO Storm
       expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
       const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
@@ -63,4 +63,18 @@ describe('Model Tests', () => {
     });
   });
 
+  describe('Unit Roatation', () => {
+    it('should rotate clockwise', () => {
+      const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
+      unit.rotate('E');
+      // TODO
+      assert.fail();
+    });
+    it('should rotate counter-clockwise', () => {
+      const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
+      unit.rotate('W');
+      // TODO
+      assert.fail();
+    });
+  });
 });
