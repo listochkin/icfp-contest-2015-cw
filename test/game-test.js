@@ -73,7 +73,7 @@ describe('Game Functions', () => {
 
       const spawned = game.spawn(board, unit);
 
-      expect(spawned).to.equal({pivot: {x: 2, y:0}, members:[{ x:  1, y: 0}, {x: 3, y: 0}, {x: 4, y: 3}]});
+      expect(spawned).to.deep.equal(new Unit({x: 2, y:0}, [{ x:  1, y: 0}, {x: 3, y: 0}, {x: 4, y: 3}]));
     });
 
     it('should spawn a unit on a board of opposite parity', () => {
