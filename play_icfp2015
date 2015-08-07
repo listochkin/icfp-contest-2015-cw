@@ -37,15 +37,27 @@ var model = require('./src/model'),
   Game = model.Game;
 var read = require('./src/reader');
 
-var solution = [];
+
+
+var answer = [];
 parsed.file.forEach(function(fileName, i, arr) {
 	data = fs.readFileSync(fileName);  
   task = JSON.parse(data);
+
+
   var game = read(task);
-  var unit = new Unit(task.units[0].pivot, task.units[0].members);
-  //console.log(unit);
-  game.unit = game.spawn(game.board, unit);
-  //game.display();
+  task.sourceSeeds.forEach(function(seed, i, arr) {
+
+    var rand = game.board.getRandomGenerator(seed);
+    var unitNum = rand()%task.units.length;  
+    //console.log(unitNum);
+
+    var unit = new Unit(task.units[unitNum].pivot, task.units[unitNum].members);
+    //console.log(unit);
+    game.unit = game.spawn(game.board, unit);
+    //game.display();
+
+  });
 
   // TODO: solve problem here
 
@@ -53,9 +65,9 @@ parsed.file.forEach(function(fileName, i, arr) {
       problemId : task.id,
       seed : task.sourceSeeds[0],
       tag : 'first',
-      solution : 'amamamama'
+      solution : 'amamamamam'
     };  
-  solution.push(entry);
+  answer.push(entry);
 });
 
-console.log(JSON.stringify(solution));
+console.log(JSON.stringify(answer));
