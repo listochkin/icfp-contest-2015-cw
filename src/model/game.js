@@ -1,3 +1,4 @@
+var math = require('mathjs');
 class Game {
   isValidPosition (board, unit) {
 
@@ -44,10 +45,26 @@ class Game {
             }
         }
 
-        line += (unitHere ? ( pivotHere ? '@' : '*') : pivotHere ? '+' : (this.board.cells[i][j] ? '#' : 'Â·')) + ' ';
+        line += (unitHere ? ( pivotHere ? '@' : '*') : pivotHere ? '+' : (this.board.cells[i][j] ? '#' : '·')) + ' ';
       };
       console.log(line);
     }
+  }
+
+spawn (board, unit) {
+    var unit_size = {x: 0, y: 0};
+    for (var i = 0; i < unit.members.length; i++) {
+      if (unit.members[i].x > unit_size.x)
+        unit_size.x = unit.members[i].x;
+    }
+    var shift = {x: 0, y:0};
+    shift.x = math.floor((board.width - unit_size.x -1)/2);
+    for (var i = 0; i < unit.members.length; i++) {
+      unit.members[i].x += shift.x;
+    }
+    unit.pivot.x += shift.x;
+
+    return unit;
   }
 }
 
