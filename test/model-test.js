@@ -7,6 +7,15 @@ const { Board, Unit } = require('../src/model');
 describe('Model Tests', () => {
   const asyncTest = f => done => f().then(done).catch(done);
 
+    describe('generator', () => {
+    it('should generate pseudo random numbers', () => {
+      const board = new Board(5, 7);
+      var gen = board.get_random_gen(17);
+      var exp = [ 0   ,24107,16552,12125,9427 ,13152,21440,3383 ,6873,16117];
+      var act = [gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen()];
+      expect(act).to.deep.equal(exp);
+    });
+  });
   describe('Board', () => {
     it('should mark cell', () => {
       const board = new Board(5, 7);
