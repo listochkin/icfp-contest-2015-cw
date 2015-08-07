@@ -2,6 +2,10 @@
 
 ICFP Contest 2015 entry by cw team 
 
+# Trello Board
+
+https://trello.com/b/Ic5qbgYr/icfpc-2015
+
 # development
 
   - Install Node 0.12 or iojs && `npm install`
