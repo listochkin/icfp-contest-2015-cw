@@ -18,14 +18,9 @@ var nopt = require("nopt")
                  }             
   , parsed = nopt(knownOpts, shortHands, process.argv, 2)
 
-
-
-console.log(parsed)
-
 if(parsed.storm) {
 	require("./storm.js")
+	process.exit();
 }
 
-
-
-console.log("\nSuccess");
+// TODO: solve problem here
