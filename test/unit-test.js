@@ -71,15 +71,15 @@ describe('Single cell rotation', () => {
 
 describe('Unit Roatation', () => {
   it('should rotate clockwise', () => {
-    const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
-    unit.rotate('E');
-    // TODO
-    assert.fail();
+    const unit = new Unit({ x: 1, y: 1 }, [{ x: 0, y: 1}, { x: 2, y: 1 }]);
+    var rotated = unit.rotate('CW');
+
+    expect(rotated.members).to.deep.equal([{ x: 1, y: 0}, { x: 2, y: 2 }]);
   });
   it('should rotate counter-clockwise', () => {
-    const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
-    unit.rotate('W');
+    const unit = new Unit({ x: 1, y: 1 }, [{ x: 0, y: 1 }, { x: 2, y: 1 }]);
+    var rotated = unit.rotate('CCW');
     // TODO
-    assert.fail();
+    expect(rotated.members).to.deep.equal([{ x: 1, y: 2}, { x: 2, y: 0 }]);
   });
 });

@@ -36,8 +36,13 @@ class Unit {
     return new Unit(pivot, members);
   }
   rotate (direction) {
-    // TODO:
-    return new Unit();
+    var pivot = this.pivot;
+    var new_members = this.members.map(
+        p => Unit.rotate_cell(
+          { x: p.x - pivot.x, y: p.y - pivot.y },
+          direction));
+    new_members = new_members.map(p => ({ x: p.x + pivot.x, y: p.y + pivot.y }));
+    return new Unit(pivot, new_members);
   }
   fillBoard (board) {
     for (var i = 0; i < unit.members.length; i++) {
