@@ -4,6 +4,7 @@ class Game {
   }
   lock (board, unit) {
     unit.fillBoard(board);
+    return board;
   }
 }
 

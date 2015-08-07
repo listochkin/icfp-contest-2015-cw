@@ -26,11 +26,12 @@ describe('Game Functions', () => {
     it('should lock a unit', () => {
       const game = new Game;
       const board = new Board(5, 6);
-      const unit = new Unit();
+      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}, {x: 3, y: 3}]);
 
       const newBoard = game.lock(board, unit);
-
-      assert.fail();
+      expect(newBoard.get(0, 0)).to.equal(1);
+      expect(newBoard.get(2, 0)).to.equal(1);
+      expect(newBoard.get(3, 3)).to.equal(1);
     });
   });
 });
