@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 require("babel/register"); // don't put anything above this line!
 
-// my-program.js
+// parse command line
 var nopt = require("nopt")
   , Stream = require("stream").Stream
   , path = require("path")
@@ -24,4 +24,20 @@ if(parsed.storm) {
 	process.exit();
 }
 
-// TODO: solve problem here
+
+if(!parsed.file) {
+  console.log('Specify file list with -f');
+  process.exit();
+}
+
+fs = require('fs')
+parsed.file.forEach(function(fileName, i, arr) {
+	fs.readFile(fileName, function (err, data) {
+                if (err) throw err;                
+                task = JSON.parse(data);
+
+                // TODO: solve problem here
+                
+                console.log(task);
+            });
+});
