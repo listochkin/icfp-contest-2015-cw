@@ -1,0 +1,32 @@
+{
+  "name": "icfp-contest-2015-cw",
+  "version": "1.0.0",
+  "description": "ICFP Contest 2015 entry by cw team ",
+  "main": "cli.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register --recursive --reporter=nyan",
+    "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/listochkin/icfp-contest-2015-cw.git"
+  },
+  "keywords": [
+    "ICFPC",
+    "IFCP Contest",
+    "cw"
+  ],
+  "author": "cw team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/listochkin/icfp-contest-2015-cw/issues"
+  },
+  "homepage": "https://github.com/listochkin/icfp-contest-2015-cw#readme",
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "babel": "^5.8.21"
+  }
+}

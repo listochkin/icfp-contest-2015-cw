@@ -1,2 +1,8 @@
 # icfp-contest-2015-cw
-CFP Contest 2015 entry by cw team 
+
+ICFP Contest 2015 entry by cw team 
+
+# development
+
+  - `npm run watch` - rerun tests on file change
+  - `npm start` - run the app
