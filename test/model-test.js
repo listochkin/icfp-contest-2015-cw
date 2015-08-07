@@ -2,8 +2,7 @@ const chai = require('chai'),
   assert = chai.assert,
   expect = chai.expect;
 
-const model = require('../src/model'),
-  Board = model.Board;
+const { Board, Unit } = require('../src/model');
 
 describe('Model Tests', () => {
   const asyncTest = f => done => f().then(done).catch(done);
@@ -30,5 +29,18 @@ describe('Model Tests', () => {
       expect(board.get(3, 4)).to.equal(0);
     });
   });
+
+  describe('Unit', () => {
+    it('should move east and west', () => { // Todo Storm
+      expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
+      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
+      const unitEast = unit.move('E');
+      expect(unitEast.pivot).to.deep.equal({ x: 2, y: 0 });
+      expect(unitEast.cells).to.deep.equal([{ x:  1, y: 0}, {x: 3, y: 0}]);
+      const unitWest = unitEast.move('W');
+      expect(unitWest.pivot).to.deep.equal({ x: 1, y: 0 });
+      expect(unitWest.cells).to.deep.equal([{ x:  0, y: 0}, {x: 2, y: 0}]);
+    });
+  })
 
 });

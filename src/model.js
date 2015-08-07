@@ -30,6 +30,17 @@ class Board {
   }
 }
 
+class Unit {
+  constructor (pivot, cells) {
+    this.pivot = pivot;
+    this.cells = cells;
+  }
+  move (direction) {
+    // TODO:
+    return new Unit();
+  }
+}
+
 module.exports = {
-  Board
+  Board, Unit
 }
