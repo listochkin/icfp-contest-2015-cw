@@ -14,7 +14,21 @@ describe('Model Tests', () => {
       expect(board.get(2, 3)).to.equal(0);
       board.fill(2, 3);
       expect(board.get(2, 3)).to.equal(1);
-    })
+      board.clear(2, 3);
+      expect(board.get(2, 3)).to.equal(0);
+    });
+
+    it('shoud clear a row', () => {
+      const board = new Board(5, 7);
+      board.fill(2, 3);
+      board.fill(3, 4);
+      board.fill(4, 5);
+      board.clearLine(4);
+      expect(board.get(2, 3)).to.equal(0);
+      expect(board.get(2, 4)).to.equal(1);
+      expect(board.get(4, 5)).to.equal(1);
+      expect(board.get(3, 4)).to.equal(0);
+    });
   });
 
 });
