@@ -46,4 +46,27 @@ class Unit {
   }
 }
 
+Unit.rotate_cell = (c, direction) => {
+  // http://gamedev.stackexchange.com/a/55493/9309
+  // http://www.redblobgames.com/grids/hexagons/#rotation
+  // odd-r offset to cube
+  var x = (c.x - (c.y - (c.y&1)) / 2) | 0;
+  var z = c.y;
+  var y = -x-z;
+
+  if (direction == 'CW') {
+    [x, y, z] = [-z, -x, -y];
+  } else if (direction == 'CCW') {
+    [x, y, z] = [-y, -z, -x];
+  } else {
+    throw new Error('Bad rotation direction');
+  }
+
+  // cube to odd-r
+  var col = x + ((z - (z&1)) / 2) | 0;
+  var row = z | 0;
+
+  return {x: col, y: row}
+}
+
 module.exports = Unit;

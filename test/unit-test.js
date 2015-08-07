@@ -37,6 +37,38 @@ describe('Unit Movement', () => {
   });
 });
 
+describe('Single cell rotation', () => {
+  it('should rotate ccw', () => {
+    const cell = {x: 1, y: 2};
+    const ccw1 = Unit.rotate_cell(cell, 'CCW');
+    expect(ccw1).to.deep.equal({ x: 2, y: 0 });
+
+    const ccw2 = Unit.rotate_cell(ccw1, 'CCW');
+    expect(ccw2).to.deep.equal({ x: 1, y: -2 });
+
+    const ccw3 = Unit.rotate_cell(ccw2, 'CCW');
+    expect(ccw3).to.deep.equal({ x: -1, y: -2 });
+
+    const ccw4 = Unit.rotate_cell(ccw3, 'CCW');
+    expect(ccw4).to.deep.equal({ x: -2, y: 0 });
+  });
+
+  it('should rotate cw', () => {
+    const cell = {x: 1, y: 1};
+    const ccw1 = Unit.rotate_cell(cell, 'CW');
+    expect(ccw1).to.deep.equal({ x: 0, y: 2 });
+
+    const ccw2 = Unit.rotate_cell(ccw1, 'CW');
+    expect(ccw2).to.deep.equal({ x: -2, y: 1 });
+
+    const ccw3 = Unit.rotate_cell(ccw2, 'CW');
+    expect(ccw3).to.deep.equal({ x: -2, y: -1 });
+
+    const ccw4 = Unit.rotate_cell(ccw3, 'CW');
+    expect(ccw4).to.deep.equal({ x: 0, y: -2 });
+  });
+});
+
 describe('Unit Roatation', () => {
   it('should rotate clockwise', () => {
     const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
