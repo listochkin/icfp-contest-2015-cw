@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "babel": "^5.8.21",
-    "nopt": "^3.0.3",
-    "mathjs": "*"
+    "mathjs": "^2.0.1",
+    "nopt": "^3.0.3"
   }
 }
