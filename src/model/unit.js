@@ -27,14 +27,14 @@ class Unit {
           break;
     }
     var pivot = { x: this.pivot.x + (this.pivot.y%2 ? deltaXOdd : deltaXEven), y: this.pivot.y + deltaY};
-    var cells = [];
+    var members = [];
 
-    this.cells.forEach(function(item, i, arr) {
-      cells.push({ x: item.x + ((item.y%2) ? deltaXOdd : deltaXEven), y: item.y + deltaY} );
+    this.members.forEach(function(item, i, arr) {
+      members.push({ x: item.x + ((item.y%2) ? deltaXOdd : deltaXEven), y: item.y + deltaY} );
     });
 
 
-    return new Unit(pivot, cells);
+    return new Unit(pivot, members);
   }
   rotate (direction) {
     // TODO:
