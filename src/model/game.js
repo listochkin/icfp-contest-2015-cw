@@ -26,7 +26,7 @@ class Game {
   }
 
   lock (board, unit) {
-    unit.fillBoard(board);
+    board.fillByUnit(unit);
     return board;
   }
 }

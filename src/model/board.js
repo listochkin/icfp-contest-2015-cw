@@ -17,6 +17,12 @@ class Board {
     this.cells[y][x] = 1;
     return this;
   }
+  fillByUnit (unit) {
+    var ref = this;
+    unit.getMembers().forEach(function(item, i, arr) {
+      ref.cells[item.y][item.x] = 1;
+    });
+  }
   clear (x, y) {
     this.cells[y][x] = 0;
     return this;
@@ -55,7 +61,4 @@ class Board {
   }
 }
 
-
-module.exports = {
-  Board
-}
+module.exports = Board;

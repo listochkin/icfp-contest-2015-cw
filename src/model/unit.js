@@ -44,10 +44,8 @@ class Unit {
     new_members = new_members.map(p => ({ x: p.x + pivot.x, y: p.y + pivot.y }));
     return new Unit(pivot, new_members);
   }
-  fillBoard (board) {
-    for (var i = 0; i < unit.members.length; i++) {
-      board.fill(unit.members[i].x, unit.members[i].y);
-    }
+  getMembers () {
+    return this.members;
   }
 }
 
