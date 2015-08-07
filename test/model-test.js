@@ -1,7 +1,7 @@
 const chai = require('chai'),
   assert = chai.assert,
   expect = chai.expect;
-
+ 
 const { Board, Unit, Game } = require('../src/model');
 
 describe('Model Tests', () => {
