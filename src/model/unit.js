@@ -2,8 +2,8 @@ const Hex = require('../hex');
 
 class Unit {
   constructor (pivot, members) {
-    this.pivot = pivot;
-    this.members = members;
+    this.pivot = JSON.parse(JSON.stringify(pivot));
+    this.members = JSON.parse(JSON.stringify(members));
   }
 
   move (direction) {
