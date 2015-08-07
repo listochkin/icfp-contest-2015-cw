@@ -58,12 +58,14 @@ spawn (board, unit) {
     shift.x = math.floor((board.width - unit_size.x)/2);
     for (var i = 0; i < unit.members.length; i++) {
       unit.members[i].x += shift.x - unit_size.min.x;
-      if(unit.members[i].x < 0) {
+      unit.members[i].y -= unit_size.min.y;
+      if((unit.members[i].x < 0) || (unit.members[i].y >= board.height)) {
         console.log('Error: Unit is bigger than field');
         return false;
       }
     }
     unit.pivot.x += shift.x  - unit_size.min.x;
+    unit.pivot.y -= unit_size.min.y;
 
     return unit;
   }

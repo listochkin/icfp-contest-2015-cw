@@ -76,10 +76,40 @@ describe('Game Functions', () => {
       expect(spawned).to.deep.equal(new Unit({x: 3, y:0}, [{ x:  2, y: 0}, {x: 4, y: 0}, {x: 5, y: 3}]));
     });
 
-    it('should spawn a unit off board', () => {
+    it('should spawn a unit off board east', () => {
       const game = new Game;
       const board = new Board(8, 6);
       const unit = new Unit({ x: 11, y: 0}, [{ x:  10, y: 0}, {x: 12, y: 0}, {x:13, y: 3}]);
+
+      const spawned = game.spawn(board, unit);
+
+      expect(spawned).to.deep.equal(new Unit({x: 3, y:0}, [{ x:  2, y: 0}, {x: 4, y: 0}, {x: 5, y: 3}]));
+    });
+
+    it('should spawn a unit off board west', () => {
+      const game = new Game;
+      const board = new Board(8, 6);
+      const unit = new Unit({ x: -9, y: 0}, [{ x:  -10, y: 0}, {x: -8, y: 0}, {x:-7, y: 3}]);
+
+      const spawned = game.spawn(board, unit);
+
+      expect(spawned).to.deep.equal(new Unit({x: 3, y:0}, [{ x:  2, y: 0}, {x: 4, y: 0}, {x: 5, y: 3}]));
+    });
+
+    it('should spawn a unit off board north', () => {
+      const game = new Game;
+      const board = new Board(8, 6);
+      const unit = new Unit({ x: 11, y: -2}, [{ x:  10, y: -2}, {x: 12, y: -2}, {x:13, y: 1}]);
+
+      const spawned = game.spawn(board, unit);
+
+      expect(spawned).to.deep.equal(new Unit({x: 3, y:0}, [{ x:  2, y: 0}, {x: 4, y: 0}, {x: 5, y: 3}]));
+    });
+
+    it('should spawn a unit off board south', () => {
+      const game = new Game;
+      const board = new Board(8, 6);
+      const unit = new Unit({ x: -9, y: 10}, [{ x:  -10, y: 10}, {x: -8, y: 10}, {x:-7, y: 13}]);
 
       const spawned = game.spawn(board, unit);
 
