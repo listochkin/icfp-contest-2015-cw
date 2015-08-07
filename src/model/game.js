@@ -44,7 +44,7 @@ class Game {
             }
         }
 
-        line += (unitHere ? ( pivotHere ? '☻' : '●') : pivotHere ? '☺' : (this.board.cells[i][j] ? '○' : '·')) + ' ';
+        line += (unitHere ? ( pivotHere ? '@' : '*') : pivotHere ? '+' : (this.board.cells[i][j] ? '#' : '·')) + ' ';
       };
       console.log(line);
     }
