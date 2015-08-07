@@ -10,7 +10,7 @@ describe('Model Tests', () => {
     describe('generator', () => {
     it('should generate pseudo random numbers', () => {
       const board = new Board(5, 7);
-      var gen = board.get_random_gen(17);
+      var gen = board.getRandomGenerator(17);
       var exp = [ 0   ,24107,16552,12125,9427 ,13152,21440,3383 ,6873,16117];
       var act = [gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen(),gen()];
       expect(act).to.deep.equal(exp);

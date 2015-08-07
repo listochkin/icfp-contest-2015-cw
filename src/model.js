@@ -38,7 +38,7 @@ class Board {
     };
   }
 
-  get_random_gen (seed) {
+  getRandomGenerator (seed) {
     var multiplier = 1103515245;
     var increment = 12345;
 
@@ -48,20 +48,16 @@ class Board {
     var sA = seed >>> 16;
     var sB = seed & 0xffff;
 
-    function bigintmuladd()
-    {
+    var result = 0;
+    var prng = function () {
+      var oldres = result;
+
       var rB = mulA*sB + mulB*sA;
       var rC = mulB*sB + increment;
       sA = (rB + (rC >>> 16)) & 0xffff;
       sB = rC & 0xffff;
-      return sA & 0x7fff;
-    };
+      result = sA & 0x7fff;
 
-    var result = 0;
-    var prng = function ()
-    {
-      var oldres = result;
-      result = bigintmuladd();
       return oldres;
     };
     return prng;
