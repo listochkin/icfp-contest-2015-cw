@@ -77,7 +77,13 @@ describe('Game Functions', () => {
     });
 
     it('should spawn a unit on a board of opposite parity', () => {
-      assert.fail();
+      const game = new Game;
+      const board = new Board(7, 4);
+      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}]);
+
+      const spawned = game.spawn(board, unit);
+
+      expect(spawned).to.deep.equal(new Unit({x: 2, y:0}, [{ x:  1, y: 0}]));
     })
   })
 });
