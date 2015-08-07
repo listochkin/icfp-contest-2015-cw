@@ -2,6 +2,8 @@
 
 ICFP Contest 2015 entry by cw team 
 
+[![Circle CI](https://circleci.com/gh/listochkin/icfp-contest-2015-cw.svg?style=svg&circle-token=d69ad3b0095bc3e87d1d73c2a3bdce3696165949)](https://circleci.com/gh/listochkin/icfp-contest-2015-cw)
+
 # Trello Board
 
 https://trello.com/b/Ic5qbgYr/icfpc-2015
