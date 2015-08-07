@@ -4,6 +4,7 @@
   "description": "ICFP Contest 2015 entry by cw team ",
   "main": "cli.js",
   "scripts": {
+    "cover": "istanbul cover _mocha -- --compilers js:babel/register --recursive --reporter=nyan",
     "test": "mocha --compilers js:babel/register --recursive --reporter=nyan",
     "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min"
   },
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/listochkin/icfp-contest-2015-cw#readme",
   "devDependencies": {
     "chai": "^3.2.0",
+    "istanbul": "^0.3.17",
     "mocha": "^2.2.5"
   },
   "dependencies": {
