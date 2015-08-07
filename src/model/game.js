@@ -3,7 +3,7 @@ class Game {
     // todo
   }
   lock (board, unit) {
-    // todo
+    unit.fillBoard(board);
   }
 }
 

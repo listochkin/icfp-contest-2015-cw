@@ -1,7 +1,7 @@
 class Unit {
-  constructor (pivot, cells) {
+  constructor (pivot, members) {
     this.pivot = pivot;
-    this.cells = cells;
+    this.members = members;
   }
   move (direction) {
 
@@ -39,6 +39,11 @@ class Unit {
   rotate (direction) {
     // TODO:
     return new Unit();
+  }
+  fillBoard (board) {
+    for (var i = 0; i < unit.members.length; i++) {
+      board.fill(unit.members[i].x, unit.members[i].y);
+    }
   }
 }
 
