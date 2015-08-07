@@ -8,12 +8,14 @@ var nopt = require("nopt")
     , knownOpts = { "phrase" : [String, null]
                 , "mem" : Number
                 , "time" : Number
+                , "cores" : Number
                 , "file" : [String, Array]
                 , "storm" : Boolean
                 }
   , shortHands = { "p" : ["--phrase"]
                  , "m" : ["--mem"]
                  , "t" : ["--time"]
+                 , "c" : ["--cores"]
                  , "f" : ["--file"]
                  , "s" : ["--storm"]
                  }
