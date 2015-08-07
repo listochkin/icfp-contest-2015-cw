@@ -68,22 +68,22 @@ describe('Game Functions', () => {
   describe('spawn a new unit on a board', () => {
     it('should spawn a unit on a same-parity board', () => {
       const game = new Game;
-      const board = new Board(7, 6);
-      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}, {x: 3, y: 3}]);
+      const board = new Board(8, 6);
+      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}, {x:3, y: 3}]);
 
       const spawned = game.spawn(board, unit);
 
-      expect(spawned).to.deep.equal(new Unit({x: 2, y:0}, [{ x:  1, y: 0}, {x: 3, y: 0}, {x: 4, y: 3}]));
+      expect(spawned).to.deep.equal(new Unit({x: 3, y:0}, [{ x:  2, y: 0}, {x: 4, y: 0}, {x: 5, y: 3}]));
     });
 
     it('should spawn a unit on a board of opposite parity', () => {
       const game = new Game;
-      const board = new Board(7, 4);
+      const board = new Board(8, 4);
       const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}]);
 
       const spawned = game.spawn(board, unit);
 
-      expect(spawned).to.deep.equal(new Unit({x: 2, y:0}, [{ x:  1, y: 0}]));
+      expect(spawned).to.deep.equal(new Unit({x: 4, y:0}, [{ x:  3, y: 0}]));
     })
   })
 });

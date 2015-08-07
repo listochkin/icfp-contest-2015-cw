@@ -47,6 +47,28 @@ class Unit {
   getMembers () {
     return this.members;
   }
+
+  getSize () {
+    var unit_size = {x: 0, y: 0};
+    for (var i = 0; i < this.members.length; i++) {
+      if (this.members[i].x >= unit_size.x)
+        unit_size.x = this.members[i].x + 1;
+      if (this.members[i].y >= unit_size.y)
+        unit_size.y = this.members[i].y + 1;
+    }
+    return unit_size;
+  }
+
+  moveTo (leftTopPoint) {
+    var movedUnit = {pivot: {x: (this.pivot.x + leftTopPoint.x), y: (this.pivot.y + leftTopPoint.y)}, members: []};
+    movedUnit.pivot.x = this.pivot.x + leftTopPoint.x;
+    movedUnit.pivot.y = this.pivot.y + leftTopPoint.y;
+    for (var i = 0; i < this.members.length; i++) {
+      var movedMember = {x: (this.members[i].x + leftTopPoint.x), y: (this.members[i].y + leftTopPoint.y)};
+      movedUnit.members.push(movedMember);
+    }
+    return movedUnit;
+  }
 }
 
 Unit.rotate_cell = (c, direction) => {

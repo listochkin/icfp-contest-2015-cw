@@ -85,6 +85,19 @@ class Board {
       console.log(line);
     }
   }
+
+  applyUnit(leftTopPoint, unit) {
+
+  }
+
+  lower_line_maximum(unit) {
+    var unit_size = unit.getSize();
+    for (var j = 0; j < this.width; j++) {
+      for(var i = (this.height -1); i >= (unit_size.y -1); i--) {
+
+      }
+    };
+  }
 }
 
 module.exports = Board;

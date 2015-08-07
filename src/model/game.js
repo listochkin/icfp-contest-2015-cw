@@ -53,13 +53,9 @@ class Game {
   }
 
 spawn (board, unit) {
-    var unit_size = {x: 0, y: 0};
-    for (var i = 0; i < unit.members.length; i++) {
-      if (unit.members[i].x > unit_size.x)
-        unit_size.x = unit.members[i].x;
-    }
-    var shift = {x: 0, y:0};
-    shift.x = math.floor((board.width - unit_size.x -1)/2);
+    var unit_size = unit.getSize();
+    var shift = {x: 0};
+    shift.x = math.floor((board.width - unit_size.x)/2);
     for (var i = 0; i < unit.members.length; i++) {
       unit.members[i].x += shift.x;
     }
@@ -67,6 +63,8 @@ spawn (board, unit) {
 
     return unit;
   }
+
+
 }
 
 module.exports = Game;
