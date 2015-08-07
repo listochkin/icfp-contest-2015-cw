@@ -33,7 +33,6 @@ class Unit {
       members.push({ x: item.x + ((item.y%2) ? deltaXOdd : deltaXEven), y: item.y + deltaY} );
     });
 
-
     return new Unit(pivot, members);
   }
   rotate (direction) {
