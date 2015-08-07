@@ -55,45 +55,7 @@ class Board {
   }
 }
 
-class Unit {
-  constructor (pivot, cells) {
-    this.pivot = pivot;
-    this.cells = cells;
-  }
-  move (direction) {
-    // TODO:
-    return new Unit();
-  }
-  rotate (direction) {
-    // TODO:
-    return new Unit();
-  }
-}
-
-Unit._rotate_cell = (c, direction) => {
-  // http://gamedev.stackexchange.com/a/55493/9309
-  // http://www.redblobgames.com/grids/hexagons/#rotation
-  // odd-r offset to cube
-  var x = c.y - (c.x - (c.x&1)) / 2;
-  var z = c.x;
-  var y = -x-z;
-
-  if (direction == 'CW') {
-    // TODO: check if it's the right direction.
-    [x, y, z] = [-z, -x, -y];
-  } else if (direction == 'CCW') {
-    [x, y, z] = [-y, -z, -x];
-  } else {
-    throw new Error('Bad rotation direction');
-  }
-
-  // cube to odd-r
-  var col = x + (z - (z&1)) / 2;
-  var row = z;
-
-  return {x: row, y: col}
-}
 
 module.exports = {
-  Board, Unit
+  Board
 }
