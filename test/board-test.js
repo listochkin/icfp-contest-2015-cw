@@ -37,4 +37,14 @@ describe('Board', () => {
     expect(board.get(4, 5)).to.equal(1);
     expect(board.get(3, 4)).to.equal(0);
   });
+  
+  it('finding lines in boards', () => {
+    const board = new Board(3, 7);
+    board.fill(0, 3);
+    board.fill(1, 3);
+    board.fill(2, 3);
+    
+    expect(board.getLines()).to.deep.equal([3]);
+  }); 
+
 });

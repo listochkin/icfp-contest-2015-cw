@@ -30,9 +30,25 @@ class Board {
   clearLine (y) {
     this.cells.splice(y, 1);
     this.cells.unshift([]);
-    for (var i = 0; i < this.height; i++) {
+    for (var i = 0; i < this.width; i++) {
       this.cells[0].push(0);
     };
+  }
+  getLines () {
+    var res = [];
+    for (var y = 0; y < this.height; y++) {
+      var isLine = true;
+      for (var x = 0; x < this.width; x++) {
+        if (this.cells[y][x] == 0) {
+          isLine = false;
+          break;
+        };
+      };
+      if (isLine) {
+        res.push(y);
+      };
+    };
+    return res;
   }
 
   getRandomGenerator (seed) {
