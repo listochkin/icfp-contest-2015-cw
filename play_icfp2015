@@ -30,14 +30,39 @@ if(!parsed.file) {
   process.exit();
 }
 
-fs = require('fs')
+var fs = require('fs')
+var model = require('./src/model'),
+  Board = model.Board,
+  Unit = model.Unit,
+  Game = model.Game;
+var read = require('./src/reader');
+
+var solution = [];
 parsed.file.forEach(function(fileName, i, arr) {
 	fs.readFile(fileName, function (err, data) {
                 if (err) throw err;                
                 task = JSON.parse(data);
+                var game = read(task);
+                var unit = new Unit(task.units[0].pivot, task.units[0].members);
+                //console.log(unit);
+                game.unit = game.spawn(game.board, unit);
+                //game.display();
+
+                var entry = {
+                    problemId : task.id,
+                    seed : task.sourceSeeds[0],
+                    tag : 'first',
+                    solution : 'amamamama'
+                  };
+                console.log(entry);
+                solution.push(entry);
+
+
 
                 // TODO: solve problem here
                 
-                console.log(task);
+                
             });
 });
+
+console.log(JSON.stringify(solution));

@@ -36,14 +36,15 @@ class Game {
       var line = i%2 ? ' ' : '';
       for (var j = 0; j < this.board.width; j++) {
 
-        var pivotHere = this.unit.pivot.x == j && this.unit.pivot.y == i;
+        var pivotHere = this.unit && this.unit.pivot.x == j && this.unit.pivot.y == i;
         var unitHere = false;
-        for (var k = 0; k < this.unit.members.length; k++) {
-            if(this.unit.members[k].x == j && this.unit.members[k].y == i) {
-                 unitHere = true;
-                 break;
+        if(this.unit)
+            for (var k = 0; k < this.unit.members.length; k++) {
+                if(this.unit.members[k].x == j && this.unit.members[k].y == i) {
+                     unitHere = true;
+                     break;
+                }
             }
-        }
 
         line += (unitHere ? ( pivotHere ? '@' : '*') : pivotHere ? '+' : (this.board.cells[i][j] ? '#' : '.')) + ' ';
       };
