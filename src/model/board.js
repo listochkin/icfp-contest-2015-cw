@@ -1,12 +1,3 @@
-class Game {
-  isValidPosition (board, unit) {
-    // todo
-  }
-  lock (board, unit) {
-    // todo
-  }
-}
-
 class Board {
   constructor (width, height) {
     this.width = width;
@@ -64,21 +55,4 @@ class Board {
   }
 }
 
-class Unit {
-  constructor (pivot, cells) {
-    this.pivot = pivot;
-    this.cells = cells;
-  }
-  move (direction) {
-    // TODO:
-    return new Unit();
-  }
-  rotate (direction) {
-    // TODO:
-    return new Unit();
-  }
-}
-
-module.exports = {
-  Board, Unit, Game
-}
+module.exports = Board;
