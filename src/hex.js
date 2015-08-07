@@ -109,33 +109,43 @@ var ODD = -1;
 function qoffset_from_cube(offset, h)
 {
     var col = h.q;
-    var row = h.r + Math.trunc((h.q + offset * (h.q & 1)) / 2);
+    var row = h.r + (h.q + offset * (h.q & 1)) / 2 | 0;
     return OffsetCoord(col, row);
 }
 
 function qoffset_to_cube(offset, h)
 {
     var q = h.col;
-    var r = h.row - Math.trunc((h.col + offset * (h.col & 1)) / 2);
+    var r = h.row - (h.col + offset * (h.col & 1)) / 2 | 0;
     var s = -q - r;
     return Hex(q, r, s);
 }
 
 function roffset_from_cube(offset, h)
 {
-    var col = h.q + Math.trunc((h.r + offset * (h.r & 1)) / 2);
-    var row = h.r;
+    var col = h.q + (h.r + offset * (h.r & 1)) / 2 | 0;
+    var row = h.r | 0;
     return OffsetCoord(col, row);
 }
 
 function roffset_to_cube(offset, h)
 {
-    var q = h.col - Math.trunc((h.row + offset * (h.row & 1)) / 2);
+    var q = h.col - (h.row + offset * (h.row & 1)) / 2 | 0;
     var r = h.row;
     var s = -q - r;
     return Hex(q, r, s);
 }
 
+// odd-r offsets, they are default for ICFP2015
+
+function offset_to_cube(c) {
+    return roffset_to_cube(ODD, new OffsetCoord(c.x, c.y));
+}
+
+function offset_from_cube(h) {
+    var offset = roffset_from_cube(ODD, h);
+    return {x: offset.col, y: offset.row};
+}
 
 
 
@@ -352,19 +362,22 @@ exports.hex_lerp = hex_lerp;
 exports.hex_linedraw = hex_linedraw;
 
 exports.OffsetCoord = OffsetCoord;
-exports.EVEN = EVEN;
-exports.ODD = ODD;
-exports.qoffset_from_cube = qoffset_from_cube;
-exports.qoffset_to_cube = qoffset_to_cube;
-exports.roffset_from_cube = roffset_from_cube;
-exports.roffset_to_cube = roffset_to_cube;
+//exports.EVEN = EVEN;
+//exports.ODD = ODD;
+//exports.qoffset_from_cube = qoffset_from_cube;
+//exports.qoffset_to_cube = qoffset_to_cube;
+//exports.roffset_from_cube = roffset_from_cube;
+//exports.roffset_to_cube = roffset_to_cube;
 
-exports.Orientation = Orientation;
+exports.offset_to_cube = offset_to_cube;
+exports.offset_from_cube = offset_from_cube;
 
-exports.Layout = Layout;
-exports.layout_pointy = layout_pointy;
-exports.layout_flat = layout_flat;
-exports.hex_to_pixel = hex_to_pixel;
-exports.pixel_to_hex = pixel_to_hex;
-exports.hex_corner_offset = hex_corner_offset;
-exports.polygon_corners = polygon_corners;
+//exports.Orientation = Orientation;
+
+//exports.Layout = Layout;
+//exports.layout_pointy = layout_pointy;
+//exports.layout_flat = layout_flat;
+///exports.hex_to_pixel = hex_to_pixel;
+//exports.pixel_to_hex = pixel_to_hex;
+//exports.hex_corner_offset = hex_corner_offset;
+//exports.polygon_corners = polygon_corners;

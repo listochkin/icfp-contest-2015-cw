@@ -80,7 +80,7 @@ class Board {
     for (var i = 0; i< this.height; i++) {
       var line = i%2 ? ' ' : '';
       for (var j = 0; j < this.width; j++) {
-        line += (this.cells[i][j] ? '•' : '·') + ' ';
+        line += (this.cells[i][j] ? '#' : '·') + ' ';
       };
       console.log(line);
     }

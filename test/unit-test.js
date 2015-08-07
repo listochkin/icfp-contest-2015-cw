@@ -2,7 +2,7 @@ const chai = require('chai'),
   assert = chai.assert,
   expect = chai.expect;
 
-const { Board, Unit, Game } = require('../src/model');
+const { Board, Unit, Game, Hex } = require('../src/model');
 
 describe('Unit Movement', () => {
   it('should move east and west', () => { // TODO Storm

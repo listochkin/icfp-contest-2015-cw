@@ -1,8 +1,11 @@
+const Hex = require('../hex');
+
 class Unit {
   constructor (pivot, members) {
     this.pivot = pivot;
     this.members = members;
   }
+
   move (direction) {
 
     var deltaXOdd = 0, deltaXEven = 0, deltaY = 0;
@@ -35,15 +38,23 @@ class Unit {
 
     return new Unit(pivot, members);
   }
+
   rotate (direction) {
-    var pivot = this.pivot;
-    var new_members = this.members.map(
-        p => Unit.rotate_cell(
-          { x: p.x - pivot.x, y: p.y - pivot.y },
-          direction));
-    new_members = new_members.map(p => ({ x: p.x + pivot.x, y: p.y + pivot.y }));
-    return new Unit(pivot, new_members);
+    var hex_pivot = Hex.offset_to_cube(this.pivot);
+    var hex_members = this.members.map(p => Hex.offset_to_cube(p));
+
+    // move hex coordinates so pivot is a center of coordinates
+    var centered_members = hex_members.map(p => Hex.hex_subtract(p, hex_pivot));
+
+    var rotated = centered_members.map(p => Unit.rotate_hex_cell(p, direction));
+
+    var move_back = rotated.map(p => Hex.hex_add(p, hex_pivot));
+
+    var new_members = move_back.map(p => Hex.offset_from_cube(p));
+
+    return new Unit(this.pivot, new_members);
   }
+
   getMembers () {
     return this.members;
   }
@@ -69,15 +80,19 @@ class Unit {
     }
     return movedUnit;
   }
+
 }
 
 Unit.rotate_cell = (c, direction) => {
-  // http://gamedev.stackexchange.com/a/55493/9309
-  // http://www.redblobgames.com/grids/hexagons/#rotation
-  // odd-r offset to cube
-  var x = (c.x - (c.y - (c.y&1)) / 2) | 0;
-  var z = c.y;
-  var y = -x-z;
+  var hex = Hex.offset_to_cube(c);
+  return Hex.offset_from_cube(Unit.rotate_hex_cell(hex, direction));
+}
+
+Unit.rotate_hex_cell = (hex, direction) => {
+
+  var x = hex.q;
+  var y = hex.s;
+  var z = hex.r;
 
   if (direction == 'CW') {
     [x, y, z] = [-z, -x, -y];
@@ -87,11 +102,8 @@ Unit.rotate_cell = (c, direction) => {
     throw new Error('Bad rotation direction');
   }
 
-  // cube to odd-r
-  var col = x + ((z - (z&1)) / 2) | 0;
-  var row = z | 0;
+  return new Hex.Hex(x, z, y);
 
-  return {x: col, y: row}
 }
 
 module.exports = Unit;
