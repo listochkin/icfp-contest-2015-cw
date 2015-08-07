@@ -6,19 +6,37 @@ const { Board, Unit, Game } = require('../src/model');
 
 describe('Game Functions', () => {
   describe('is valid position', () => {
-    // TODO
+
+    it('no collisions', () => {
+      const game = new Game;
+      const board = new Board(3, 2);
+      const unit = new Unit();
+      unit.pivot = {x: 1, y: 1};
+      unit.members = [{x: 0, y: 0}, {x: 1, y: 0}];
+
+      expect(game.isValidPosition(board, unit)).to.equal(true);
+    });
 
     it('should not overlap filled cells', () => {
       const game = new Game;
-      const board = new Board(5, 6);
+      const board = new Board(3, 2);
+      board.fill(1, 1);
       const unit = new Unit();
 
-      game.isValidPosition(board, unit);
-      assert.fail();
+      unit.pivot = {x: 1, y: 1};
+      unit.members = [{x: 0, y: 0}, {x: 1, y: 0}];
+      expect(game.isValidPosition(board, unit)).to.equal(false);
     });
 
     it('should not leave the board', () => {
+      const game = new Game;
+      const board = new Board(3, 2);
 
+      const unit = new Unit();
+
+      unit.pivot = {x: 1, y: 1};
+      unit.members = [{x: 0, y: 0}, {x: 2, y: 0}];
+      expect(game.isValidPosition(board, unit)).to.equal(false);
     })
   });
 
