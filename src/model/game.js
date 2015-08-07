@@ -7,8 +7,8 @@ class Game {
     for (var i = 0; valid && i < unit.members.length; i++) {
 
       var member = {
-        x: unit.pivot.x + unit.members[i].x,
-        y: unit.pivot.y + unit.members[i].y
+        x: unit.members[i].x,
+        y: unit.members[i].y
       }
 
       // check that member is within board bounds
