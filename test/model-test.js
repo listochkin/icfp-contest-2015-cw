@@ -41,6 +41,16 @@ describe('Model Tests', () => {
       expect(unitWest.pivot).to.deep.equal({ x: 1, y: 0 });
       expect(unitWest.cells).to.deep.equal([{ x:  0, y: 0}, {x: 2, y: 0}]);
     });
+
+    it('should move doagonaly', () => { // Todo Storm
+      const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
+      const unitEast = unit.move('SE');
+      expect(unitEast.pivot).to.deep.equal({ x: 2, y: 1 });
+      expect(unitEast.cells).to.deep.equal([{ x:  1, y: 1}, {x: 3, y: 1}]);
+      const unitWest = unitEast.move('SW');
+      expect(unitWest.pivot).to.deep.equal({ x: 1, y: 2 });
+      expect(unitWest.cells).to.deep.equal([{ x:  0, y: 2}, {x: 2, y: 2}]);
+    });
   })
 
 });
