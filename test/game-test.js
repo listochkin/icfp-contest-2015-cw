@@ -33,4 +33,14 @@ describe('Game Functions', () => {
       assert.fail();
     });
   });
+
+  describe('spawn a new unit on a board', () => {
+    it('should spawn a unit on a same-parity board', () => {
+      assert.fail();
+    });
+
+    it('should spawn a unit on a board of opposite parity', () => {
+      assert.fail();
+    })
+  })
 });
