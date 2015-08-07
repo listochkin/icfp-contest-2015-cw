@@ -2,8 +2,9 @@
   "name": "icfp-contest-2015-cw",
   "version": "1.0.0",
   "description": "ICFP Contest 2015 entry by cw team ",
-  "main": "cli.js",
+  "main": "play_icfp2015",
   "scripts": {
+    "start": "./play_icfp2015",
     "cover": "istanbul cover _mocha -- --compilers js:babel/register --recursive --reporter=nyan",
     "test": "mocha --compilers js:babel/register --recursive --reporter=nyan",
     "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min"
