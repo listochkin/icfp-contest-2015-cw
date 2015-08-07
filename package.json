@@ -4,7 +4,6 @@
   "description": "ICFP Contest 2015 entry by cw team ",
   "main": "cli.js",
   "scripts": {
-    "start": "babel-node cli.js",
     "cover": "istanbul cover _mocha -- --compilers js:babel/register --recursive --reporter=nyan",
     "test": "mocha --compilers js:babel/register --recursive --reporter=nyan",
     "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min"
