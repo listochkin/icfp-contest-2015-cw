@@ -1,4 +1,3 @@
-require("babel/register");
 var model = require('./src/model'),
   Board = model.Board,
   Unit = model.Unit,
