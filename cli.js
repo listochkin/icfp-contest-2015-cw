@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require("babel/register"); // don't put anything above this line!
 
 // my-program.js
@@ -15,7 +16,7 @@ var nopt = require("nopt")
                  , "t" : ["--time"]
                  , "f" : ["--file"]
                  , "s" : ["--storm"]
-                 }             
+                 }
   , parsed = nopt(knownOpts, shortHands, process.argv, 2)
 
 if(parsed.storm) {
