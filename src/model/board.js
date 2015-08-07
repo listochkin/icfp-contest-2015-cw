@@ -95,5 +95,5 @@ Unit._rotate_cell = (c, direction) => {
 }
 
 module.exports = {
-  Board, Unit, Game
+  Board, Unit
 }
