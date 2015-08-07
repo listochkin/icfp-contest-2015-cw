@@ -29,6 +29,26 @@ class Game {
     board.fillByUnit(unit);
     return board;
   }
+
+  display() {
+    for (var i = 0; i< this.board.height; i++) {
+      var line = i%2 ? ' ' : '';
+      for (var j = 0; j < this.board.width; j++) {
+
+        var pivotHere = this.unit.pivot.x == j && this.unit.pivot.y == i;
+        var unitHere = false;
+        for (var k = 0; k < this.unit.members.length; k++) {
+            if(this.unit.members[k].x == j && this.unit.members[k].y == i) {
+                 unitHere = true;
+                 break;
+            }
+        }
+
+        line += (unitHere ? ( pivotHere ? '☻' : '●') : pivotHere ? '☺' : (this.board.cells[i][j] ? '○' : '·')) + ' ';
+      };
+      console.log(line);
+    }
+  }
 }
 
 module.exports = Game;
