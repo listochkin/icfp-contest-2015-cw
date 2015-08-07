@@ -49,17 +49,25 @@ class Unit {
   }
 
   getSize () {
-    var unit_size = {x: 0, y: 0};
-    for (var i = 0; i < this.members.length; i++) {
-      if (this.members[i].x >= unit_size.x)
-        unit_size.x = this.members[i].x + 1;
-      if (this.members[i].y >= unit_size.y)
-        unit_size.y = this.members[i].y + 1;
+    var min_x = this.members[0].x;
+    var min_y = this.members[0].y;
+    var max_x = this.members[0].x;
+    var max_y = this.members[0].y;
+    for (var i = 1; i < this.members.length; i++) {
+      if (this.members[i].x > max_x)
+        max_x = this.members[i].x;
+      if (this.members[i].y > max_y)
+        max_y = this.members[i].y;
+      if (this.members[i].x < min_x)
+        min_x = this.members[i].x;
+      if (this.members[i].y < min_y)
+        min_y = this.members[i].y;
     }
-    return unit_size;
+
+    return {x: (max_x - min_x + 1), y: (max_y - min_y + 1)};
   }
 
-  moveTo (leftTopPoint) {
+  moveToPoint (leftTopPoint) {
     var movedUnit = {pivot: {x: (this.pivot.x + leftTopPoint.x), y: (this.pivot.y + leftTopPoint.y)}, members: []};
     movedUnit.pivot.x = this.pivot.x + leftTopPoint.x;
     movedUnit.pivot.y = this.pivot.y + leftTopPoint.y;
