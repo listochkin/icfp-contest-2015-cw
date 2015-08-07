@@ -34,4 +34,14 @@ describe('Game Functions', () => {
       expect(newBoard.get(3, 3)).to.equal(1);
     });
   });
+
+  describe('spawn a new unit on a board', () => {
+    it('should spawn a unit on a same-parity board', () => {
+      assert.fail();
+    });
+
+    it('should spawn a unit on a board of opposite parity', () => {
+      assert.fail();
+    })
+  })
 });
