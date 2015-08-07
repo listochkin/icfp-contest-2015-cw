@@ -75,7 +75,7 @@ class Unit {
         min_y = this.members[i].y;
     }
 
-    return {x: (max_x - min_x + 1), y: (max_y - min_y + 1)};
+    return {x: (max_x - min_x + 1), y: (max_y - min_y + 1), min: {x: min_x, y: min_y}, max: {x: max_x, y: max_y}};
   }
 
   moveToPoint (leftTopPoint) {
