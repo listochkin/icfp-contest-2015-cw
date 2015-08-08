@@ -51,7 +51,12 @@ parsed.file.forEach(function(fileName, i, arr) {
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
   //console.log(task.units.length);
 
-  var iteration = 0;
+  var encoding = {
+          W : "p",
+          E : "b",
+          SW : "a",
+          SE : "m"
+        };
 
   task.sourceSeeds.forEach(function(seed, i, arr) {
     var solution = "";
@@ -71,13 +76,49 @@ parsed.file.forEach(function(fileName, i, arr) {
         console.log(" ");
       }
 
+
+
       // check for endgame
       if(!game.isValidPosition(game.board, game.unit))
         break;
 
       // TODO: solve problem here
 
-    game.unit = game.findUnitTargetPlacement(game.board, game.unit);
+      var unitDest = game.findUnitTargetPlacement(game.board, game.unit);
+
+      var tmp = game.unit;
+      game.unit = unitDest;
+      if(parsed.log) {
+        game.display();
+        console.log("===");
+      }
+      game.unit = tmp;
+
+      while(1) {
+
+        var dir = game.unit.pivot.x >= unitDest.pivot.x ? "W" : "E";
+        if(Math.abs(game.unit.pivot.x - unitDest.pivot.x) <=1)
+          dir = "S" + dir;
+        
+        if(parsed.log) { 
+          console.log(" game.unit.pivot.x=" + game.unit.pivot.x + " unitDest.pivot.x="+unitDest.pivot.x);
+          console.log(dir);
+        }
+
+        var moved = game.unit.move(dir);
+        solution += encoding[dir];
+        if(game.isValidPosition(game.board, moved)) {
+          game.unit = moved;
+          if(parsed.log) {
+            game.display();
+            console.log(" ");
+          }
+        }
+        else
+          break;
+      }
+
+
       /*
       while(1) {
 
