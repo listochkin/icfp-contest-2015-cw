@@ -170,7 +170,7 @@ parsed.file.forEach(function(fileName, i, arr) {
           console.log("unit completed");
         }
       }
-      var thisAttemptScore = game.moveScoreGet();
+      var thisAttemptScore = game.moveScoreGet().move_scores;
       if(thisAttemptScore > bestScore) {
           bestSolution = solution;
           bestScore = thisAttemptScore;
