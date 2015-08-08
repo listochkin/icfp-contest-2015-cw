@@ -119,4 +119,53 @@ describe('Game Functions', () => {
     })
   });
 
+  describe('count move_score', () => {
+    it('should count scores after one unit lock', () => {
+      const game = new Game();
+      game.board = new Board(6, 8);
+      const lines = {
+        5: [0, 1, 2, 3, 4, 5],
+        6: [0, 1, 2, 5],
+        7: [0, 1, 2, 3, 4, 5]
+      };
+      const unit = new Unit({x:2, y: 0}, [{x: 3, y: 3}, {x: 4, y: 0}] );
+      game.unit = game.spawn(game.board, unit);
+
+      [5, 6, 7].forEach(y => lines[y].forEach(x => game.board.fill(x, y)));
+      game.moveScoreCount(game);
+
+      expect(game.moveScoreGet()).to.deep.equal({
+        lines_cleared: 2,
+        current_score: 302,
+        old_score: 0,
+        move_scores: 302
+      });
+    });
+
+    it('should count scores after two units lock', () => {
+      const game = new Game();
+      game.board = new Board(6, 8);
+      const lines = {
+        5: [0, 1, 2, 3, 4, 5],
+        6: [0, 1, 2, 5],
+        7: [0, 1, 2, 3, 4, 5]
+      };
+      const unit = new Unit({x:2, y: 0}, [{x: 3, y: 3}, {x: 4, y: 0}] );
+      game.unit = game.spawn(game.board, unit);
+
+      [5, 6, 7].forEach(y => lines[y].forEach(x => game.board.fill(x, y)));
+      game.moveScoreCount(game);
+      game.board.clearLines();
+      [5, 6].forEach(y => lines[y].forEach(x => game.board.fill(x, y)));
+      game.moveScoreCount(game);
+
+      expect(game.moveScoreGet()).to.deep.equal({
+        lines_cleared: 1,
+        current_score: 112,
+        old_score: 302,
+        move_scores: 414
+      });
+    });
+  });
+
 });

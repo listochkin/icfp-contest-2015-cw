@@ -138,8 +138,9 @@ parsed.file.forEach(function(fileName, i, arr) {
 
       // apply unit and find score
       game.board.fillByUnit(game.unit);
+      game.moveScoreCount(game);
       if(parsed.log) {
-        console.log('Score so far: ', game.moveScoreCount(game).moveScoreGet());
+        console.log('Score so far: ', game.moveScoreGet());
       }
       game.board.clearLines();
       game.unit = undefined;
