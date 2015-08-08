@@ -16,8 +16,9 @@ function path (board, unit, start, finish) {
 
       neighbor (node) {
         const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
-        //const hex_coords = Hex.offset_to_cube(node.unit.pivot);
-        const temp_unit = node.unit; //unit.moveTo(node.point);
+        const temp_unit = node.unit;
+        // Yes, rotation increases the branching, but it has a low priority and
+        // doesn't improve the heuristic.
         const allowed_dirs = [0,3,4,5,6,7].filter(d => {
           const next_unit = temp_unit.move(icfpc_directions[d]);
           const isValid = game.isValidPosition(board, next_unit);
@@ -25,10 +26,7 @@ function path (board, unit, start, finish) {
           return isValid;
         });
         const neighbors = allowed_dirs.map(d => ({
-          //point: Hex.offset_from_cube(Hex.hex_neighbor(hex_coords, d)),
           unit: node.unit.move(icfpc_directions[d]),
-          //  Hex.offset_from_cube(Hex.hex_neighbor(hex_coords, d))
-          //),
           direction: icfpc_directions[d]
         }));
         return neighbors
@@ -47,7 +45,6 @@ function path (board, unit, start, finish) {
         node.unit.members.forEach((m) => {
           h += `|${m.x};${m.y}`;
         });
-        //console.log('Hash: ' + h);
         return h;
       },
 
