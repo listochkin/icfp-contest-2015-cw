@@ -71,6 +71,35 @@ spawn (board, unit) {
   }
 
 
+  findUnitTargetPlacement(board, unit) {
+    var size = unit.getSize();
+    var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
+    var targetUnit = unit.moveBy(offset);
+
+    if (this.isValidPosition(board, targetUnit))
+      return targetUnit;
+
+    return this.findNextTargetPlacement(board, targetUnit);
+  }
+
+
+  findNextTargetPlacement(board, unit) {
+    var target = unit.move('W');
+
+    while (!this.isValidPosition(board, target)) {
+
+      var size = target.getSize();
+      if (size.min.x > 0)
+        target = target.move('W');
+      else {
+        // move target one row up
+        target = target.moveBy({x: board.width - size.max.x - 1, y: -1});
+      }
+    }
+    return target;
+  }
+
+
 }
 
 module.exports = Game;

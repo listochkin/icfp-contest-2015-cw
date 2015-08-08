@@ -78,15 +78,11 @@ class Unit {
     return {x: (max_x - min_x + 1), y: (max_y - min_y + 1), min: {x: min_x, y: min_y}, max: {x: max_x, y: max_y}};
   }
 
-  moveToPoint (leftTopPoint) {
-    var movedUnit = {pivot: {x: (this.pivot.x + leftTopPoint.x), y: (this.pivot.y + leftTopPoint.y)}, members: []};
-    movedUnit.pivot.x = this.pivot.x + leftTopPoint.x;
-    movedUnit.pivot.y = this.pivot.y + leftTopPoint.y;
-    for (var i = 0; i < this.members.length; i++) {
-      var movedMember = {x: (this.members[i].x + leftTopPoint.x), y: (this.members[i].y + leftTopPoint.y)};
-      movedUnit.members.push(movedMember);
-    }
-    return movedUnit;
+  moveBy (offset) {
+    var movedPivot = {x: (this.pivot.x + offset.x), y: (this.pivot.y + offset.y)};
+    var movedMembers = this.members.map(m => ({x: m.x + offset.x, y: m.y + offset.y}));
+
+    return new Unit(movedPivot, movedMembers);
   }
 
 }
