@@ -60,6 +60,10 @@ while(1) {
         }
         // Find best reachable position and path there
         game.board.setHeuristicParameters(euristicParameters.a, euristicParameters.b, euristicParameters.c);
+        if(euristicParameters.queueSize == 0) { //smth went wrong
+          ga.dumpPopulation();
+
+        }
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize);
         var unitDest = targetGenerator.next();
         if(!unitDest) {
@@ -78,6 +82,14 @@ while(1) {
           if(path.status == 'success')
             break;
 
+          if(targetGenerator._pq.length == 0) { //smth went wrong
+            var tmp = game.unit;
+            game.unit = unitDest;
+            game.display();
+            game.unit = tmp;
+            console.log("------------");
+
+          }
           unitDest = targetGenerator.next();
           if(!unitDest) {
             generatorFailed = true;

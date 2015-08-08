@@ -20,29 +20,37 @@ class TargetPlacementGenerator {
   }
 
   next() {
+    var hasItems = true;
     if (this._pq.size() == 0) {
-      this._fetchBatch();
+      hasItems = this._fetchBatch();
     }
 
+    if(!hasItems)
+      return null;
     return this._pq.deq()[1];
   }
 
   _fetchBatch() {
     var target = this._lastFetched;
     var heuristic;
+    var itemsEnqueued = 0;
     for (var i = 0; i < this._queueLen; i++) {
       target = this._findNext(this._board, target);
       if (!target)
         break;
       heuristic = this._board.boardHeuristic(target);
       this._pq.enq([heuristic, target]);
-
+      itemsEnqueued++;
       // console.log('Target ' + JSON.stringify(target.pivot) + ', heuristic ' + heuristic);
     }
     this._lastFetched = target;
+    if(itemsEnqueued == 0)
+      return false;
+
+    return true;
   }
 
-  
+
   _findInitial(board, unit) {
     var size = unit.getSize();
     var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
