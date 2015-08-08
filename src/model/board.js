@@ -50,7 +50,7 @@ class Board {
     };
     return res;
   }
-  clearLines () {    
+  clearLines () {
     var lines = this.getLines();
     for (var i = 0; i < lines.length; i++) {
       this.clearLine(lines[i]);
@@ -140,6 +140,13 @@ class Board {
     return holes;
   }
 
+  boardHeuristic() {
+    const a = -0.51;
+    const b = 0.76;
+    const c = -0.35;
+
+    return a*this.aggregateHeight() + b*this.completeLines() + c*this.holes();
+  }
 }
 
 module.exports = Board;
