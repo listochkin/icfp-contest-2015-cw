@@ -35,7 +35,7 @@ var ga = new GA();
       var euristicParameters = ga.getItem();
 
       console.log("attempt #next");
-      console.log("a/b/c/queueSize" + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
+      console.log("a/b/c/queueSize " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
 
 
       console.log("seed: " + seed);
@@ -57,21 +57,27 @@ var ga = new GA();
         game.board.setHeuristicParameters(euristicParameters.a, euristicParameters.b, euristicParameters.c);
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize);
         var unitDest = targetGenerator.next();
-        console.log("nextUnit: " + unitDest.pivot.x + " " + unitDest.pivot.y);
-        while(1) {
+        if(!unitDest) {
+          solution += 'a';
+          break;
+        }
+        var generatorFailed = false;
+        while(!generatorFailed) {
           // using pathfinder
 
-          var tmp = game.unit;
-          game.unit = unitDest;
-          game.display();
-          game.unit = tmp;
-          console.log("------------");
+//          var tmp = game.unit;
+//          game.unit = unitDest;
+//          game.display();
+//          game.unit = tmp;
+//          console.log("------------");
           var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
           if(path.status == 'success')
             break;
 
           unitDest = targetGenerator.next();
-          console.log("nextUnit: " + unitDest.pivot.x + " " + unitDest.pivot.y);
+          if(!unitDest) {
+            generatorFailed = true;
+          }
         }
 
         for(var i=0; i < path.commands.length; i++) {
@@ -85,7 +91,7 @@ var ga = new GA();
         // apply unit and find score
         game.board.fillByUnit(game.unit);
         game.moveScoreCount(game);
-        console.log('Score so far: ', game.moveScoreGet());
+//        console.log('Score so far: ', game.moveScoreGet());
         game.board.clearLines();
         game.unit = undefined;
 
