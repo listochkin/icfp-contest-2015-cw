@@ -12,14 +12,14 @@ var GA = require('./src/GA')
 var fs = require('fs')
 
 
-var initialA = -0.51;
+var initialA = -0.51;// not used now
 var initialB = 2.00;
 var initialC = -0.35;
 
-var ga = new GA(initialA, initialB, initialC);
+var ga = new GA();
 
 [
-  "problems/problem_3.json"
+  "problems/problem_0.json"
 ].forEach(function(fileName, i, arr) {
   var data = fs.readFileSync(fileName);
   var task = JSON.parse(data);
@@ -35,7 +35,7 @@ var ga = new GA(initialA, initialB, initialC);
       var euristicParameters = ga.getItem();
 
       console.log("attempt #next");
-      console.log("a/b/c " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c);
+      console.log("a/b/c/queueSize" + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
 
 
       console.log("seed: " + seed);
@@ -43,6 +43,7 @@ var ga = new GA(initialA, initialB, initialC);
       var rand = game.board.getRandomGenerator(seed);
 
       for(var unitIndex = 0; unitIndex < task.sourceLength; unitIndex++) {
+
         var currentUnit = rand()%task.units.length;
         //console.log(currentUnit);
         var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
@@ -54,21 +55,23 @@ var ga = new GA(initialA, initialB, initialC);
         }
         // Find best reachable position and path there
         game.board.setHeuristicParameters(euristicParameters.a, euristicParameters.b, euristicParameters.c);
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 1);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 1); //euristicParameters.queueSize);
         var unitDest = targetGenerator.next();
+        console.log("nextUnit: " + unitDest.pivot.x + " " + unitDest.pivot.y);
         while(1) {
           // using pathfinder
 
-//          var tmp = game.unit;
-//          game.unit = unitDest;
-//          game.display();
-//          game.unit = tmp;
-//          console.log("------------");
+          var tmp = game.unit;
+          game.unit = unitDest;
+          game.display();
+          game.unit = tmp;
+          console.log("------------");
           var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
           if(path.status == 'success')
             break;
 
           unitDest = targetGenerator.next();
+          console.log("nextUnit: " + unitDest.pivot.x + " " + unitDest.pivot.y);
         }
 
         for(var i=0; i < path.commands.length; i++) {
