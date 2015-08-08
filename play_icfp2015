@@ -85,23 +85,23 @@ parsed.file.forEach(function(fileName, i, arr) {
         break;
 
       // Find best reachable position and path there
-      var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 6);
+      var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 1);
       var unitDest = targetGenerator.next();
       while(1) {
         // using pathfinder
 
-        // if(parsed.log) {
-        //   var tmp = game.unit;
-        //   game.unit = unitDest;
-        //   game.display();
-        //   console.log("placement found");
-        //   game.unit = tmp;
-        // }
+         if(parsed.log) {
+           var tmp = game.unit;
+           game.unit = unitDest;
+           game.display();
+           console.log("placement found");
+           game.unit = tmp;
+         }
 
         var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
-        if(parsed.log) {
-          console.log(path.commands);
-        }
+        // if(parsed.log) {
+        //   console.log(path.commands);
+        // }
         if(path.status == 'success')
           break;
 
@@ -112,10 +112,10 @@ parsed.file.forEach(function(fileName, i, arr) {
       for(var i=0; i < path.commands.length; i++) {
         var dir = path.commands[i];
 
-        if(parsed.log) {
-          console.log(" i=" + i + " of "+path.commands.length);
-          console.log(dir);
-        }
+        //if(parsed.log) {
+        //  console.log(" i=" + i + " of "+path.commands.length);
+        //  console.log(dir);
+        //}
 
         var moved = game.unit.move(dir);
         solution += encoding[dir];
@@ -123,16 +123,17 @@ parsed.file.forEach(function(fileName, i, arr) {
           game.unit = moved;
           solution += encoding[dir];
 
-          if(parsed.log) {
-            game.display();
-            console.log("valid move ");
-          }
+          // if(parsed.log) {
+          //   game.display();
+          //   console.log("valid move ");
+          // }
         }
         else {
-          if(parsed.log) {
-            game.display();
-            console.log("invalid move ");
-          }
+          solution += 'a';
+          // if(parsed.log) {
+          //   game.display();
+          //   console.log("invalid move ");
+          // }
           break;
         }
       }

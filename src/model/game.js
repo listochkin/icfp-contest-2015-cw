@@ -71,7 +71,7 @@ spawn (board, unit) {
     var points = size + 100 * (1 + ls) * ls / 2;
     var line_bonus = 0;
     if(this.ls_old > 1){
-      line_bonus = Math.floor ((this.ls_old - 1) * points / 10);
+      line_bonus = math.floor ((this.ls_old - 1) * points / 10);
     }
     this.ls_old = ls;
     this.move_score = points + line_bonus;
