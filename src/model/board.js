@@ -158,7 +158,8 @@ class Board {
       // check that member is on free board cell
       valid = valid && !this.get(member.x, member.y);
 
-      if(!this.getFloodFill(member.x, member.y) && unit.members.length > 1) return false;
+      //if(!this.getFloodFill(member.x, member.y) && unit.members.length > 1) return false;
+      if(!this.getFloodFill(member.x, member.y) && ((unit.minPivotDistance() < 2) || !unit.oneDirectionFromPivot())) return false;
     }
     return valid;
   }

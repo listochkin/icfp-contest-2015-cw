@@ -148,9 +148,38 @@ class Unit {
       else if(d < distance)
         distance = d;
     }
-    console.log('dist:' + distance);
+
     return distance;
 
+  }
+
+  oneDirectionFromPivot () {
+    var weights = {N: 0, S:0, E:0, W:0};
+    for(var i=0; i < this.members.length; i++) {
+      if(this.members[i].x > this.pivot.x)
+        weights.E++;
+      else if(this.members[i].x < this.pivot.x)
+        weights.W++;
+      else {
+        weights.E++;
+        weights.W++;
+      }
+
+      if(this.members[i].y > this.pivot.y)
+        weights.S++;
+      else if(this.members[i].y < this.pivot.y)
+        weights.N++;
+      else {
+        weights.S++;
+        weights.N++;
+      }
+
+    }
+    if((weights.N && !weights.S) || (!weights.N && weights.S))
+      return true;
+    if((weights.E && !weights.W) || (!weights.E && weights.W))
+      return true;
+    return false;
   }
 
 }
