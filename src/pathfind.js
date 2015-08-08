@@ -127,6 +127,8 @@ function path (board, unit, start, finish, shouldClose) {
           return !isValid;
         });
         if (illegalMoves.length === 0) {
+          Object.assign(new Game(), { board, unit: lastStep.unit }).display();
+
           throw new Error("can't close the path");
         }
         const direction = icfpc_directions[illegalMoves[0]];
