@@ -56,7 +56,9 @@ parsed.file.forEach(function(fileName, i, arr) {
           W : "p",
           E : "b",
           SW : "a",
-          SE : "m"
+          SE : "m",
+          CW : "d",
+          CCW : "k"
         };
 
   task.sourceSeeds.forEach(function(seed, i, arr) {
@@ -68,8 +70,7 @@ parsed.file.forEach(function(fileName, i, arr) {
       var currentUnit = rand()%task.units.length;
       //console.log(currentUnit);
 
-      var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
-      //console.log(unit);
+      var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);      
       game.unit = game.spawn(game.board, unit);
 
       if(parsed.log) {
@@ -77,14 +78,11 @@ parsed.file.forEach(function(fileName, i, arr) {
         console.log(" ");
       }
 
-
-
       // check for endgame
       if(!game.isValidPosition(game.board, game.unit))
         break;
 
       // TODO: solve problem here
-
       var unitDest = game.findUnitTargetPlacement(game.board, game.unit);
 
       while(1) {
@@ -144,7 +142,7 @@ parsed.file.forEach(function(fileName, i, arr) {
         solution += encoding[c];    
       });      
 */
-      solution += ' ';
+      //solution += '\t';
 
       //game.unit = unitDest;
       if(parsed.log) {
@@ -205,7 +203,9 @@ parsed.file.forEach(function(fileName, i, arr) {
           break;
       }*/
       game.board.fillByUnit(game.unit);
-      console.log('Game scores: ', game.moveScoreCount(game).moveScoreGet());
+      if(parsed.log) {
+        console.log('Game scores: ', game.moveScoreCount(game).moveScoreGet());
+      }
       game.board.clearLines();
 
       game.unit = undefined;
@@ -227,7 +227,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 
   });
 
-  var moveScore = game.moveScoreGet();
+  //var moveScore = game.moveScoreGet();
 });
 
 console.log(JSON.stringify(answer));
