@@ -76,6 +76,22 @@ describe('A* test', () => {
     expect(path.cost).to.equal(2);
   });
 
+  it('should find another path', () => {
+    const map_array = [
+      ". @ .",
+       ". . .",
+      ". X ."
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    //console.log(path.commands);
+    expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal(['SW', 'SE']);
+    expect(path.cost).to.equal(2);
+  });
+
   it('should fail with no path', () => {
     const map_array = [
       ". @ .",
@@ -201,19 +217,20 @@ describe('A* test', () => {
     const unit = new Unit(start, [start]);
     const path = pathfind(board, unit, start, finish);
 
-    // for (var i = 0; i < 10; i++) {
-    //   var line = i % 2 ? ' ' : '';
-    //   for (var j = 0; j < 10; j++) {
-    //     let pp = path.path.filter(p => {
-    //       return p.x == j && p.y == i;
-    //     });
-    //     const isOnPath = pp.length > 0;
-    //     line = line + ' ' + (isOnPath ? '*' : '.');
-    //   };
-    //   console.log(line);
-    // };
+    for (var i = 0; i < 10; i++) {
+      var line = i % 2 ? ' ' : '';
+      for (var j = 0; j < 10; j++) {
+        let pp = path.path.filter(p => {
+          return p.x == j && p.y == i;
+        });
+        const isOnPath = pp.length > 0;
+        line = line + ' ' + (isOnPath ? '*' : '.');
+      };
+      console.log(line);
+    };
+    console.log(path.commands);
     expect(path.commands.indexOf('E')).to.equal(path.commands.lastIndexOf('E'));
-    // expect(path.commands).to.deep.equal([ 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'E' ]);
+    expect(path.commands).to.deep.equal([ 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'E' ]);
   });
 
   it('should close path', () => {
