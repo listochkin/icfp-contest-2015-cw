@@ -63,28 +63,37 @@ function path (board, unit, start, finish, shouldClose) {
         const deltaX = next.x - prev.x;
         const deltaY = next.y - prev.y;
         // console.log(prev, next, deltaX, deltaY);
+
+        let action;
+
+        // rotation
         if (deltaX === 0 && deltaY === 0) {
           throw new Error('unimplemented');
         }
 
-        let eastWest = '';
-        if (prev.y % 2 === 0) {
-          if (deltaX == 0) {
-            eastWest = 'E';
-          } else {
-            eastWest = 'W';
+        if (deltaX === -1 && deltaY === 0) {
+          action = 'W';
+        } else if (deltaX === 1 && deltaY === 0) {
+          action = 'E';
+        } else if (prev.y % 2 === 0) {
+          // even row
+          if (deltaX === -1) {
+            action = 'SW';
+          } else if (deltaX === 0) {
+            action = 'SE';
           }
+
         } else {
-          if (deltaX == 0) {
-            eastWest = 'W';
-          } else {
-            eastWest = 'E'
+          // odd row
+          if (deltaX === 0 ) {
+            action = 'SW';
+          } else if (deltaX === 1) {
+            action = 'SE';
           }
         }
-        let south = deltaY > 0 ? 'S' : '';
 
-        // console.log(deltaX, deltaY, south + eastWest)
-        commands.push(south + eastWest);
+        commands.push(action);
+        continue;
       };
       // console.log('commands', commands);
 

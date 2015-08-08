@@ -288,4 +288,31 @@ describe('A* test', () => {
     expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'SW']);
   });
 
+  it('should prefer filling the gaps (regression problem_17)', () => {
+    const map_array = [
+      '. . . . . . . @ . . . . . . .',
+       '. . . . . . . . . . . . . . .',
+      '. . . . . . . . . . . . . . .',
+       '. . . . . . . . . . . . . . .',
+      '. . . . . . . . . . . . . . .',
+       '. . . . . . . . . . . . . . .',
+      '. . . . . . . . . . . . . . .',
+       '. . . . . . . . . . . . . . .',
+      '. . . . . . . . . . . . . . .',
+       '# # # # # # # # # # # # # X #',
+      '# . # # # # # # # # # # # # #',
+       '# # # # # # . # # # # # # # #',
+      '# # # . # # # # # # # # # # #',
+       '# # # # # # # # # # # # . # #',
+      '# # # # # # # # # # # # # # .'
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish, 'close');
+
+    console.log(path.commands);
+
+    expect(path.status).to.equal('success');
+    // expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'SW']);
+  });
 });
