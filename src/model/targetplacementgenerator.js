@@ -52,11 +52,11 @@ class TargetPlacementGenerator {
 
 
   _findNext(board, unit) {
-    console.log("_findNext");
+    //console.log("_findNext");
     var target = unit.move('W');
 
     while (!board.isValidPositionPlusFlood(target)) {
-      console.log("skip " + target);
+      //console.log("skip " + target);
 
       var size = target.getSize();
       if (size.min.x > 0)
