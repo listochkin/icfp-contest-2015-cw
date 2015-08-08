@@ -84,7 +84,12 @@ spawn (board, unit) {
       old_score: this.old_score,
       move_scores: this.move_score + this.old_score};
   }
-
+  clearScore(){
+    this.old_score = 0;
+    this.move_score = 0;
+    this.move_scores = 0;
+    this.ls_old = 0;
+  }
 }
 
 module.exports = Game;

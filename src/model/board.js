@@ -1,5 +1,12 @@
 class Board {
   constructor (width, height) {
+    this.a = -0.51;
+//    const b = 0.76;
+    this.b = 2.00;
+    this.c = -0.35;
+
+
+
     this.width = width;
     this.height = height;
     this.cells = [];
@@ -175,14 +182,17 @@ class Board {
     return holes;
   }
 
+
+  setHeuristicParameters(a, b, c) { // not used for now - to be used by improver
+    this.a = a;
+    this.b = b;
+    this.c = c;
+  }
+
   boardHeuristic(targetUnit) {
-    const a = -0.51;
-//    const b = 0.76;
-    const b = 2.00;
-    const c = -0.35;
 
     this.fillByUnit(targetUnit);
-    var heuristic = a*this.aggregateHeight() + b*this.completeLines() + c*this.holes();
+    var heuristic = this.a*this.aggregateHeight() + this.b*this.completeLines() + this.c*this.holes();
     this.clearByUnit(targetUnit);
 
     return heuristic;
