@@ -131,12 +131,42 @@ class GA {
     this.dumpPopulation();
   }
 
+  mutateString(str) {
+    var pos = this.getRandomInt(0, 15);
+    var res = '';
+
+    for(var i = 0; i < 16; i++) {
+      if(i == pos) {
+        if(str[i] == '0')
+          res += '1';
+        else
+          res += '0';
+      }
+      else
+        res += str[i];
+    }
+    return res;
+  }
+
   mutate() {
+//    this.dumpPopulation();
     for(var i = 0; i < this.population.length; i++) {
+      if (this.getRandomInt(0, 20) <= 1) {
+        var res = this.mutateString(this.binaryRepresentation(this.population[i].a));
+        this.population[i].a = parseInt(res, 2);
+      }
+      if (this.getRandomInt(0, 20) <= 1) {
+
+        this.population[i].b = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].b)), 2);
+      }
       if(this.getRandomInt(0, 20) <= 1) {
-        // do the mutation
+        this.population[i].c = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].c)), 2);
+      }
+      if(this.getRandomInt(0, 20) <= 1) {
+        this.population[i].queueSize = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].queueSize)), 2);
       }
     }
+ //   this.dumpPopulation();
   }
 
   removeWorse(){ //removes half worst elements
