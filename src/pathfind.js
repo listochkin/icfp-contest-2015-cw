@@ -45,15 +45,49 @@ function path (board, unit, start, finish, shouldClose) {
       hash (node) {
         //var h = `${node.direction}|${node.unit.pivot.x}|${node.unit.pivot.y}`;
         var h = `${node.unit.pivot.x}|${node.unit.pivot.y}`;
-        //node.unit.members.forEach((m) => {
-        //  h += `|${m.x};${m.y}`;
-        //});
+        node.unit.members.forEach((m) => {
+         h += `|${m.x};${m.y}`;
+        });
         return h;
       },
 
       timeout: 20000
   })].map(function (result) {
     if (result.status === 'success') {
+      // backtrack
+      var dots = result.path.map(a => a.unit.pivot);
+      const commands = [];
+      for (var i = 0; i < dots.length - 1; i++) {
+        const prev = dots[i];
+        const next = dots[i + 1];
+        const deltaX = next.x - prev.x;
+        const deltaY = next.y - prev.y;
+        console.log(prev, next, deltaX, deltaY);
+        if (deltaX === 0 && deltaY === 0) {
+          throw new Error('unimplemented');
+        }
+
+        let eastWest = '';
+        if (prev.y % 2 === 0) {
+          if (deltaX == 0) {
+            eastWest = 'E';
+          } else {
+            eastWest = 'W';
+          }
+        } else {
+          if (deltaX == 0) {
+            eastWest = 'W';
+          } else {
+            eastWest = 'E'
+          }
+        }
+        let south = deltaY > 0 ? 'S' : '';
+
+        console.log(deltaX, deltaY, south + eastWest)
+        commands.push(south + eastWest);
+      };
+      console.log('commands', commands);
+
       if (shouldClose) {
         const lastStep = result.path[result.path.length - 1];
         const illegalMoves = [0,3,4,5,6,7].filter(d => {
@@ -69,10 +103,11 @@ function path (board, unit, start, finish, shouldClose) {
           unit: lastStep.unit.move(direction),
           direction: direction
         });
+        commands.push(direction);
       }
 
       const path = result.path.map(a => a.unit.pivot);
-      const commands = result.path.filter(a => a.direction).map(a => a.direction);
+      // const commands = result.path.filter(a => a.direction).map(a => a.direction);
       result.path = path;
       result.commands = commands;
     }
