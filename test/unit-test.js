@@ -69,7 +69,7 @@ describe('Single cell rotation', () => {
   });
 });
 
-describe('Unit Roatation', () => {
+describe('Unit Rotation', () => {
   it('should rotate clockwise', () => {
     const unit = new Unit({ x: 1, y: 1 }, [{ x: 0, y: 1}, { x: 2, y: 1 }]);
     var rotated = unit.rotate('CW');
