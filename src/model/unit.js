@@ -28,6 +28,11 @@ class Unit {
           deltaXOdd = 1;
           deltaXEven = 1;
           break;
+        case 'CW':
+        case 'CCW':
+          return this.rotate(direction);
+          break;
+
     }
     var pivot = { x: this.pivot.x + (this.pivot.y%2 ? deltaXOdd : deltaXEven), y: this.pivot.y + deltaY};
     var members = [];

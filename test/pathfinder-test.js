@@ -211,8 +211,8 @@ describe('A* test', () => {
     const path = pathfind(board, unit, start, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['W', 'SW', 'SE']);
-    expect(path.cost).to.equal(3);
+    expect(path.commands).to.deep.equal(['CW']);
+    expect(path.cost).to.equal(1);
   });
 
   it('should find a path on a harder map', () => {

@@ -7,25 +7,28 @@ function path (board, unit, start, finish) {
 
   return [aStar({
       start: {
-        point: start
+        unit: unit.moveTo(start)
       },
 
       isEnd (node) {
-        return node.point.x === finish.x && node.point.y === finish.y;
+        return node.unit.pivot.x === finish.x && node.unit.pivot.y === finish.y;
       },
 
       neighbor (node) {
-        const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE' ];
-        const hex_coords = Hex.offset_to_cube(node.point);
-        const temp_unit = unit.moveTo(node.point);
-        const allowed_dirs = [0,3,4,5].filter(d => {
+        const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
+        //const hex_coords = Hex.offset_to_cube(node.unit.pivot);
+        const temp_unit = node.unit; //unit.moveTo(node.point);
+        const allowed_dirs = [0,3,4,5,6,7].filter(d => {
           const next_unit = temp_unit.move(icfpc_directions[d]);
           const isValid = game.isValidPosition(board, next_unit);
           // console.log(icfpc_directions[d], next_unit, isValid);
           return isValid;
         });
         const neighbors = allowed_dirs.map(d => ({
-          point: Hex.offset_from_cube(Hex.hex_neighbor(hex_coords, d)),
+          //point: Hex.offset_from_cube(Hex.hex_neighbor(hex_coords, d)),
+          unit: node.unit.move(icfpc_directions[d]),
+          //  Hex.offset_from_cube(Hex.hex_neighbor(hex_coords, d))
+          //),
           direction: icfpc_directions[d]
         }));
         return neighbors
@@ -36,11 +39,16 @@ function path (board, unit, start, finish) {
       },
 
       heuristic (node) {
-        return Hex.hex_distance(Hex.offset_to_cube(finish), Hex.offset_to_cube(node));
+        return Hex.hex_distance(Hex.offset_to_cube(finish), Hex.offset_to_cube(node.unit.pivot));
       },
 
       hash (node) {
-        return `${node.point.x}|${node.point.y}`;
+        var h = `${node.unit.pivot.x}|${node.unit.pivot.y}`;
+        node.unit.members.forEach((m) => {
+          h += `|${m.x};${m.y}`;
+        });
+        //console.log('Hash: ' + h);
+        return h;
       },
 
       timeout: 20000
