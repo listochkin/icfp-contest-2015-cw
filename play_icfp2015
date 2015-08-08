@@ -82,34 +82,30 @@ parsed.file.forEach(function(fileName, i, arr) {
       if(!game.isValidPosition(game.board, game.unit))
         break;
 
-      // TODO: solve problem here
+      // Find best reachable position and path there
       var unitDest = game.findUnitTargetPlacement(game.board, game.unit);
-
       while(1) {
-
         // using pathfinder
-        var tmp = game.unit;
-        game.unit = unitDest;
         if(parsed.log) {
+          var tmp = game.unit;
+          game.unit = unitDest;
           game.display();
-          console.log("===");
+          console.log("placement found");
+          game.unit = tmp;
         }
-        game.unit = tmp;
 
         var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
-
         if(parsed.log) {
           console.log(path.commands);
         }
-
         if(path.status == 'success')
           break;
 
         unitDest = game.findNextTargetPlacement(game.board, unitDest);
       }
 
+      // safe-trace returned path and generate answer sequence
       for(var i=0; i < path.commands.length; i++) {
-
         var dir = path.commands[i];
 
         if(parsed.log) { 
@@ -125,102 +121,37 @@ parsed.file.forEach(function(fileName, i, arr) {
 
           if(parsed.log) {
             game.display();
-            console.log("valid ");
+            console.log("valid move ");
           }
         }
         else {
           if(parsed.log) {
             game.display();
-            console.log("invalid ");
+            console.log("invalid move ");
           }
           break;
         }
       }
 
-/*
-      path.commands.forEach(function(c) {
-        solution += encoding[c];    
-      });      
-*/
-      //solution += '\t';
-
-      //game.unit = unitDest;
-      if(parsed.log) {
-        game.display();
-        console.log("!!!!");
-      }
-
-/*
-      var tmp = game.unit;
-      game.unit = unitDest;
-      if(parsed.log) {
-        game.display();
-        console.log("===");
-      }
-      game.unit = tmp;
-
-      while(1) {
-
-        var dir = game.unit.pivot.x >= unitDest.pivot.x ? "W" : "E";
-        if(Math.abs(game.unit.pivot.x - unitDest.pivot.x) <=1)
-          dir = "S" + dir;
-
-        if(parsed.log) {
-          console.log(" game.unit.pivot.x=" + game.unit.pivot.x + " unitDest.pivot.x="+unitDest.pivot.x);
-          console.log(dir);
-        }
-
-        var moved = game.unit.move(dir);
-        solution += encoding[dir];
-        if(game.isValidPosition(game.board, moved)) {
-          game.unit = moved;
-          if(parsed.log) {
-            game.display();
-            console.log(" ");
-          }
-        }
-        else
-          break;
-      }
-*/
-
-      /*
-      while(1) {
-
-        var dir = (iteration++)%2;
-
-
-        var moved = game.unit.move(dir ? "SW" : "SE");
-        solution += dir ? 'a' : 'm';
-        if(game.isValidPosition(game.board, moved)) {
-          game.unit = moved;
-          if(parsed.log) {
-            game.display();
-            console.log(" ");
-          }
-        }
-        else
-          break;
-      }*/
+      // apply unit and find score
       game.board.fillByUnit(game.unit);
       if(parsed.log) {
-        console.log('Game scores: ', game.moveScoreCount(game).moveScoreGet());
+        console.log('Score so far: ', game.moveScoreCount(game).moveScoreGet());
       }
       game.board.clearLines();
-
       game.unit = undefined;
 
       if(parsed.log) {
         //game.display();
         //console.log(" ");
-        console.log("------------");
+        console.log("unit completed");
       }
     }
 
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v1_pathfind' + task.id,
+      tag : 'cw_v2_pathfind' + task.id,
       solution : solution
     };
     answer.push(entry);
