@@ -96,6 +96,8 @@ while(1) {
           }
         }
 
+        if(path == null || path.commands == null)
+          break;
         for(var i=0; i < path.commands.length; i++) {
           var dir = path.commands[i];
 

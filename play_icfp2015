@@ -140,6 +140,10 @@ parsed.file.forEach(function(fileName, i, arr) {
 
         // safe-trace returned path and generate answer sequence
         var failed = false;
+        if(path == null || path.commands == null) {
+          failed = true;
+          break;
+        }
         for(var i=0; i < path.commands.length; i++) {
           var dir = path.commands[i];
 
