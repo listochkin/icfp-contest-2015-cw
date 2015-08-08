@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 var t9 = require('../src/t9');
 
-describe.only('T9', () => {
+describe('T9', () => {
   it('should not replace anything if no power words present', () => {
     const path = 'aaa';
     expect(t9(path)).to.equal(path);
