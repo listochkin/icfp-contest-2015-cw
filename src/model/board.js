@@ -23,6 +23,14 @@ class Board {
       ref.cells[item.y][item.x] = 1;
     });
   }
+
+  clearByUnit (unit) {
+    var ref = this;
+    unit.getMembers().forEach(function(item, i, arr) {
+      ref.cells[item.y][item.x] = 0;
+    });
+  }
+
   clear (x, y) {
     this.cells[y][x] = 0;
     return this;
@@ -167,12 +175,16 @@ class Board {
     return holes;
   }
 
-  boardHeuristic() {
+  boardHeuristic(targetUnit) {
     const a = -0.51;
     const b = 0.76;
     const c = -0.35;
 
-    return a*this.aggregateHeight() + b*this.completeLines() + c*this.holes();
+    this.fillByUnit(targetUnit);
+    var heuristic = a*this.aggregateHeight() + b*this.completeLines() + c*this.holes();
+    this.clearByUnit(targetUnit);
+
+    return heuristic;
   }
 }
 

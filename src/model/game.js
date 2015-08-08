@@ -1,7 +1,6 @@
 var math = require('mathjs');
-
+var PriorityQueue = require('../priorityqueue');
 const pathevaluator = require('./pathevaluator');
-
 
 class Game {
   isValidPosition (board, unit) {
@@ -52,6 +51,22 @@ spawn (board, unit) {
     return unit;
   }
 
+
+  findTargetPlacementPQ(board, unit) {
+    var pq = new PriorityQueue((a, b) => a[0] - b[0]);
+
+    var target = findUnitTargetPlacement(board, unit);
+    var heuristic = board.boardHeuristic(target);
+
+    pq.enq([heuristic, target]);
+
+    for (var i = 0; i < 10; i++) {
+      target = findNextTargetPlacement(board, unit);
+      heuristic = board.boardHeuristic(target);
+      pq.enq([heuristic, target]);
+    }
+    return pq;
+  }
 
   findUnitTargetPlacement(board, unit) {
     var size = unit.getSize();
