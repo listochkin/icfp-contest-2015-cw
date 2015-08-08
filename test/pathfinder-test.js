@@ -109,7 +109,8 @@ describe('A* test', () => {
 
     const path = pathfind(board, unit, start, finish);
 
-    console.log(path);
+    // console.log(path);
+    expect(path.commands).to.deep.equal(['SW', 'SE']);
     expect(path.status).to.equal('success');
   })
 });
