@@ -102,12 +102,14 @@ describe('A* test', () => {
     // . X .
     const board = new Board(3, 3);
     board.fill(1, 1); // #
-    const start = {x: 0, y: 1}; //@
-    const finish = { x: 2, y: 1 }; // X
+    const start = { x: 1, y: 0 }; //@
+    const finish = { x: 1, y: 2 }; // X
 
     const unit = new Unit(start, [start]);
 
     const path = pathfind(board, unit, start, finish);
+
+    console.log(path);
     expect(path.status).to.equal('success');
   })
 });
