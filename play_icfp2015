@@ -169,12 +169,15 @@ parsed.file.forEach(function(fileName, i, arr) {
         }
       }
 
+    var t9 = require('./src/t9');
+    var t9solution = t9(solution);
+
     //solution = solution.substring(0, solution.length-1);
     var entry = {
       problemId : task.id,
       seed : seed,
       tag : 'cw_v13_pathfind' + task.id,
-      solution : solution
+      solution : t9solution
     };
     answer.push(entry);
   });
