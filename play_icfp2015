@@ -40,6 +40,7 @@ var model = require('./src/model'),
   Unit = model.Unit,
   Game = model.Game;
 var read = require('./src/reader');
+var pathfind = require('./src/pathfind');
 
 var answer = [];
 
@@ -86,6 +87,39 @@ parsed.file.forEach(function(fileName, i, arr) {
 
       var unitDest = game.findUnitTargetPlacement(game.board, game.unit);
 
+      while(1) {
+
+        // using pathfinder
+        var tmp = game.unit;
+        game.unit = unitDest;
+        if(parsed.log) {
+          game.display();
+          console.log("===");
+        }
+        game.unit = tmp;
+
+        var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
+
+        if(path.status == 'success')
+          break;
+
+        unitDest = game.findNextTargetPlacement(game.board, unitDest);
+      }
+
+
+      path.commands.forEach(function(c) {
+        solution += encoding[c];    
+      });
+
+      
+
+      game.unit = unitDest;
+      if(parsed.log) {
+        game.display();
+        console.log("!!!!");
+      }
+
+/*
       var tmp = game.unit;
       game.unit = unitDest;
       if(parsed.log) {
@@ -117,7 +151,7 @@ parsed.file.forEach(function(fileName, i, arr) {
         else
           break;
       }
-
+*/
 
       /*
       while(1) {
@@ -152,7 +186,7 @@ parsed.file.forEach(function(fileName, i, arr) {
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v6_stupid' + task.id,
+      tag : 'cw_v0_pathfind' + task.id,
       solution : solution
     };  
     answer.push(entry);
