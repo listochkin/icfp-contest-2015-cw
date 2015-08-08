@@ -135,5 +135,40 @@ describe('Board holes', () => {
 
 });
 
+describe('Flood fill', () => {
+  it('should fill initial spawn', () => {
+    var board = new Board(3, 3);
+    board.floodFill();
+    expect(board.getFloodFill(1, 0)).to.equal(1);
+  });
+
+  it('should fill initial row', () => {
+    var board = new Board(3, 3);
+    board.floodFill();
+    expect(board.getFloodFill(0, 0)).to.equal(1);
+  });
+
+  it('should fill other rows', () => {
+    var board = new Board(3, 3);
+    board.floodFill();
+    expect(board.getFloodFill(0, 2)).to.equal(1);
+    expect(board.getFloodFill(1, 2)).to.equal(1);
+    expect(board.getFloodFill(2, 2)).to.equal(1);
+  });
+
+  it('should not fill behind wall', () => {
+    var board = new Board(3, 3);
+    board.fill(0, 1);
+    board.fill(1, 1);
+    board.fill(2, 1);
+
+    board.floodFill();
+    expect(board.getFloodFill(0, 2)).to.equal(0);
+    expect(board.getFloodFill(1, 2)).to.equal(0);
+    expect(board.getFloodFill(2, 2)).to.equal(0);
+    expect(board.getFloodFill(0, 1)).to.equal(0);
+  });
+});
+
 
 

@@ -1,11 +1,11 @@
+var math = require('mathjs');
+
 class Board {
   constructor (width, height) {
     this.a = -0.51;
 //    const b = 0.76;
     this.b = 2.00;
     this.c = -0.35;
-
-
 
     this.width = width;
     this.height = height;
@@ -19,6 +19,9 @@ class Board {
   }
   get (x, y) {
     return this.cells[y][x];
+  }
+  getFloodFill(x, y) {
+    return this.flood[y][x];
   }
   fill (x, y) {
     this.cells[y][x] = 1;
@@ -197,6 +200,62 @@ class Board {
 
 //    console.log(heuristic);
     return heuristic;
+  }
+
+  floodFill() {
+    this.flood = [];
+    for (var i = 0; i< this.height; i++) {
+      this.flood.push([]);
+      for (var j = 0; j < this.width; j++) {
+        this.flood[i][j] = 0;
+      };
+    }
+    var fringes = [{x : Math.floor(this.width/2), y: 0}];
+    this.flood[0][Math.floor(this.width/2)] = 1;
+
+    var it;
+    var x, y;
+    while((it = fringes.shift())) {
+      //console.log(it);
+
+      x = it.x + 1;
+      y = it.y;
+      if(!this.flood[y][x] && !this.cells[y][x] && x < this.width) {
+        //console.log("1");
+        fringes.push({x : x, y: y});
+        this.flood[y][x] = 1;
+      }
+      x = it.x - 1;
+      if(!this.flood[y][x] && !this.cells[y][x] && x >= 0) {
+        //console.log("2");
+        fringes.push({x : x, y: y});
+        this.flood[y][x] = 1;
+      }
+      y = it.y + 1;
+      if(y < this.height) {
+        x = it.x
+        if(!this.flood[y][x] && !this.cells[y][x] && x >= 0) {
+          fringes.push({x : x, y: y});
+          this.flood[y][x] = 1;
+        }
+
+        if(it.y%1) {
+          x = it.x + 1;
+          if(!this.flood[y][x] && !this.cells[y][x] && x < this.width) {
+            fringes.push({x : x, y: y});
+            this.flood[y][x] = 1;
+          }
+        }
+        else {
+          x = it.x - 1;
+          if(!this.flood[y][x] && !this.cells[y][x] && x >= 0) {
+            fringes.push({x : x, y: y});
+            this.flood[y][x] = 1;
+          }
+        }
+      }
+
+    }
   }
 }
 
