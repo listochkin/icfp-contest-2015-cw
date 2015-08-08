@@ -265,7 +265,7 @@ describe('A* test', () => {
       ];
 
     const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish, 'close');
+    const path = pathfind(board, unit, start, finish);
 
     expect(path.status).to.equal('success');
     expect(path.commands).to.deep.equal([ 'W', 'W', 'SW', 'CCW', 'SW', 'SW' ]);
