@@ -19,7 +19,7 @@ function path (board, unit, start, finish, shouldClose) {
         // console.log(temp_unit);
         // Yes, rotation increases the branching, but it has a low priority and
         // doesn't improve the heuristic.
-        const allowed_dirs = [0,3,4,5/*,6,7*/].filter(d => {
+        const allowed_dirs = [0,3,4,5,6,7].filter(d => {
           const next_unit = temp_unit.move(icfpc_directions[d]);
           const isValid = board.isValidPosition(next_unit);
           // console.log(icfpc_directions[d], next_unit, isValid);
