@@ -85,6 +85,10 @@ class Unit {
     return new Unit(movedPivot, movedMembers);
   }
 
+  moveTo (newPivot) {
+    return moveBy({x: newPivot.x - this.pivot.x, y: newPivot.y - this.pivot.y});
+  }
+
 }
 
 Unit.rotate_cell = (c, direction) => {
