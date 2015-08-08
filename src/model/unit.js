@@ -1,9 +1,10 @@
 const Hex = require('../hex');
 
 class Unit {
-  constructor (pivot, members) {
+  constructor (pivot, members, rotation = 0) {
     this.pivot = JSON.parse(JSON.stringify(pivot));
     this.members = JSON.parse(JSON.stringify(members));
+    this.rotation = rotation;
   }
 
   move (direction) {
@@ -45,6 +46,8 @@ class Unit {
   }
 
   rotate (direction) {
+    this.rotation += direction == 'CW' ? 1 : -1;
+
     var hex_pivot = Hex.offset_to_cube(this.pivot);
     var hex_members = this.members.map(p => Hex.offset_to_cube(p));
 
