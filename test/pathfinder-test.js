@@ -120,6 +120,7 @@ function parse_map_array(map_array) {
         pivot = start;
         members.push(start);
       } else if (cell == '+') {
+        start = { x: x, y: y };
         pivot = start;
       } else if (cell == '*') {
         members.push({ x: x, y: y });
@@ -159,8 +160,8 @@ describe('A* test', () => {
     const path = pathfind(board, unit, start, finish);
 
     //console.log(path.commands);
-    expect(path.commands).to.deep.equal(['SW', 'SE']);
     expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal(['SW', 'SE']);
     expect(path.cost).to.equal(2);
   });
 
@@ -179,19 +180,39 @@ describe('A* test', () => {
     expect(path.status).to.equal('noPath');
   });
 
-  it('should fail with no path when too big to squeeze', () => {
+  it('should find a path when needs to turn to squeeze (I expect this to fail)', () => {
     var pathfind = require('../src/pathfind');
 
     const map_array = [
       ". @ *",
        "# . #",
+      ". X .",
+       ". . ."
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal(['CW', 'SE', 'SW']);
+    expect(path.cost).to.equal(3);
+  });
+
+  it('should find a path with pivot outside of the glass', () => {
+    var pathfind = require('../src/pathfind');
+
+    const map_array = [
+      "+ . *",
+       ". # #",
       ". X ."
     ];
 
     const [board, start, finish, unit] = parse_map_array(map_array);
     const path = pathfind(board, unit, start, finish);
 
-    expect(path.status).to.equal('noPath');
+    expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal(['W', 'SW', 'SE']);
+    expect(path.cost).to.equal(3);
   });
 
   it('should find a path on a harder map', () => {
@@ -205,7 +226,7 @@ describe('A* test', () => {
       ". . . . . # .",
        ". . . X . . .",
       ". . . . . . .",
-       ". . . . . . .",
+       ". . . . . . ."
     ];
 
     const [board, start, finish, unit] = parse_map_array(map_array);
@@ -227,7 +248,7 @@ describe('A* test', () => {
       ". # . # . . .",
        ". . . . # . .",
       ". # # # # # .",
-       ". . . . X # #",
+       ". . . . X # #"
     ];
 
     const [board, start, finish] = parse_map_array(map_array);
