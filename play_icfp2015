@@ -88,7 +88,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 
     var entry = {
       problemId : task.id,
-      seed : task.sourceSeeds[0],
+      seed : seed,
       tag : 'cw_sln_stupid' + task.id,
       solution : solution
     };  
