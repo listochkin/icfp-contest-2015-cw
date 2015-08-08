@@ -1,4 +1,4 @@
-var PriorityQueue = require('../priorityqueue');
+var PriorityQueue = require('priorityqueuejs');
 var Hex = require('../hex');
 
 // FIXME: just downloaded PQ from Github. It's on npm, maybe you'd like to import it the right way.

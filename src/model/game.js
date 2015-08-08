@@ -1,5 +1,5 @@
 var math = require('mathjs');
-var PriorityQueue = require('../priorityqueue');
+var PriorityQueue = require('priorityqueuejs');
 const pathevaluator = require('./pathevaluator');
 
 class Game {
