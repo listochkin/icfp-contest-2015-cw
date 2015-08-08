@@ -233,5 +233,23 @@ describe('A* test', () => {
 
     expect(path.commands).to.deep.equal([ 'SE', 'SW', 'SE', 'W' ]);
     expect(path.status).to.equal('success');
-  })
+  });
+
+  it('should rotate and find a path', () => {
+    const map_array = [
+       ". * + *"
+      ". . . .",
+       "X # # #",
+      ". . . ."
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    //console.log(path.commands);
+    
+    expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'SW']);
+    expect(path.status).to.equal('success');
+  });
+
 });
