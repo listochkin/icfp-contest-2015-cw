@@ -45,10 +45,22 @@ describe('A* pathfinder', () => {
     });
   });
 
-  describe('calc', () => {
+  describe.only('calc', () => {
     it('should actually return the came_from array', () => {
-      // TODO
-      assert.fail();
+      // .@.
+      // .#.
+      // .X.
+      const board = new Board(3, 3);
+      board.fill(1, 1); // #
+      const start = {x: 0, y: 1}; //@
+      const finish = { x: 2, y: 1 }; // X
+
+      const unit = new Unit(start, [start]);
+
+      const aStar = new Pathfinder.AStar(board, unit, start, finish);
+
+      const result = aStar.calc();
+      console.log(result);
     });
   });
 });
