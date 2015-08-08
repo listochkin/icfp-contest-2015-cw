@@ -123,11 +123,12 @@ parsed.file.forEach(function(fileName, i, arr) {
 
           if(parsed.log) {
             game.display();
-            console.log(" ");
+            console.log("valid ");
           }
         }
         else {
           if(parsed.log) {
+            game.display();
             console.log("invalid ");
           }
           break;
@@ -141,7 +142,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 */
       //solution += ' ';
 
-      game.unit = unitDest;
+      //game.unit = unitDest;
       if(parsed.log) {
         game.display();
         console.log("!!!!");
