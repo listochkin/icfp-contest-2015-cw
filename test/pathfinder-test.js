@@ -104,6 +104,8 @@ function parse_map_array(map_array) {
   var board = new Board((map_array[0].length+1) / 2, map_array.length);
   var start = null;
   var finish = null;
+  var pivot = null;
+  var members = [];
 
   for (var y=0; y<board.height; y++) {
     for (var x=0; x<board.width; x++) {
@@ -115,6 +117,12 @@ function parse_map_array(map_array) {
         board.fill(x, y);
       } else if (cell == '@') {
         start = { x: x, y: y };
+        pivot = start;
+        members.push(start);
+      } else if (cell == '+') {
+        pivot = start;
+      } else if (cell == '*') {
+        members.push({ x: x, y: y });
       } else if (cell == 'X') {
         finish = { x: x, y: y };
       } else {
@@ -123,16 +131,21 @@ function parse_map_array(map_array) {
     }
   }
 
+  var unit = null;
+  if (pivot && members) {
+    unit = new Unit(pivot, members);
+  }
   //return {
   //  board: board,
   //  start: start,
   //  finish: finish
+  //  unit: unit;
   //}
-  return [board, start, finish]
+  return [board, start, finish, unit]
 }
 
 
-describe('A* test', () => {
+describe.only('A* test', () => {
   it('should find a path', () => {
     var pathfind = require('../src/pathfind');
 
@@ -142,14 +155,28 @@ describe('A* test', () => {
       ". X ."
     ];
 
-    const [board, start, finish] = parse_map_array(map_array);
-    const unit = new Unit(start, [start]);
+    const [board, start, finish, unit] = parse_map_array(map_array);
     const path = pathfind(board, unit, start, finish);
 
-    console.log(path);
+    //console.log(path.commands);
     expect(path.commands).to.deep.equal(['SW', 'SE']);
     expect(path.status).to.equal('success');
     expect(path.cost).to.equal(2);
+  });
+
+  it('should fail with no path', () => {
+    var pathfind = require('../src/pathfind');
+
+    const map_array = [
+      ". @ .",
+       "# # #",
+      ". X ."
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    expect(path.status).to.equal('noPath');
   });
 
   it('should find a path on a harder map', () => {
@@ -166,13 +193,35 @@ describe('A* test', () => {
        ". . . . . . .",
     ];
 
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    //console.log(path.commands);
+    expect(path.status).to.equal('success');
+    expect(path.cost).to.equal(10);
+  });
+
+  it('should have some rollercoaster', () => {
+    var pathfind = require('../src/pathfind');
+
+    const map_array = [
+      ". @ . . . . .",
+       ". # # # # # #",
+      ". . . . . . .",
+       "# # # # # # .",
+      ". # . # . . .",
+       ". . . . # . .",
+      ". # # # # # .",
+       ". . . . X # #",
+    ];
+
     const [board, start, finish] = parse_map_array(map_array);
     const unit = new Unit(start, [start]);
     const path = pathfind(board, unit, start, finish);
 
-    // console.log(path);
+    console.log(path.commands);
     expect(path.status).to.equal('success');
-    expect(path.cost).to.equal(10);
+    expect(path.cost).to.equal(21);
   })
 
 });
