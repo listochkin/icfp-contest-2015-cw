@@ -13,7 +13,7 @@ https://trello.com/b/Ic5qbgYr/icfpc-2015
   - Goto Tools->Build System->New
   - Enter command, for example
   {
-	"shell_cmd": "node C:/dev/icfp/2015/icfp-contest-2015-cw/play_icfp2015 -f C:/dev/icfp/2015/icfp-contest-2015-cw/problems/problem_0.json -l > C:/dev/icfp/2015/icfp-contest-2015-cw/build.log"
+	"shell_cmd": "node play_icfp2015 -f problems/problem_0.json -l 
   }
   - Press Ctrl+B
   - Open build.log and see results instantly!

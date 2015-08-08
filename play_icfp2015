@@ -51,6 +51,8 @@ parsed.file.forEach(function(fileName, i, arr) {
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
   //console.log(task.units.length);
 
+  var iteration = 0;
+
   task.sourceSeeds.forEach(function(seed, i, arr) {
     var solution = "";
     game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
@@ -76,7 +78,8 @@ parsed.file.forEach(function(fileName, i, arr) {
       // TODO: solve problem here
       while(1) {
 
-        var dir = false;//Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+        var dir = (iteration++)%2;
+
 
         var moved = game.unit.move(dir ? "SW" : "SE");
         solution += dir ? 'a' : 'm';
@@ -103,7 +106,7 @@ parsed.file.forEach(function(fileName, i, arr) {
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v5_stupid' + task.id,
+      tag : 'cw_v6_stupid' + task.id,
       solution : solution
     };  
     answer.push(entry);
