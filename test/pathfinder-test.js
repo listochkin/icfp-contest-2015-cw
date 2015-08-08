@@ -45,7 +45,7 @@ describe('A* pathfinder', () => {
     });
   });
 
-  describe.only('calc', () => {
+  describe('calc', () => {
     it('should actually return the came_from array', () => {
       // .@.
       // .#.
