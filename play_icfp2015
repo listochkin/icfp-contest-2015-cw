@@ -30,9 +30,8 @@ if(parsed.storm) {
 	process.exit();
 }
 
-
-if(!parsed.file) {
-  console.log('Specify file list with -f');
+if(parsed.improve) {
+  require("./improver.js")
   process.exit();
 }
 
@@ -48,9 +47,10 @@ var pathfind = require('./src/pathfind');
 
 var answer = [];
 
-var attempts = 1;
-if(parsed.improve) {
-  attempts = 3;
+
+if(!parsed.file) {
+  console.log('Specify file list with -f');
+  process.exit();
 }
 
 parsed.file.forEach(function(fileName, i, arr) {
@@ -72,16 +72,6 @@ parsed.file.forEach(function(fileName, i, arr) {
 
   task.sourceSeeds.forEach(function(seed, i, arr) {
     var solution = "";
-    var bestScore = -1;
-    var bestSolution = "";
-    for(attempt = 0; attempt < attempts; attempt++){
-      solution = "";
-      if(parsed.log) {
-        console.log("attempt #" + attempt);
-      }
-      if(parsed.improve) {
-        game.clearScore();
-      }
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       var rand = game.board.getRandomGenerator(seed);
 
@@ -170,19 +160,13 @@ parsed.file.forEach(function(fileName, i, arr) {
           console.log("unit completed");
         }
       }
-      var thisAttemptScore = game.moveScoreGet().move_scores;
-      if(thisAttemptScore > bestScore) {
-          bestSolution = solution;
-          bestScore = thisAttemptScore;
-        }
 
-    }
 
     var entry = {
       problemId : task.id,
       seed : seed,
       tag : 'cw_v2_pathfind' + task.id,
-      solution : bestSolution
+      solution : solution
     };
     answer.push(entry);
 
