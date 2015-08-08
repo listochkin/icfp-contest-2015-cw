@@ -73,7 +73,7 @@ class Unit {
     }
     this.pivot.x += this.pivot.y%2 ? deltaXOdd : deltaXEven;
     this.pivot.y += deltaY;
-    
+
     this.members.forEach(function(item, i, arr) {
       item.x += (item.y%2) ? deltaXOdd : deltaXEven;
       item.y += deltaY;
@@ -129,6 +129,22 @@ class Unit {
     var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(newPivot), Hex.offset_to_cube(this.pivot));
     var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
     return new Unit(newPivot, newMembers);
+  }
+
+  minPivotDistance () {
+    var cube_pivot = Hex.offset_to_cube(this.pivot);
+    var distance = 0;
+    for(var i=0; i < this.members.length; i++) {
+      var cube_point = Hex.offset_to_cube(this.members[i]);
+      var d = Hex.hex_distance(cube_pivot, cube_point);
+      if(i == 0)
+        distance = d;
+      else if(d < distance)
+        distance = d;
+    }
+    console.log('dist:' + distance);
+    return distance;
+
   }
 
 }
