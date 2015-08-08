@@ -106,12 +106,40 @@ parsed.file.forEach(function(fileName, i, arr) {
         unitDest = game.findNextTargetPlacement(game.board, unitDest);
       }
 
+      for(var i=0; i < path.commands.length; i++) {
 
+        var dir = path.commands[i];
+
+        if(parsed.log) { 
+          console.log(" i=" + i + " of "+path.commands.length);
+          console.log(dir);
+        }
+
+        var moved = game.unit.move(dir);
+        solution += encoding[dir];
+        if(game.isValidPosition(game.board, moved)) {
+          game.unit = moved;
+          solution += encoding[dir];
+
+          if(parsed.log) {
+            game.display();
+            console.log(" ");
+          }
+        }
+        else {
+          if(parsed.log) {
+            console.log("invalid ");
+          }
+          break;
+        }
+      }
+
+/*
       path.commands.forEach(function(c) {
         solution += encoding[c];    
-      });
-
-      
+      });      
+*/
+      //solution += ' ';
 
       game.unit = unitDest;
       if(parsed.log) {
@@ -186,7 +214,7 @@ parsed.file.forEach(function(fileName, i, arr) {
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v0_pathfind' + task.id,
+      tag : 'cw_v1_pathfind' + task.id,
       solution : solution
     };  
     answer.push(entry);
