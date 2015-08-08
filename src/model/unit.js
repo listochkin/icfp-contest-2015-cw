@@ -45,6 +45,41 @@ class Unit {
     return new Unit(pivot, members);
   }
 
+  moveNc (direction) {
+    var deltaXOdd = 0, deltaXEven = 0, deltaY = 0;
+    switch(direction) {
+        case 'SW':
+          deltaXOdd = 0;
+          deltaXEven = -1;
+          deltaY = 1;
+          break;
+        case 'SE':
+          deltaXOdd = 1;
+          deltaXEven = 0;
+          deltaY = 1;
+          break;
+        case 'W':
+          deltaXOdd = -1;
+          deltaXEven = -1;
+          break;
+        case 'E':
+          deltaXOdd = 1;
+          deltaXEven = 1;
+          break;
+        case 'CW':
+        case 'CCW':
+          return this.rotate(direction);
+          break;
+    }
+    this.pivot.x += this.pivot.y%2 ? deltaXOdd : deltaXEven;
+    this.pivot.y += deltaY;
+    
+    this.members.forEach(function(item, i, arr) {
+      item.x += (item.y%2) ? deltaXOdd : deltaXEven;
+      item.y += deltaY;
+    });
+  }
+
   rotate (direction) {
     this.rotation += direction == 'CW' ? 1 : -1;
 

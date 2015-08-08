@@ -116,6 +116,7 @@ parsed.file.forEach(function(fileName, i, arr) {
         }
 
         // safe-trace returned path and generate answer sequence
+        var failed = false;
         for(var i=0; i < path.commands.length; i++) {
           var dir = path.commands[i];
 
@@ -123,20 +124,18 @@ parsed.file.forEach(function(fileName, i, arr) {
           //  console.log(" i=" + i + " of "+path.commands.length);
           //  console.log(dir);
           //}
-
-          var moved = game.unit.move(dir);
           solution += encoding[dir];
+          var moved = game.unit.move(dir);          
           if(game.isValidPosition(game.board, moved)) {
             game.unit = moved;
-            solution += encoding[dir];
-
+            
             // if(parsed.log) {
             //   game.display();
             //   console.log("valid move ");
             // }
           }
           else {
-            solution += 'a';
+            failed = true;            
             // if(parsed.log) {
             //   game.display();
             //   console.log("invalid move ");
@@ -144,6 +143,15 @@ parsed.file.forEach(function(fileName, i, arr) {
             break;
           }
         }
+        // add locking step
+        if(!failed)
+          solution += 'a';
+
+        if(parsed.log) {
+           game.display();
+           console.log(solution);
+         }
+         //solution += ' ';
 
         // apply unit and find score
         game.board.fillByUnit(game.unit);
@@ -161,18 +169,14 @@ parsed.file.forEach(function(fileName, i, arr) {
         }
       }
 
-
+    //solution = solution.substring(0, solution.length-1);
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v2_pathfind' + task.id,
+      tag : 'cw_v12_pathfind' + task.id,
       solution : solution
     };
     answer.push(entry);
-
   });
-
-  //var moveScore = game.moveScoreGet();
 });
-
 console.log(JSON.stringify(answer));

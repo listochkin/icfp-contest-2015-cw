@@ -5,7 +5,7 @@ const chai = require('chai'),
 const { Board, Unit, Game, Hex } = require('../src/model');
 
 describe('Unit Movement', () => {
-  it('should move east and west', () => { // TODO Storm
+  it('should move east and west', () => {
     expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
     const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
     const unitEast = unit.move('E');
@@ -16,7 +16,7 @@ describe('Unit Movement', () => {
     expect(unitWest.members).to.deep.equal([{ x:  0, y: 0}, {x: 2, y: 0}]);
   });
 
-  it('should move diagonaly from even to odd', () => { // TODO Storm
+  it('should move diagonaly from even to odd', () => { 
     const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
     const unitEast = unit.move('SE');
     expect(unitEast.pivot).to.deep.equal({ x: 1, y: 1 });
@@ -26,7 +26,7 @@ describe('Unit Movement', () => {
     expect(unitWest.members).to.deep.equal([{ x:  0, y: 2}, {x: 2, y: 2}]);
   });
 
-  it('should move diagonaly from odd to even', () => { // TODO Storm
+  it('should move diagonaly from odd to even', () => { 
     const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
     const unitEast = unit.move('SE');
     expect(unitEast.pivot).to.deep.equal({ x: 2, y: 2 });
@@ -34,6 +34,40 @@ describe('Unit Movement', () => {
     const unitWest = unitEast.move('SW');
     expect(unitWest.pivot).to.deep.equal({ x: 1, y: 3 });
     expect(unitWest.members).to.deep.equal([{ x:  0, y: 3}, {x: 2, y: 3}]);
+  });
+});
+
+describe('Unit Movement without copy', () => {
+  it('should move east and west', () => {
+    expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
+    const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);    
+
+    unit.moveNc('E');
+    expect(unit.pivot).to.deep.equal({ x: 2, y: 0 });
+    expect(unit.members).to.deep.equal([{ x:  1, y: 0}, {x: 3, y: 0}]);
+    unit.moveNc('W');
+    expect(unit.pivot).to.deep.equal({ x: 1, y: 0 });
+    expect(unit.members).to.deep.equal([{ x:  0, y: 0}, {x: 2, y: 0}]);
+  });
+
+  it('should move diagonaly from even to odd', () => { 
+    const unit = new Unit({ x: 1, y: 0}, [{ x:  0, y: 0}, {x: 2, y: 0}]);
+    unit.moveNc('SE');
+    expect(unit.pivot).to.deep.equal({ x: 1, y: 1 });
+    expect(unit.members).to.deep.equal([{ x:  0, y: 1}, {x: 2, y: 1}]);
+    unit.moveNc('SW');
+    expect(unit.pivot).to.deep.equal({ x: 1, y: 2 });
+    expect(unit.members).to.deep.equal([{ x:  0, y: 2}, {x: 2, y: 2}]);
+  });
+
+  it('should move diagonaly from odd to even', () => { 
+    const unit = new Unit({ x: 1, y: 1}, [{ x:  0, y: 1}, {x: 2, y: 1}]);
+    unit.moveNc('SE');
+    expect(unit.pivot).to.deep.equal({ x: 2, y: 2 });
+    expect(unit.members).to.deep.equal([{ x:  1, y: 2}, {x: 3, y: 2}]);
+    unit.moveNc('SW');
+    expect(unit.pivot).to.deep.equal({ x: 1, y: 3 });
+    expect(unit.members).to.deep.equal([{ x:  0, y: 3}, {x: 2, y: 3}]);
   });
 });
 
