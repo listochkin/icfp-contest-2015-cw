@@ -5,6 +5,18 @@ class Unit {
     this.pivot = JSON.parse(JSON.stringify(pivot));
     this.members = JSON.parse(JSON.stringify(members));
     this.rotation = rotation;
+    this.hashValue = null;
+  }
+
+  hash () {
+    if (!this.hashValue) {
+      var h = `${this.pivot.x}|${this.pivot.y}`;
+      this.members.forEach((m) => {
+        h += `|${m.x};${m.y}`;
+      });
+      this.hashValue = h;
+    }
+    return this.hashValue;
   }
 
   move (direction) {

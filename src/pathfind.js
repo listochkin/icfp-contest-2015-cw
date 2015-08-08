@@ -2,14 +2,6 @@ const aStar = require('a-star');
 const Hex = require('./hex');
 const { Game } = require('./model');
 
-function hash(unit) {
-  var h = `${unit.pivot.x}|${unit.pivot.y}`;
-  unit.members.forEach((m) => {
-    h += `|${m.x};${m.y}`;
-  });
-  return h;
-}
-
 function path (board, unit, start, finish, shouldClose) {
   const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
 
@@ -51,7 +43,7 @@ function path (board, unit, start, finish, shouldClose) {
       },
 
       hash (node) {
-        return hash(node.unit);
+        return node.unit.hash();
       },
 
       timeout: 20000
@@ -85,7 +77,7 @@ function path (board, unit, start, finish, shouldClose) {
                 direction: icfpc_directions[d]
               }
             }).filter(({ unit, direction }) => {
-              return hash(unit) === hash(result.path[i + 1].unit);
+              return unit.hash() === result.path[i + 1].unit.hash();
             }).map(a => a.direction))[0];
           }
 
