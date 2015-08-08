@@ -136,6 +136,35 @@ class Board {
     return valid;
   }
 
+  isValidPositionPlusFlood(unit) {
+
+    let valid = true;
+    for (var i = 0; valid && i < unit.members.length; i++) {
+
+      var member = {
+        x: unit.members[i].x,
+        y: unit.members[i].y
+      }
+
+      // check that member is within board bounds
+      if (member.x < 0 || member.x >= this.width) {
+        return false;
+      }
+
+      if (member.y < 0 || member.y >= this.height) {
+        return false;
+      }
+
+      // check that member is on free board cell
+      valid = valid && !this.get(member.x, member.y);
+      console.log("flood test");
+      if(!this.getFloodFill(member.x, member.y)) {
+        console.log("flood fail " + this.getFloodFill(member.x, member.y));
+      }
+    }
+    return valid;
+  }
+
 
   applyUnit(leftTopPoint, unit) {
 
@@ -215,6 +244,7 @@ class Board {
 
     var it;
     var x, y;
+    //var count = 0;
     while((it = fringes.shift())) {
       //console.log(it);
 
@@ -239,7 +269,7 @@ class Board {
           this.flood[y][x] = 1;
         }
 
-        if(it.y%1) {
+        if(it.y%2) {
           x = it.x + 1;
           if(!this.flood[y][x] && !this.cells[y][x] && x < this.width) {
             fringes.push({x : x, y: y});
@@ -254,7 +284,6 @@ class Board {
           }
         }
       }
-
     }
   }
 }
