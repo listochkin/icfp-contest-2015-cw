@@ -81,7 +81,13 @@ class Unit {
   }
 
   rotate (direction) {
-    this.rotation += direction == 'CW' ? 1 : -1;
+    var rotation = this.rotation + (direction == 'CW' ? 1 : -1);
+
+    if (rotation >=6)
+      rotation -= 6;
+
+    if (rotation < 0)
+      rotation += 6;
 
     var hex_pivot = Hex.offset_to_cube(this.pivot);
     var hex_members = this.members.map(p => Hex.offset_to_cube(p));
@@ -95,7 +101,7 @@ class Unit {
 
     var new_members = move_back.map(p => Hex.offset_from_cube(p));
 
-    return new Unit(this.pivot, new_members);
+    return new Unit(this.pivot, new_members, rotation);
   }
 
   getMembers () {

@@ -136,7 +136,30 @@ describe('Unit Rotation', () => {
     // TODO
     expect(rotated.members).to.deep.equal([{ x: 1, y: 2}, { x: 2, y: 0 }]);
   });
+  it('should keep rotation counter updated', () => {
+    const unit = new Unit({ x: 1, y: 1 }, [{ x: 1, y: 1 }]);
+    expect(unit.rotation).to.equal(0);
 
+    var rotated = unit.rotate('CW');
+    expect(rotated.rotation).to.equal(1);
+
+    rotated = rotated.rotate('CW');
+    expect(rotated.rotation).to.equal(2);
+
+    rotated = rotated.rotate('CW');
+    expect(rotated.rotation).to.equal(3);
+
+    rotated = rotated.rotate('CW');
+    rotated = rotated.rotate('CW');
+    expect(rotated.rotation).to.equal(5);
+
+    rotated = rotated.rotate('CW');
+    expect(rotated.rotation).to.equal(0);
+
+    rotated = rotated.rotate('CCW');
+    expect(rotated.rotation).to.equal(5);
+
+  });
 
 });
 
