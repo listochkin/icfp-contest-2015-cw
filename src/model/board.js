@@ -195,6 +195,7 @@ class Board {
     var heuristic = this.a*this.aggregateHeight() + this.b*this.completeLines() + this.c*this.holes();
     this.clearByUnit(targetUnit);
 
+//    console.log(heuristic);
     return heuristic;
   }
 }
