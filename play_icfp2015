@@ -76,6 +76,9 @@ parsed.file.forEach(function(fileName, i, arr) {
         break;
 
       // TODO: solve problem here
+
+    game.unit = game.findUnitTargetPlacement(game.board, game.unit);
+      /*
       while(1) {
 
         var dir = (iteration++)%2;
@@ -92,8 +95,10 @@ parsed.file.forEach(function(fileName, i, arr) {
         }
         else
           break;
-      }
+      }*/
       game.board.fillByUnit(game.unit);
+      game.board.clearLines();
+
       game.unit = undefined;
       
       if(parsed.log) {

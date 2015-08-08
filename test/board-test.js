@@ -47,4 +47,30 @@ describe('Board', () => {
     expect(board.getLines()).to.deep.equal([3]);
   }); 
 
+  it('shoudl clear all lines', () => {
+    const board = new Board(3, 7);
+    board.fill(0, 3);
+    board.fill(1, 3);
+    board.fill(2, 3);
+
+    board.fill(0, 2);
+    board.fill(1, 2);
+    board.fill(2, 2);
+
+    board.fill(0, 1);
+
+    board.clearLines();        
+
+    // element should move
+    expect(board.get(0, 1)).to.equal(0);
+    expect(board.get(0, 3)).to.equal(1);
+
+    // lines should be clear
+    expect(board.get(1, 3)).to.equal(0);
+    expect(board.get(1, 2)).to.equal(0);
+
+  }); 
+
+  
+
 });

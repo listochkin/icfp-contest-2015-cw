@@ -50,6 +50,12 @@ class Board {
     };
     return res;
   }
+  clearLines () {    
+    var lines = this.getLines();
+    for (var i = 0; i < lines.length; i++) {
+      this.clearLine(lines[i]);
+    }
+  }
 
   getRandomGenerator (seed) {
     var multiplier = 1103515245;
