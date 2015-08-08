@@ -8,9 +8,21 @@ ICFP Contest 2015 entry by cw team
 
 https://trello.com/b/Ic5qbgYr/icfpc-2015
 
+# How to launch App from Sublime
+
+  - Goto Tools->Build System->New
+  - Enter command, for example
+  {
+	"shell_cmd": "node C:/dev/icfp/2015/icfp-contest-2015-cw/play_icfp2015 -f C:/dev/icfp/2015/icfp-contest-2015-cw/problems/problem_0.json -l > C:/dev/icfp/2015/icfp-contest-2015-cw/build.log"
+  }
+  - Press Ctrl+B
+  - Open build.log and see results instantly!
+ 
+
 # development
 
   - Install Node 0.12 or iojs && `npm install`
   - `npm run watch` - rerun tests on file change
   - `npm run cover` - to generate a caverage report. See it in `coverage/lcov-report/index.html`
   - `npm start` - run the app
+

@@ -11,6 +11,7 @@ var nopt = require("nopt")
                 , "cores" : Number
                 , "file" : [String, Array]
                 , "storm" : Boolean
+                , "log" : Boolean
                 }
   , shortHands = { "p" : ["--phrase"]
                  , "m" : ["--mem"]
@@ -18,6 +19,7 @@ var nopt = require("nopt")
                  , "c" : ["--cores"]
                  , "f" : ["--file"]
                  , "s" : ["--storm"]
+                 , "l" : ["--log"]
                  }
   , parsed = nopt(knownOpts, shortHands, process.argv, 2)
 
@@ -47,7 +49,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 
   var game = read(task);
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
-  console.log(task.units.length);
+  //console.log(task.units.length);
 
   task.sourceSeeds.forEach(function(seed, i, arr) {
     var solution = "";
@@ -56,13 +58,16 @@ parsed.file.forEach(function(fileName, i, arr) {
 
     for(var unitIndex = 0; unitIndex < task.sourceLength; unitIndex++) {
       var currentUnit = rand()%task.units.length;  
-      console.log(currentUnit);
+      //console.log(currentUnit);
 
       var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
       //console.log(unit);
       game.unit = game.spawn(game.board, unit);    
 
-      game.display();
+      if(parsed.log) {
+        game.display();
+        console.log(" ");
+      }
 
       // check for endgame
       if(!game.isValidPosition(game.board, game.unit))
@@ -71,25 +76,34 @@ parsed.file.forEach(function(fileName, i, arr) {
       // TODO: solve problem here
       while(1) {
 
-        var dir = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+        var dir = false;//Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 
         var moved = game.unit.move(dir ? "SW" : "SE");
         solution += dir ? 'a' : 'm';
-        if(game.isValidPosition(game.board, moved))
+        if(game.isValidPosition(game.board, moved)) {
           game.unit = moved;
+          if(parsed.log) {
+            game.display();
+            console.log(" ");
+          }
+        }
         else
-          break;        
+          break;
       }
       game.board.fillByUnit(game.unit);
       game.unit = undefined;
-      game.display();
-      console.log(" ");
+      
+      if(parsed.log) {
+        //game.display();
+        //console.log(" ");
+        console.log("------------");
+      }
     }
 
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_sln_stupid' + task.id,
+      tag : 'cw_v5_stupid' + task.id,
       solution : solution
     };  
     answer.push(entry);
