@@ -5,14 +5,17 @@ require("babel/register"); // don't put anything above this line!
 var nopt = require("nopt")
   , Stream = require("stream").Stream
   , path = require("path")
-    , knownOpts = { "phrase" : [String, null]
+  , knownOpts = { "phrase" : [String, null]
                 , "mem" : Number
                 , "time" : Number
                 , "cores" : Number
                 , "file" : [String, Array]
                 , "storm" : Boolean
                 , "log" : Boolean
+                , "perflog" : Boolean
+                , "depth" : Number // how deep to look for potential target unit positions
                 , "improve" : Boolean
+                , "suppress" : Boolean // suppress output of problem answer
                 }
   , shortHands = { "p" : ["--phrase"]
                  , "m" : ["--mem"]
@@ -22,6 +25,9 @@ var nopt = require("nopt")
                  , "s" : ["--storm"]
                  , "l" : ["--log"]
                  , "i" : ["--improve"]
+                 , "e" : ["--perflog"]
+                 , "d" : ["--depth"]
+                 , "s" : ["--suppress"]
                  }
   , parsed = nopt(knownOpts, shortHands, process.argv, 2)
 
@@ -46,12 +52,19 @@ var read = require('./src/reader');
 var pathfind = require('./src/pathfind');
 
 var answer = [];
-
+var seedScores = [];
 
 if(!parsed.file) {
   console.log('Specify file list with -f');
   process.exit();
 }
+
+var lookupDepth = 1;
+if (parsed.depth) {
+  lookupDepth = parsed.depth;
+}
+
+var startTime = new Date();
 
 parsed.file.forEach(function(fileName, i, arr) {
 	data = fs.readFileSync(fileName);
@@ -71,8 +84,9 @@ parsed.file.forEach(function(fileName, i, arr) {
         };
 
   task.sourceSeeds.forEach(function(seed, i, arr) {
-    var solution = "";
+      var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
+      game.clearScore();
       var rand = game.board.getRandomGenerator(seed);
 
       for(var unitIndex = 0; unitIndex < task.sourceLength; unitIndex++) {
@@ -92,7 +106,7 @@ parsed.file.forEach(function(fileName, i, arr) {
           break;
 
         // Find best reachable position and path there
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 4);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth);
         var unitDest = targetGenerator.next();
         while(1) {
           // using pathfinder
@@ -125,17 +139,17 @@ parsed.file.forEach(function(fileName, i, arr) {
           //  console.log(dir);
           //}
           solution += encoding[dir];
-          var moved = game.unit.move(dir);          
+          var moved = game.unit.move(dir);
           if(game.isValidPosition(game.board, moved)) {
             game.unit = moved;
-            
+
             // if(parsed.log) {
             //   game.display();
             //   console.log("valid move ");
             // }
           }
           else {
-            failed = true;            
+            failed = true;
              if(parsed.log) {
                game.display();
                console.log("invalid move ");
@@ -180,6 +194,18 @@ parsed.file.forEach(function(fileName, i, arr) {
       solution : t9solution
     };
     answer.push(entry);
+
+    seedScores.push(game.moveScoreGet().move_scores);
+
   });
 });
-console.log(JSON.stringify(answer));
+
+var executionTime = new Date() - startTime;
+
+if (!parsed.suppress)
+  console.log(JSON.stringify(answer));
+
+if (parsed.perflog)
+  console.log('Lookup depth: ' + lookupDepth
+    + ', Seed scores: ' + JSON.stringify(seedScores)
+    + ', Execution time sec: ' + (executionTime / 1000));

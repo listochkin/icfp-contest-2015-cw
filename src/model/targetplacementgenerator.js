@@ -20,7 +20,7 @@ class TargetPlacementGenerator {
 
   next() {
     if (this._pq.size() == 0) {
-      this._fetchBatch();      
+      this._fetchBatch();
     }
 
     return this._pq.deq()[1];
@@ -28,7 +28,7 @@ class TargetPlacementGenerator {
 
   _fetchBatch() {
     var target = this._lastFetched;
-    var heuristic;    
+    var heuristic;
     for (var i = 0; i < this._queueLen; i++) {
       target = this._findNext(this._board, target);
       heuristic = this._board.boardHeuristic(target);
@@ -52,16 +52,18 @@ class TargetPlacementGenerator {
 
 
   _findNext(board, unit) {
-    //console.log("_findNext");
+    // console.log("_findNext");
     var target = unit.move('W');
 
     while (!board.isValidPositionPlusFlood(target)) {
-      //console.log("skip " + target);
+      // console.log("skip " + target);
 
       var size = target.getSize();
       if (size.min.x > 0)
         target = target.move('W');
       else {
+        if (size.min.y <= 0)
+          return null;
         // move target one row up
         target = target.moveBy({x: board.width - size.max.x - 1, y: -1});
       }

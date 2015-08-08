@@ -1,0 +1,7 @@
+Lookup depth: 1, Seed scores: [509], Execution time sec: 1.362
+Lookup depth: 2, Seed scores: [291], Execution time sec: 1.349
+Lookup depth: 3, Seed scores: [509], Execution time sec: 1.46
+Lookup depth: 4, Seed scores: [1384], Execution time sec: 2.037
+Lookup depth: 5, Seed scores: [391], Execution time sec: 0.961
+Lookup depth: 6, Seed scores: [814], Execution time sec: 1.209
+Lookup depth: 7, Seed scores: [391], Execution time sec: 0.921
