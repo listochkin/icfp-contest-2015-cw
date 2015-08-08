@@ -18,19 +18,20 @@ class TargetPlacementGenerator {
   }
 
   next() {
-    if (this._pq.size() == 0)
-      this._fetchBatch();
+    if (this._pq.size() == 0) {
+      this._fetchBatch();      
+    }
 
     return this._pq.deq()[1];
   }
 
   _fetchBatch() {
     var target = this._lastFetched;
-    var heuristic;
-    for (var i = 1; i < this._queueLen; i++) {
+    var heuristic;    
+    for (var i = 0; i < this._queueLen; i++) {
       target = this._findNext(this._board, target);
       heuristic = this._board.boardHeuristic(target);
-      this._pq.enq([heuristic, target]);
+      this._pq.enq([heuristic, target]);     
 
       // console.log('Target ' + JSON.stringify(target.pivot) + ', heuristic ' + heuristic);
     }
