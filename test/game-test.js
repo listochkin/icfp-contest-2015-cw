@@ -10,10 +10,7 @@ describe('Game Functions', () => {
     it('no collisions', () => {
       const game = new Game;
       const board = new Board(3, 2);
-      const unit = new Unit();
-      unit.pivot = {x: 1, y: 1};
-      unit.members = [{x: 0, y: 0}, {x: 1, y: 0}];
-
+      const unit = new Unit({x: 1, y: 1}, [{x: 0, y: 0}, {x: 1, y: 0}]);
       expect(game.isValidPosition(board, unit)).to.equal(true);
     });
 
@@ -21,23 +18,18 @@ describe('Game Functions', () => {
       const game = new Game;
       const board = new Board(3, 2);
       board.fill(1, 1);
-      const unit = new Unit();
-
-      unit.pivot = {x: 1, y: 1};
-      unit.members = [{x: 0, y: 0}, {x: 1, y: 0}];
-      expect(game.isValidPosition(board, unit)).to.equal(false);
+      const unit1 = new Unit({x: 1, y: 1}, [{x: 0, y: 0}, {x: 1, y: 0}]);
+      expect(game.isValidPosition(board, unit1)).to.equal(true);
+      const unit2 = new Unit({x: 1, y: 1}, [{x: 0, y: 0}, {x: 1, y: 1}]);
+      expect(game.isValidPosition(board, unit2)).to.equal(false);
     });
 
     it('should not leave the board', () => {
       const game = new Game;
       const board = new Board(3, 2);
-
-      const unit = new Unit();
-
-      unit.pivot = {x: 1, y: 1};
-      unit.members = [{x: 0, y: 0}, {x: 2, y: 0}];
+      const unit = new Unit({x: 1, y: 1}, [{x: 0, y: 0}, {x: 3, y: 0}]);
       expect(game.isValidPosition(board, unit)).to.equal(false);
-    })
+    });
   });
 
   describe('lock unit on a board', () => {
