@@ -77,7 +77,6 @@ describe('A* test', () => {
   });
 
   it('should fail with no path', () => {
-
     const map_array = [
       ". @ .",
        "# # #",
@@ -185,7 +184,7 @@ describe('A* test', () => {
     expect(path.cost).to.equal(21);
   });
 
-  it.only('should return correct path for empty map (regression: problem_0)', () => {
+  it('should return correct path for empty map (regression: problem_0)', () => {
     const map_array = [
       ". . . . @ . . . . .",
        ". . . . . . . . . .",
