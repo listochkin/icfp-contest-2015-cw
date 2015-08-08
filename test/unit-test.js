@@ -37,6 +37,26 @@ describe('Unit Movement', () => {
   });
 });
 
+describe('Unit Move By', () => {
+  it('move unit by 1 down', () => {
+    expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
+    const unit = new Unit({ x: 0, y: 0}, [{ x: 0, y: 1}]);
+    const moved = unit.moveBy({x: 0, y: 1});
+    expect(moved.pivot).to.deep.equal({ x: 0, y: 1 });
+    expect(moved.members).to.deep.equal([{ x: 1, y: 2}]);
+  });
+});
+
+describe('Unit Move To', () => {
+  it('move unit by 1 down', () => {
+    expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
+    const unit = new Unit({ x: 0, y: 0}, [{ x: 0, y: 1}]);
+    const moved = unit.moveTo({x: 0, y: 3});
+    expect(moved.pivot).to.deep.equal({ x: 0, y: 3 });
+    expect(moved.members).to.deep.equal([{ x: 1, y: 4}]);
+  });
+});
+
 describe('Single cell rotation', () => {
   it('should rotate ccw', () => {
     const cell = {x: 1, y: 2};

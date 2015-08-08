@@ -155,7 +155,7 @@ describe('Game Functions', () => {
       var targetUnit = game.findUnitTargetPlacement(board, unit);
 
       expect(targetUnit.pivot).to.deep.equal({x: 5, y: 2});
-      expect(targetUnit.members).to.deep.equal([{x: 7, y: 3}]);
+      expect(targetUnit.members).to.deep.equal([{x: 6, y: 3}]);
     });
 
   });

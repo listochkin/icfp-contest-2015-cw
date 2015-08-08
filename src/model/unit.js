@@ -84,22 +84,13 @@ class Unit {
   }
 
   moveBy (offset) {
-    var movedPivot = {x: (this.pivot.x + offset.x), y: (this.pivot.y + offset.y)};
-    var movedMembers = this.members.map(m => ({x: m.x + offset.x, y: m.y + offset.y}));
-
-    return new Unit(movedPivot, movedMembers);
+    return this.moveTo({x: this.pivot.x + offset.x, y: this.pivot.y + offset.y});
   }
 
   moveTo (newPivot) {
-    return this.moveBy({x: newPivot.x - this.pivot.x, y: newPivot.y - this.pivot.y});
-  }
-
-  getGreedyDirection(target) {
-    var dir = this.pivot.x > target.pivot.x ? "W" : "E";
-    //console.log()
-    if(Math.abs(this.pivot.x - target.pivot.x) <=1)
-      dir = "S" + dir;
-    return dir;
+    var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(newPivot), Hex.offset_to_cube(this.pivot));
+    var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
+    return new Unit(newPivot, newMembers);
   }
 
 }
