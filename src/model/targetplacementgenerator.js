@@ -31,6 +31,8 @@ class TargetPlacementGenerator {
     var heuristic;
     for (var i = 0; i < this._queueLen; i++) {
       target = this._findNext(this._board, target);
+      if (!target)
+        break;
       heuristic = this._board.boardHeuristic(target);
       this._pq.enq([heuristic, target]);
 
@@ -39,6 +41,7 @@ class TargetPlacementGenerator {
     this._lastFetched = target;
   }
 
+  
   _findInitial(board, unit) {
     var size = unit.getSize();
     var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};

@@ -55,7 +55,7 @@ var ga = new GA();
         }
         // Find best reachable position and path there
         game.board.setHeuristicParameters(euristicParameters.a, euristicParameters.b, euristicParameters.c);
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, 1); //euristicParameters.queueSize);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize);
         var unitDest = targetGenerator.next();
         console.log("nextUnit: " + unitDest.pivot.x + " " + unitDest.pivot.y);
         while(1) {
