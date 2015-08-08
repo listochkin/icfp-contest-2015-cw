@@ -177,7 +177,8 @@ class Board {
 
   boardHeuristic(targetUnit) {
     const a = -0.51;
-    const b = 0.76;
+//    const b = 0.76;
+    const b = 2.00;
     const c = -0.35;
 
     this.fillByUnit(targetUnit);
