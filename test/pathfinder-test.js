@@ -94,25 +94,87 @@ describe.skip('Graph', () => {
     // timeout - optional limit to amount of milliseconds to search before returning null.
 
 
+function parse_map_array(map_array) {
+  //map_array = [
+  // ". @ .",
+  //  ". # .",
+  // ". X ."
+  //];
+
+  var board = new Board((map_array[0].length+1) / 2, map_array.length);
+  var start = null;
+  var finish = null;
+
+  for (var y=0; y<board.height; y++) {
+    for (var x=0; x<board.width; x++) {
+
+      const cell = map_array[y].charAt(x * 2);
+      if (cell == '.') {
+        // noop
+      } else if (cell == '#') {
+        board.fill(x, y);
+      } else if (cell == '@') {
+        start = { x: x, y: y };
+      } else if (cell == 'X') {
+        finish = { x: x, y: y };
+      } else {
+        throw Error('Bad map at ' + x + ',' + y);
+      }
+    }
+  }
+
+  //return {
+  //  board: board,
+  //  start: start,
+  //  finish: finish
+  //}
+  return [board, start, finish]
+}
+
+
 describe('A* test', () => {
   it('should find a path', () => {
     var pathfind = require('../src/pathfind');
-    // . @ .
-    //  . # .
-    // . X .
-    const board = new Board(3, 3);
-    board.fill(1, 1); // #
-    const start = { x: 1, y: 0 }; //@
-    const finish = { x: 1, y: 2 }; // X
 
+    const map_array = [
+      ". @ .",
+       ". # .",
+      ". X ."
+    ];
+
+    const [board, start, finish] = parse_map_array(map_array);
     const unit = new Unit(start, [start]);
+    const path = pathfind(board, unit, start, finish);
 
+    console.log(path);
+    expect(path.status).to.equal('success');
+    expect(path.cost).to.equal(2);
+  });
+
+  it('should find a path on a harder map', () => {
+    var pathfind = require('../src/pathfind');
+
+    const map_array = [
+      ". @ . . . . .",
+       ". . . . . . .",
+      ". . . . . . .",
+       "# # # # # . .",
+      ". . . . . # .",
+       ". . . X . . .",
+      ". . . . . . .",
+       ". . . . . . .",
+    ];
+
+    const [board, start, finish] = parse_map_array(map_array);
+    const unit = new Unit(start, [start]);
     const path = pathfind(board, unit, start, finish);
 
     // console.log(path);
     expect(path.commands).to.deep.equal(['SW', 'SE']);
     expect(path.status).to.equal('success');
+    expect(path.cost).to.equal(10);
   })
+
 });
 
 describe.skip('A* pathfinder', () => {
