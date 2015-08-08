@@ -33,6 +33,8 @@
     "a-star": "^0.2.0",
     "babel": "^5.8.21",
     "mathjs": "^2.0.1",
-    "nopt": "^3.0.3"
+    "nopt": "^3.0.3",
+    "paralleljs": "^0.2.1",
+    "priorityqueuejs": "^1.0.0"
   }
 }

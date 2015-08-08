@@ -86,8 +86,7 @@ describe('Unit Rotation', () => {
 
 });
 
-
-describe('Finding greedy direction', () => {
+describe.skip('Finding greedy direction', () => {
   it('should work on odd row', () => {
     const unit = new Unit({ x: 3, y: 0 }, [{ x: 3, y: 0}]);
     const targetUnit = new Unit({ x: 3, y: 1 }, [{ x: 3, y: 1}]);
@@ -101,7 +100,7 @@ describe('Finding greedy direction', () => {
     const targetUnitFar2 = new Unit({ x: 0, y: 1 }, [{ x: 0, y: 1}]);
     expect(unit2.getGreedyDirection(targetUnit2)).to.equal('SW');
     expect(unit2.getGreedyDirection(targetUnitFar2)).to.equal('W');
-  });  
+  });
 
   it('should work on even row', () => {
     const unit = new Unit({ x: 3, y: 1 }, [{ x: 3, y: 1}]);
@@ -116,7 +115,5 @@ describe('Finding greedy direction', () => {
     const targetUnitFar2 = new Unit({ x: 0, y: 2 }, [{ x: 0, y: 2}]);
     expect(unit2.getGreedyDirection(targetUnit2)).to.equal('SE');
     expect(unit2.getGreedyDirection(targetUnitFar2)).to.equal('W');
-  });  
-
-  
+  });
 });
