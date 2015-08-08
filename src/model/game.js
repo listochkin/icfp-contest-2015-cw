@@ -99,7 +99,6 @@ spawn (board, unit) {
     return target;
   }
 
-
 }
 
 module.exports = Game;

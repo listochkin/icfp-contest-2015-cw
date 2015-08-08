@@ -89,6 +89,16 @@ class Unit {
     return this.moveBy({x: newPivot.x - this.pivot.x, y: newPivot.y - this.pivot.y});
   }
 
+  getGreedyDirection(target) {
+    var dir = (this.pivot.y%2) 
+      ? this.pivot.x > target.pivot.x ? "W" : "E"
+      : this.pivot.x >= target.pivot.x ? "W" : "E";
+    console.log(this.pivot.x > target.pivot.x);
+    if(Math.abs(this.pivot.x - target.pivot.x) <=1)
+      dir = "S" + dir;
+    return dir;
+  }
+
 }
 
 Unit.rotate_cell = (c, direction) => {

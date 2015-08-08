@@ -82,4 +82,41 @@ describe('Unit Rotation', () => {
     // TODO
     expect(rotated.members).to.deep.equal([{ x: 1, y: 2}, { x: 2, y: 0 }]);
   });
+
+
+});
+
+
+describe('Finding greedy direction', () => {
+  it('should work on odd row', () => {
+    const unit = new Unit({ x: 3, y: 0 }, [{ x: 3, y: 0}]);
+    const targetUnit = new Unit({ x: 3, y: 1 }, [{ x: 3, y: 1}]);
+    const targetUnitFar = new Unit({ x: 10, y: 1 }, [{ x: 10, y: 1}]);
+
+    expect(unit.getGreedyDirection(targetUnit)).to.equal('SE');
+    expect(unit.getGreedyDirection(targetUnitFar)).to.equal('E');
+
+    const unit2 = new Unit({ x: 3, y: 0 }, [{ x: 3, y: 0}]);
+    const targetUnit2 = new Unit({ x: 2, y: 1 }, [{ x: 2, y: 1}]);
+    const targetUnitFar2 = new Unit({ x: 0, y: 1 }, [{ x: 0, y: 1}]);
+    expect(unit2.getGreedyDirection(targetUnit2)).to.equal('SW');
+    expect(unit2.getGreedyDirection(targetUnitFar2)).to.equal('W');
+  });  
+
+  it('should work on even row', () => {
+    const unit = new Unit({ x: 3, y: 1 }, [{ x: 3, y: 1}]);
+    const targetUnit = new Unit({ x: 3, y: 2 }, [{ x: 3, y: 2}]);
+    const targetUnitFar = new Unit({ x: 10, y: 2 }, [{ x: 10, y: 2}]);
+
+    expect(unit.getGreedyDirection(targetUnit)).to.equal('SW');
+    expect(unit.getGreedyDirection(targetUnitFar)).to.equal('E');
+
+    const unit2 = new Unit({ x: 3, y: 1 }, [{ x: 3, y: 1}]);
+    const targetUnit2 = new Unit({ x: 4, y: 2 }, [{ x: 4, y: 2}]);
+    const targetUnitFar2 = new Unit({ x: 0, y: 2 }, [{ x: 0, y: 2}]);
+    expect(unit2.getGreedyDirection(targetUnit2)).to.equal('SE');
+    expect(unit2.getGreedyDirection(targetUnitFar2)).to.equal('W');
+  });  
+
+  
 });
