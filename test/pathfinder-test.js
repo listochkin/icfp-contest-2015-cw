@@ -154,7 +154,7 @@ describe('A* test', () => {
     const path = pathfind(board, unit, start, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['SE', 'CW', 'SE', 'SE', 'SE', 'SW', 'SW', 'CCW', 'SW', 'SW', 'SE']);
+    expect(path.commands).to.deep.equal(['SE', 'CW', 'SE', 'SE', 'SE', 'SW', 'SW', 'SW', 'SW', 'CCW', 'SE']);
     expect(path.cost).to.equal(11);
   });
 
@@ -310,9 +310,8 @@ describe('A* test', () => {
     const [board, start, finish, unit] = parse_map_array(map_array);
     const path = pathfind(board, unit, start, finish, 'close');
 
-    console.log(path.commands);
+    // console.log(path.commands);
 
     expect(path.status).to.equal('success');
-    // expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'SW']);
   });
 });
