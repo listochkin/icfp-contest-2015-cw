@@ -145,7 +145,7 @@ function parse_map_array(map_array) {
 }
 
 
-describe.only('A* test', () => {
+describe('A* test', () => {
   it('should find a path', () => {
     var pathfind = require('../src/pathfind');
 
@@ -170,6 +170,21 @@ describe.only('A* test', () => {
     const map_array = [
       ". @ .",
        "# # #",
+      ". X ."
+    ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    expect(path.status).to.equal('noPath');
+  });
+
+  it('should fail with no path when too big to squeeze', () => {
+    var pathfind = require('../src/pathfind');
+
+    const map_array = [
+      ". @ *",
+       "# . #",
       ". X ."
     ];
 
@@ -219,7 +234,7 @@ describe.only('A* test', () => {
     const unit = new Unit(start, [start]);
     const path = pathfind(board, unit, start, finish);
 
-    console.log(path.commands);
+    //console.log(path.commands);
     expect(path.status).to.equal('success');
     expect(path.cost).to.equal(21);
   })
