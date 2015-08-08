@@ -22,12 +22,15 @@ class Graph {
     this.game = new Game();
   }
 
+  neighbor_busy(unit, direction) {
+    var next_unit = unit.move(icfpc_directions[direction]);
+    return this.game.isValidPosition(this.board, next_unit);
+  }
+
   neighbors(offset) {
+    var unit = this.unit.moveTo(offset);
     var hex_coords = Hex.offset_to_cube(offset);
-    var allowed_dirs = [0,1,2,3,4,5].filter(d => {
-      var next_unit = this.unit.move(icfpc_directions[d]);
-      return this.game.isValidPosition(this.board, next_unit);
-    });
+    var allowed_dirs = [0,1,2,3,4,5].filter(d => this.neighbor_busy(unit, d));
     var hex_neighbors = allowed_dirs.map(
         d => Hex.hex_neighbor(hex_coords, d));
     return hex_neighbors.map(Hex.offset_from_cube);
