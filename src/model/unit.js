@@ -86,7 +86,7 @@ class Unit {
   }
 
   moveTo (newPivot) {
-    return moveBy({x: newPivot.x - this.pivot.x, y: newPivot.y - this.pivot.y});
+    return this.moveBy({x: newPivot.x - this.pivot.x, y: newPivot.y - this.pivot.y});
   }
 
 }
