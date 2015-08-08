@@ -86,11 +86,38 @@ class Board {
     for (var i = 0; i< this.height; i++) {
       var line = i%2 ? ' ' : '';
       for (var j = 0; j < this.width; j++) {
-        line += (this.cells[i][j] ? '#' : '·') + ' ';
+        line += (this.cells[i][j] ? '#' : 'В·') + ' ';
       };
       console.log(line);
     }
   }
+
+  isValidPosition (unit) {
+
+    let valid = true;
+
+    for (var i = 0; valid && i < unit.members.length; i++) {
+
+      var member = {
+        x: unit.members[i].x,
+        y: unit.members[i].y
+      }
+
+      // check that member is within board bounds
+      if (member.x < 0 || member.x >= this.width) {
+        return false;
+      }
+
+      if (member.y < 0 || member.y >= this.height) {
+        return false;
+      }
+
+      // check that member is on free board cell
+      valid = valid && !this.get(member.x, member.y);
+    }
+    return valid;
+  }
+
 
   applyUnit(leftTopPoint, unit) {
 

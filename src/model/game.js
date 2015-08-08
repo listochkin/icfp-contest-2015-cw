@@ -1,29 +1,11 @@
 var math = require('mathjs');
+
+const pathevaluator = require('./pathevaluator');
+
+
 class Game {
   isValidPosition (board, unit) {
-
-    let valid = true;
-
-    for (var i = 0; valid && i < unit.members.length; i++) {
-
-      var member = {
-        x: unit.members[i].x,
-        y: unit.members[i].y
-      }
-
-      // check that member is within board bounds
-      if (member.x < 0 || member.x >= board.width) {
-        return false;
-      }
-
-      if (member.y < 0 || member.y >= board.height) {
-        return false;
-      }
-
-      // check that member is on free board cell
-      valid = valid && !board.get(member.x, member.y);
-    }
-    return valid;
+    return board.isValidPosition(unit);
   }
 
   lock (board, unit) {
@@ -97,6 +79,14 @@ spawn (board, unit) {
       }
     }
     return target;
+  }
+
+  reachableLocation(board, unit) { // TODO: checks if unit's location is reachable for current board configuration
+    var evaluator = new pathevaluator(board);
+
+    evaluator.proceedEvaluation(this.spawn(board, unit));
+
+    return evaluator.checkReachable(unit);
   }
 
 }
