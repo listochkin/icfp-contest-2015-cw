@@ -3,7 +3,6 @@ const Hex = require('./hex');
 const { Game } = require('./model');
 
 function path (board, unit, start, finish, shouldClose) {
-  const game = new Game(board, unit);
   const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
 
   return [aStar({
@@ -22,7 +21,7 @@ function path (board, unit, start, finish, shouldClose) {
         // doesn't improve the heuristic.
         const allowed_dirs = [0,3,4,5/*,6,7*/].filter(d => {
           const next_unit = temp_unit.move(icfpc_directions[d]);
-          const isValid = game.isValidPosition(board, next_unit);
+          const isValid = board.isValidPosition(next_unit);
           // console.log(icfpc_directions[d], next_unit, isValid);
           return isValid;
         });
@@ -59,7 +58,7 @@ function path (board, unit, start, finish, shouldClose) {
         const lastStep = result.path[result.path.length - 1];
         const illegalMoves = [0,3,4,5,6,7].filter(d => {
           const next_unit = lastStep.unit.move(icfpc_directions[d]);
-          const isValid = game.isValidPosition(board, next_unit);
+          const isValid = board.isValidPosition(next_unit);
           return !isValid;
         });
         if (illegalMoves.length === 0) {
@@ -68,14 +67,14 @@ function path (board, unit, start, finish, shouldClose) {
         const direction = icfpc_directions[illegalMoves[0]];
         result.path.push({
           unit: lastStep.unit.move(direction),
-          direction
+          direction: direction
         });
       }
 
       const path = result.path.map(a => a.unit.pivot);
       const commands = result.path.filter(a => a.direction).map(a => a.direction);
       result.path = path;
-      result.commands = commands;      
+      result.commands = commands;
     }
     return result;
   })[0];
