@@ -108,7 +108,12 @@ parsed.file.forEach(function(fileName, i, arr) {
         // Find best reachable position and path there
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth);
         var unitDest = targetGenerator.next();
-        while(1) {
+        if(!unitDest) {
+          solution += 'a';
+          break;
+        }
+        var generatorFailed = false;
+        while(!generatorFailed) {
           // using pathfinder
 
            if(parsed.log) {
@@ -127,6 +132,10 @@ parsed.file.forEach(function(fileName, i, arr) {
             break;
 
           unitDest = targetGenerator.next();
+          if(!unitDest) {
+            solution += 'a';
+            generatorFailed = true;
+          }
         }
 
         // safe-trace returned path and generate answer sequence
