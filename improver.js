@@ -18,32 +18,37 @@ var initialC = -0.35;
 
 var ga = new GA();
 
-[
-  "problems/problem_0.json"
-].forEach(function(fileName, i, arr) {
-  var data = fs.readFileSync(fileName);
-  var task = JSON.parse(data);
-  var game = read(task);
-  var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
-  console.log("file: " + fileName);
+var bestSummaryScore = -1;
+while(1) {
   //console.log(task.units.length);
-
-  while(1) {
+  var summaryScore = 0;
+  [
+    "problems/problem_0.json"
+  ].forEach(function(fileName, i, arr) {
+      var data = fs.readFileSync(fileName);
+      var task = JSON.parse(data);
+      var game = read(task);
+      var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
+//      console.log("file: " + fileName);
+    var bestSeedScore = 0;
     task.sourceSeeds.forEach(function(seed, i, arr)
     {
       game.clearScore();
       var euristicParameters = ga.getItem();
 
-      console.log("attempt #next");
-      console.log("a/b/c/queueSize " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
+//      console.log("attempt #next");
+//      console.log("a/b/c/queueSize " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
 
 
-      console.log("seed: " + seed);
+//      console.log("seed: " + seed);
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       var rand = game.board.getRandomGenerator(seed);
 
+//      console.log("a/b/c/queueSize " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c + "/" + euristicParameters.queueSize);
+//      console.log("queueSize: " + euristicParameters.queueSize);
       for(var unitIndex = 0; unitIndex < task.sourceLength; unitIndex++) {
 
+//        console.log("for/queueSize: " + euristicParameters.queueSize);
         var currentUnit = rand()%task.units.length;
         //console.log(currentUnit);
         var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
@@ -58,7 +63,6 @@ var ga = new GA();
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize);
         var unitDest = targetGenerator.next();
         if(!unitDest) {
-          solution += 'a';
           break;
         }
         var generatorFailed = false;
@@ -97,9 +101,20 @@ var ga = new GA();
 
       }
       var thisAttemptScore = game.moveScoreGet().move_scores;
-      console.log('score for this attempt: ' + thisAttemptScore);
+//      console.log('score for this attempt: ' + thisAttemptScore);
       ga.setItemTargetValue(thisAttemptScore);
+      if(thisAttemptScore > bestSeedScore) {
+        bestSeedScore = thisAttemptScore;
+//        console.log("new best score: " + bestScore);
+//        ga.dumpPopulation();
+      }
     });
+    summaryScore += bestSeedScore;
+  });
+  if(summaryScore > bestSummaryScore) {
+    bestSummaryScore = summaryScore;
+        console.log("new best score: " + bestSummaryScore + "; please review population");
+        ga.dumpPopulation();
   }
-});
+}
 

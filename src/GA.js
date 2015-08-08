@@ -32,7 +32,11 @@ class GA {
       this.nextItemToUse = this.population.length / 2; // first half of population already has target value. We are not interested to repeat it.
     }
 
-    console.log("Going to check population member " + this.nextItemToUse);
+//    console.log("Going to check population member " + this.nextItemToUse + "; queueSize is " + this.population[this.nextItemToUse].queueSize);
+//    console.log("a/b/c/queueSize " + this.population[this.nextItemToUse].a + "/" + this.population[this.nextItemToUse].b + "/"
+//      + this.population[this.nextItemToUse].c + "/" + this.population[this.nextItemToUse].queueSize);
+
+//    this.dumpPopulation();
     return {a: this.toFloating(this.population[this.nextItemToUse].a),
             b: this.toFloating(this.population[this.nextItemToUse].b),
             c: this.toFloating(this.population[this.nextItemToUse].c),
@@ -72,7 +76,7 @@ class GA {
 
   dumpPopulation() {
     for(var i = 0; i < this.population.length; i++) {
-      console.log("population[" + i + "]: a/b/c/target " + this.population[i].a + "/" + this.population[i].b + "/" + this.population[i].c + "/" + this.population[i].target);
+      console.log("population[" + i + "]: a/b/c/queueSize/target " + this.toFloating(this.population[i].a) + "/" + this.toFloating(this.population[i].b) + "/" + this.toFloating(this.population[i].c) + "/" + this.population[i].queueSize + "/" + this.population[i].target);
     }
   }
 
@@ -89,7 +93,7 @@ class GA {
 
 
   crossover() {
-    console.log("starting crossover. length" + this.population.length);
+    //console.log("starting crossover. length" + this.population.length);
     var itemsToCrossover = this.population.length / 2;
     for(var i = 0; i < itemsToCrossover; i++) {
       var j = i + itemsToCrossover;
@@ -106,12 +110,14 @@ class GA {
       var secondBinaryStringC = this.binaryRepresentation(this.population[j].c);
 
       var firstQueueSize = this.binaryRepresentation(this.population[i].queueSize);
-      var secondQueueSize = this.binaryRepresentation(this.population[i].queueSize);
+      var secondQueueSize = this.binaryRepresentation(this.population[j].queueSize);
 
       var res1 = this.executeCrossover(firstBinaryStringA, secondBinaryStringA);
       var res2 = this.executeCrossover(firstBinaryStringB, secondBinaryStringB);
       var res3 = this.executeCrossover(firstBinaryStringC, secondBinaryStringC);
       var resQueue = this.executeCrossover(firstQueueSize, secondQueueSize);
+
+  //    console.log("first/second/crossresult1/crossres2: " + firstQueueSize + " " + secondQueueSize + " " + resQueue.first + " " + resQueue.second);
 
       var a1 = parseInt(res1.first, 2);
       var a2 = parseInt(res1.second, 2);
@@ -122,13 +128,22 @@ class GA {
       var queueSize1 = parseInt(resQueue.first, 2);
       var queueSize2 = parseInt(resQueue.second, 2);
 
+      if(queueSize1 == 0) {
+        queueSize1 = queueSize2;
+  //      console.log("setting to queueSize2 " + queueSize2);
+      }
+
+      if(queueSize2 == 0) {
+        queueSize2 = queueSize1;
+  //      console.log("setting to queueSize1 " + queueSize1);
+      }
 
       this.population.push({a:a1, b:b1,c:c1,queueSize: queueSize1, target:0});
       this.population.push({a:a2, b:b2,c:c2,queueSize: queueSize2, target:0});
     }
 
-    console.log("after crossover:");
-    this.dumpPopulation();
+  //  console.log("after crossover:");
+//    this.dumpPopulation();
   }
 
   mutateString(str) {
@@ -149,24 +164,29 @@ class GA {
   }
 
   mutate() {
+//    console.log("before mutate");
 //    this.dumpPopulation();
     for(var i = 0; i < this.population.length; i++) {
-      if (this.getRandomInt(0, 20) <= 1) {
+      if (this.getRandomInt(0, 20) <= 3) {
         var res = this.mutateString(this.binaryRepresentation(this.population[i].a));
         this.population[i].a = parseInt(res, 2);
       }
-      if (this.getRandomInt(0, 20) <= 1) {
+      if (this.getRandomInt(0, 20) <= 3) {
 
         this.population[i].b = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].b)), 2);
       }
-      if(this.getRandomInt(0, 20) <= 1) {
+      if(this.getRandomInt(0, 20) <= 3) {
         this.population[i].c = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].c)), 2);
       }
-      if(this.getRandomInt(0, 20) <= 1) {
+      if(this.getRandomInt(0, 20) <= 3) {
+        var origQueueSize = this.population[i].queueSize;
         this.population[i].queueSize = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].queueSize)), 2);
+        if(this.population[i].queueSize == 0)
+          this.population[i].queueSize = origQueueSize;
       }
     }
- //   this.dumpPopulation();
+//    console.log("after mutate");
+//    this.dumpPopulation();
   }
 
   removeWorse(){ //removes half worst elements
