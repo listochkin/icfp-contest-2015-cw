@@ -17,6 +17,7 @@ function path (board, unit, start, finish) {
       neighbor (node) {
         const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
         const temp_unit = node.unit;
+        // console.log(temp_unit);
         // Yes, rotation increases the branching, but it has a low priority and
         // doesn't improve the heuristic.
         const allowed_dirs = [0,3,4,5,6,7].filter(d => {
@@ -25,10 +26,12 @@ function path (board, unit, start, finish) {
           // console.log(icfpc_directions[d], next_unit, isValid);
           return isValid;
         });
+        // console.log(allowed_dirs);
         const neighbors = allowed_dirs.map(d => ({
           unit: node.unit.move(icfpc_directions[d]),
           direction: icfpc_directions[d]
         }));
+        // console.log(neighbors);
         return neighbors
       },
 
@@ -41,7 +44,7 @@ function path (board, unit, start, finish) {
       },
 
       hash (node) {
-        var h = `${node.unit.pivot.x}|${node.unit.pivot.y}`;
+        var h = `${node.direction}|${node.unit.pivot.x}|${node.unit.pivot.y}`;
         node.unit.members.forEach((m) => {
           h += `|${m.x};${m.y}`;
         });
