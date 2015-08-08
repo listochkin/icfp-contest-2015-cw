@@ -19,24 +19,26 @@ var initialC = -0.35;
 var ga = new GA(initialA, initialB, initialC);
 
 [
-  "problems/problem_0.json"
+  "problems/problem_3.json"
 ].forEach(function(fileName, i, arr) {
   var data = fs.readFileSync(fileName);
   var task = JSON.parse(data);
   var game = read(task);
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
+  console.log("file: " + fileName);
   //console.log(task.units.length);
 
   while(1) {
-    game.clearScore();
-
-    var euristicParameters = ga.getItem();
-
-    console.log("attempt #next");
-    console.log("a/b/c " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c);
     task.sourceSeeds.forEach(function(seed, i, arr)
     {
-      console.log("file: " + fileName);
+      game.clearScore();
+      var euristicParameters = ga.getItem();
+
+      console.log("attempt #next");
+      console.log("a/b/c " + euristicParameters.a + "/" + euristicParameters.b + "/" + euristicParameters.c);
+
+
+      console.log("seed: " + seed);
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       var rand = game.board.getRandomGenerator(seed);
 
@@ -80,15 +82,15 @@ var ga = new GA(initialA, initialB, initialC);
         // apply unit and find score
         game.board.fillByUnit(game.unit);
         game.moveScoreCount(game);
-//        console.log('Score so far: ', game.moveScoreGet());
+        console.log('Score so far: ', game.moveScoreGet());
         game.board.clearLines();
         game.unit = undefined;
 
       }
+      var thisAttemptScore = game.moveScoreGet().move_scores;
+      console.log('score for this attempt: ' + thisAttemptScore);
+      ga.setItemTargetValue(thisAttemptScore);
     });
-    var thisAttemptScore = game.moveScoreGet().move_scores;
-    console.log('score for this attempt: ' + thisAttemptScore);
-    ga.setItemTargetValue(thisAttemptScore);
   }
 });
 
