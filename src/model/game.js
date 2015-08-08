@@ -3,6 +3,12 @@ var PriorityQueue = require('priorityqueuejs');
 const pathevaluator = require('./pathevaluator');
 
 class Game {
+  constructor(){
+    this.ls_old = 0;
+    this.move_score = 0;
+    this.old_score = 0;
+  }
+
   isValidPosition (board, unit) {
     return board.isValidPosition(unit);
   }
@@ -102,6 +108,27 @@ spawn (board, unit) {
     evaluator.proceedEvaluation(this.spawn(board, unit));
 
     return evaluator.checkReachable(unit);
+  }
+
+  moveScoreCount(game){
+    this.old_score += parseInt(this.move_score);
+    var ls = game.board.getLines().length;
+    var size = game.unit.members.length;
+    var points = size + 100 * (1 + ls) * ls / 2;
+    var line_bonus = 0;
+    if(this.ls_old > 1){
+      line_bonus = floor ((this.ls_old - 1) * points / 10);
+    }
+    this.ls_old = ls;
+    this.move_score = points + line_bonus;
+    return this;
+  }
+  moveScoreGet(){
+    return {
+      lines_cleared: this.ls_old,
+      current_score: this.move_score,
+      old_score: this.old_score,
+      move_scores: this.move_score + this.old_score};
   }
 
 }

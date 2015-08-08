@@ -45,7 +45,7 @@ var pathfind = require('./src/pathfind');
 var answer = [];
 
 parsed.file.forEach(function(fileName, i, arr) {
-	data = fs.readFileSync(fileName);  
+	data = fs.readFileSync(fileName);
   task = JSON.parse(data);
 
   var game = read(task);
@@ -65,12 +65,12 @@ parsed.file.forEach(function(fileName, i, arr) {
     var rand = game.board.getRandomGenerator(seed);
 
     for(var unitIndex = 0; unitIndex < task.sourceLength; unitIndex++) {
-      var currentUnit = rand()%task.units.length;  
+      var currentUnit = rand()%task.units.length;
       //console.log(currentUnit);
 
       var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
       //console.log(unit);
-      game.unit = game.spawn(game.board, unit);    
+      game.unit = game.spawn(game.board, unit);
 
       if(parsed.log) {
         game.display();
@@ -166,8 +166,8 @@ parsed.file.forEach(function(fileName, i, arr) {
         var dir = game.unit.pivot.x >= unitDest.pivot.x ? "W" : "E";
         if(Math.abs(game.unit.pivot.x - unitDest.pivot.x) <=1)
           dir = "S" + dir;
-        
-        if(parsed.log) { 
+
+        if(parsed.log) {
           console.log(" game.unit.pivot.x=" + game.unit.pivot.x + " unitDest.pivot.x="+unitDest.pivot.x);
           console.log(dir);
         }
@@ -205,10 +205,11 @@ parsed.file.forEach(function(fileName, i, arr) {
           break;
       }*/
       game.board.fillByUnit(game.unit);
+      console.log('Game scores: ', game.moveScoreCount(game).moveScoreGet());
       game.board.clearLines();
 
       game.unit = undefined;
-      
+
       if(parsed.log) {
         //game.display();
         //console.log(" ");
@@ -221,10 +222,12 @@ parsed.file.forEach(function(fileName, i, arr) {
       seed : seed,
       tag : 'cw_v1_pathfind' + task.id,
       solution : solution
-    };  
+    };
     answer.push(entry);
 
-  });  
+  });
+
+  var moveScore = game.moveScoreGet();
 });
 
 console.log(JSON.stringify(answer));
