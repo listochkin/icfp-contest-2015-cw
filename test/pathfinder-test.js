@@ -366,4 +366,35 @@ describe('A* test', () => {
 
     expect(path.status).to.equal('success');
   });
+
+  it('should solve problem 22', () => {
+    var map_array = [
+        ". . . . @ * . . . .",
+         ". . . . . . . . . .",
+        "X # # # # # # # # #",
+         ". . . . . . . . # #"
+      ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal([ 'W', 'W', 'W', 'SW', 'CCW', 'SW' ]);
+  });
+
+  it('should solve problem 22 vol2', () => {
+    var map_array = [
+        ". . . . @ * . . . .",
+         ". . . . . . . . . .",
+        "# # # # # # # # # @",
+         ". . . . . . . . # #"
+      ];
+
+    const [board, start, finish, unit] = parse_map_array(map_array);
+    const path = pathfind(board, unit, start, finish);
+
+    expect(path.status).to.equal('success');
+    expect(path.commands).to.deep.equal([ 'E', 'E', 'E', 'E', 'SE', 'CCW', 'CCW', 'SE' ]);
+  });  
+
 });
