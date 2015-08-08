@@ -6,8 +6,8 @@
   "scripts": {
     "start": "./play_icfp2015",
     "cover": "istanbul cover _mocha -- --compilers js:babel/register --recursive --reporter=nyan",
-    "test": "mocha --compilers js:babel/register --recursive --reporter=nyan",
-    "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min"
+    "test": "mocha --compilers js:babel/register --recursive --reporter=spec",
+    "watch": "mocha --watch --compilers js:babel/register --recursive --reporter=min --growl"
   },
   "repository": {
     "type": "git",
