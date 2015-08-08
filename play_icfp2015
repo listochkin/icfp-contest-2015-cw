@@ -100,6 +100,10 @@ parsed.file.forEach(function(fileName, i, arr) {
 
         var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
 
+        if(parsed.log) {
+          console.log(path.commands);
+        }
+
         if(path.status == 'success')
           break;
 
@@ -140,7 +144,7 @@ parsed.file.forEach(function(fileName, i, arr) {
         solution += encoding[c];    
       });      
 */
-      //solution += ' ';
+      solution += ' ';
 
       //game.unit = unitDest;
       if(parsed.log) {
