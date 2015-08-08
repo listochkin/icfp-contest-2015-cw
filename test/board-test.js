@@ -37,15 +37,15 @@ describe('Board', () => {
     expect(board.get(4, 5)).to.equal(1);
     expect(board.get(3, 4)).to.equal(0);
   });
-  
+
   it('finding lines in boards', () => {
     const board = new Board(3, 7);
     board.fill(0, 3);
     board.fill(1, 3);
     board.fill(2, 3);
-    
+
     expect(board.getLines()).to.deep.equal([3]);
-  }); 
+  });
 
   it('shoudl clear all lines', () => {
     const board = new Board(3, 7);
@@ -59,7 +59,7 @@ describe('Board', () => {
 
     board.fill(0, 1);
 
-    board.clearLines();        
+    board.clearLines();
 
     // element should move
     expect(board.get(0, 1)).to.equal(0);
@@ -69,8 +69,71 @@ describe('Board', () => {
     expect(board.get(1, 3)).to.equal(0);
     expect(board.get(1, 2)).to.equal(0);
 
-  }); 
-
-  
+  });
 
 });
+
+describe('Board aggregateHeight', () => {
+  it('empty board', () => {
+    var board = new Board(5, 7);
+    expect(board.aggregateHeight()).to.equal(0);
+  });
+
+  it('should returm sum of heights for each column', () => {
+    var board = new Board(5, 7);
+    board.fill(0, 6);
+    board.fill(1, 6);
+    board.fill(1, 5);
+    expect(board.aggregateHeight()).to.equal(3);
+  });
+});
+
+describe('Board completeLines', () => {
+  it('no lines on empty board', () => {
+    var board = new Board(3, 7);
+    board.fill(0, 4);
+    board.fill(1, 4);
+    expect(board.completeLines()).to.equal(0);
+  });
+
+  it('should return number of completeLines', () => {
+    var board = new Board(3, 7);
+    [0, 1, 2].forEach(x => board.fill(x, 4));
+    [0, 1, 2].forEach(x => board.fill(x, 6));
+    expect(board.completeLines()).to.equal(2);
+  });
+});
+
+describe('Board holes', () => {
+  it('no holes on empty board', () => {
+    var board = new Board(3, 7);
+    board.fill(0, 4);
+    board.fill(1, 4);
+    expect(board.completeLines()).to.equal(0);
+  });
+
+  it('should return number of holes', () => {
+    var board = new Board(3, 7);
+    [0, 1, 2].forEach(x => board.fill(x, 4));
+    [0, 1, 2].forEach(x => board.fill(x, 5));
+    [0, 1, 2].forEach(x => board.fill(x, 6));
+    expect(board.holes()).to.equal(0);
+
+    board.clear(0, 4);
+    expect(board.holes()).to.equal(0);
+
+    board.clear(1, 5);
+    expect(board.holes()).to.equal(1);
+
+    board.clear(1, 6);
+    expect(board.holes()).to.equal(1);
+
+    board.clear(2, 6);
+    expect(board.holes()).to.equal(2);
+
+  });
+
+});
+
+
+

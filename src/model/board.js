@@ -104,6 +104,42 @@ class Board {
       }
     };
   }
+
+  aggregateHeight() {
+    var sum = 0;
+    for (var x = 0; x < this.width; x++) {
+      for (var y = 0; y < this.height; y++) {
+        if (this.get(x, y)) {
+          sum += this.height - y;
+          break;
+        }
+      }
+    }
+    return sum;
+  }
+
+  completeLines() {
+    var lines = 0;
+    for (var y = 0; y < this.height; y++) {
+      if (this.cells[y].findIndex(e => e==0) == -1) {
+        lines++;
+      }
+    }
+    return lines;
+  }
+
+  holes() {
+    var holes = 0;
+    for (var x = 0; x < this.width; x++) {
+      for (var y = 1; y < this.height; y++) {
+        if (this.cells[y][x] == 0 && this.cells[y-1][x] == 1)
+          holes++;
+      }
+    }
+
+    return holes;
+  }
+
 }
 
 module.exports = Board;
