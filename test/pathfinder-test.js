@@ -237,7 +237,7 @@ describe('A* test', () => {
 
   it('should rotate and find a path', () => {
     const map_array = [
-       ". * + *"
+       ". * + *",
       ". . . .",
        "X # # #",
       ". . . ."
