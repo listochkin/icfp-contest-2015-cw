@@ -1,7 +1,7 @@
 class GA {
   constructor() { //initial values
     this.populationLimit = 20;
-
+    this.mutationCounter = 0;
     var a, b, c, queueSize;
 
     this.population = [];
@@ -146,12 +146,12 @@ class GA {
 //    this.dumpPopulation();
   }
 
-  mutateString(str) {
+  mutateString(str, bits) {
     var pos = this.getRandomInt(0, 15);
     var res = '';
 
     for(var i = 0; i < 16; i++) {
-      if(i == pos) {
+      if(i >= (16-bits) && i == pos) {
         if(str[i] == '0')
           res += '1';
         else
@@ -163,30 +163,38 @@ class GA {
     return res;
   }
 
+
+
   mutate() {
 //    console.log("before mutate");
 //    this.dumpPopulation();
     for(var i = 0; i < this.population.length; i++) {
-      if (this.getRandomInt(0, 20) <= 3) {
-        var res = this.mutateString(this.binaryRepresentation(this.population[i].a));
+      if (this.getRandomInt(0, 20) <= 10) {
+        var res = this.mutateString(this.binaryRepresentation(this.population[i].a), 16);
         this.population[i].a = parseInt(res, 2);
       }
-      if (this.getRandomInt(0, 20) <= 3) {
+      if (this.getRandomInt(0, 20) <= 10) {
 
-        this.population[i].b = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].b)), 2);
+        this.population[i].b = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].b), 16), 2);
       }
-      if(this.getRandomInt(0, 20) <= 3) {
-        this.population[i].c = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].c)), 2);
+      if(this.getRandomInt(0, 20) <= 10) {
+        this.population[i].c = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].c), 16), 2);
       }
-      if(this.getRandomInt(0, 20) <= 3) {
+      if(this.getRandomInt(0, 20) <= 10) {
         var origQueueSize = this.population[i].queueSize;
-        this.population[i].queueSize = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].queueSize)), 2);
-        if(this.population[i].queueSize == 0)
+        this.population[i].queueSize = parseInt(this.mutateString(this.binaryRepresentation(this.population[i].queueSize), 4), 2);
+        if(this.population[i].queueSize == 0 || this.population[i].queueSize > 15)
           this.population[i].queueSize = origQueueSize;
       }
     }
 //    console.log("after mutate");
 //    this.dumpPopulation();
+    this.mutationCounter++;
+    if(this.mutationCounter % 3 == 0) {
+      console.log(" " + this.mutationCounter + "mutations passed, checking:");
+      this.dumpPopulation();
+    }
+
   }
 
   removeWorse(){ //removes half worst elements
