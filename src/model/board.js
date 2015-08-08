@@ -164,11 +164,6 @@ class Board {
     return valid;
   }
 
-
-  applyUnit(leftTopPoint, unit) {
-
-  }
-
   lower_line_maximum(unit) {
     var unit_size = unit.getSize();
     for (var j = 0; j < this.width; j++) {
@@ -211,6 +206,24 @@ class Board {
     }
 
     return holes;
+  }
+
+  findLinesHistogram() {
+    var hist = [];
+    for (var y = 0; y < this.height; y++) {
+      hist[y] = {y: y, filled : 0};
+      for (var x = 0; x < this.width; x++) {
+        if(this.cells[y][x] == 1)
+          hist[y].filled++;
+      }
+    }
+    var k = 1;
+    var height = this.height;
+    hist.sort(function(a, b) {
+      return a.filled+k*a.y/height > b.filled+k*b.y/height 
+        ? -1 : (a.filled+k*a.y/height < b.filled+k*b.y/height ? 1 : 0); 
+    })    
+    return hist;
   }
 
 

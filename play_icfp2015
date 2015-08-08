@@ -166,9 +166,20 @@ parsed.file.forEach(function(fileName, i, arr) {
             break;
           }
         }
-        // add locking step
-        if(!failed)
-          solution += 'a';
+
+        // finish path to locking
+        if(!failed) {
+          while(1) {
+            var dir = "E";            
+            var moved = game.unit.move(dir);
+            solution += encoding[dir];
+            if(game.isValidPosition(game.board, moved)) {
+              game.unit = moved;              
+            }
+            else
+              break;
+          }
+        }
 
         if(parsed.log) {
            game.display();
@@ -199,7 +210,7 @@ parsed.file.forEach(function(fileName, i, arr) {
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v13_pathfind' + task.id,
+      tag : 'cw_v14_pathfind' + task.id,
       solution : t9solution
     };
     answer.push(entry);
@@ -214,7 +225,14 @@ var executionTime = new Date() - startTime;
 if (!parsed.suppress)
   console.log(JSON.stringify(answer));
 
-if (parsed.perflog)
+if (parsed.perflog) {
+  var sum = 0;
+  for( var i = 0; i < seedScores.length; i++ ){
+      sum += seedScores[i];
+  }
+  var avg = sum/seedScores.length;
+
   console.log('Lookup depth: ' + lookupDepth
-    + ', Seed scores: ' + JSON.stringify(seedScores)
+    + ', Seed scores: ' + JSON.stringify(seedScores) + " Avg=" + avg
     + ', Execution time sec: ' + (executionTime / 1000));
+}

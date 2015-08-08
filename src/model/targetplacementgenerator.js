@@ -9,6 +9,9 @@ class TargetPlacementGenerator {
     this._rotate = rotate;
     this._board = board;
     this._board.floodFill();
+    this.hist = this._board.findLinesHistogram();
+    this.currentYIndex = 0;
+    //console.log("Hist: " + JSON.stringify(this.hist));
 
     var target = this._findInitial(board, startingUnit);
     var heuristic = board.boardHeuristic(target);
@@ -53,7 +56,8 @@ class TargetPlacementGenerator {
 
   _findInitial(board, unit) {
     var size = unit.getSize();
-    var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
+    //var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
+    var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};
     var targetUnit = unit.moveBy(offset);
 
     if (board.isValidPositionPlusFlood(targetUnit))
@@ -79,8 +83,11 @@ class TargetPlacementGenerator {
       else {
         if (size.min.y <= 0)
           return null;
-        // move target one row up
-        target = target.moveBy({x: board.width - size.max.x - 1, y: -1});
+        
+        // goto next best row
+        this.currentYIndex++;
+        var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};
+        target = target.moveBy(offset);
       }
     }
     return target;
