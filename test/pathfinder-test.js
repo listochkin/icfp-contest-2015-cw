@@ -202,17 +202,17 @@ describe('A* test', () => {
     var pathfind = require('../src/pathfind');
 
     const map_array = [
-      "+ . *",
-       ". # #",
-      ". X ."
+      "+ . * .",
+       ". # # #",
+      ". X . ."
     ];
 
     const [board, start, finish, unit] = parse_map_array(map_array);
     const path = pathfind(board, unit, start, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['CW']);
-    expect(path.cost).to.equal(1);
+    expect(path.commands).to.deep.equal(['W', 'SW', 'SE', 'E', 'E']);
+    expect(path.cost).to.equal(5);
   });
 
   it('should find a path on a harder map', () => {
