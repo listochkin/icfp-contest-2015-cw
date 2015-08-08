@@ -3,9 +3,10 @@ const Unit = require('./unit');
 
 class TargetPlacementGenerator {
 
-  constructor (board, startingUnit, queueLen) {
+  constructor (board, startingUnit, queueLen, rotate = 0) {
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
+    this._rotate = rotate;
     this._board = board;
     this._board.floodFill();
 
@@ -55,7 +56,10 @@ class TargetPlacementGenerator {
 
 
   _findNext(board, unit) {
-    // console.log("_findNext");
+
+    if (!unit)
+      return null;
+
     var target = unit.move('W');
 
     while (!board.isValidPositionPlusFlood(target)) {

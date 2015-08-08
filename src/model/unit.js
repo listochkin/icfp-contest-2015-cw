@@ -128,7 +128,7 @@ class Unit {
   moveTo (newPivot) {
     var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(newPivot), Hex.offset_to_cube(this.pivot));
     var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
-    return new Unit(newPivot, newMembers);
+    return new Unit(newPivot, newMembers, this.rotation);
   }
 
   minPivotDistance () {
