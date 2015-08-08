@@ -62,7 +62,7 @@ function path (board, unit, start, finish, shouldClose) {
         const next = dots[i + 1];
         const deltaX = next.x - prev.x;
         const deltaY = next.y - prev.y;
-        console.log(prev, next, deltaX, deltaY);
+        // console.log(prev, next, deltaX, deltaY);
         if (deltaX === 0 && deltaY === 0) {
           throw new Error('unimplemented');
         }
@@ -83,10 +83,10 @@ function path (board, unit, start, finish, shouldClose) {
         }
         let south = deltaY > 0 ? 'S' : '';
 
-        console.log(deltaX, deltaY, south + eastWest)
+        // console.log(deltaX, deltaY, south + eastWest)
         commands.push(south + eastWest);
       };
-      console.log('commands', commands);
+      // console.log('commands', commands);
 
       if (shouldClose) {
         const lastStep = result.path[result.path.length - 1];

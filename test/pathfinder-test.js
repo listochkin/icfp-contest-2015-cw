@@ -226,9 +226,9 @@ describe('A* test', () => {
         const isOnPath = pp.length > 0;
         line = line + ' ' + (isOnPath ? '*' : '.');
       };
-      console.log(line);
+      // console.log(line);
     };
-    console.log(path.commands);
+    // console.log(path.commands);
     expect(path.commands.indexOf('E')).to.equal(path.commands.lastIndexOf('E'));
     expect(path.commands).to.deep.equal([ 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'E' ]);
   });
