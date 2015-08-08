@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 const { Board, Unit, Game, Pathfinder } = require('../src/model');
 
-describe.only('Graph', () => {
+describe('Graph', () => {
   describe('neighbors', () => {
 
     it('should account for occupied cells', () => {
@@ -37,7 +37,7 @@ describe.only('Graph', () => {
   });
 });
 
-describe.only('A* pathfinder', () => {
+describe('A* pathfinder', () => {
   describe('heuristic', () => {
     it('should return the distance between cells', () => {
       // TODO
