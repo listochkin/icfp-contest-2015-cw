@@ -51,7 +51,7 @@ function path (board, unit, start, finish) {
       timeout: 20000
   })].map(function (result) {
     if (result.status === 'success') {
-      const path = result.path.map(a => a.point);
+      const path = result.path.map(a => a.unit.pivot);
       const commands = result.path.filter(a => a.direction).map(a => a.direction);
       result.path = path;
       result.commands = commands;

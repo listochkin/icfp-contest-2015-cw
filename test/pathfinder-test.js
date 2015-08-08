@@ -5,15 +5,7 @@ const chai = require('chai'),
 const Hex = require('../src/hex');
 
 const { Board, Unit, Game } = require('../src/model');
-
-    // start - the start node
-    // isEnd - function(node) that returns whether a node is an acceptable end
-    // neighbor - function(node) that returns an array of neighbors for a node
-    // distance - function(a, b) that returns the distance cost between two nodes
-    // heuristic - function(node) that returns a heuristic guess of the cost from node to an end.
-    // hash - function(node) that returns a unique string for a node. this is so that we can put nodes in heap and set data structures which are based on plain old JavaScript objects. Defaults to using node.toString.
-    // timeout - optional limit to amount of milliseconds to search before returning null.
-
+const pathfind = require('../src/pathfind');
 
 function parse_map_array(map_array) {
   //map_array = [
@@ -69,8 +61,6 @@ function parse_map_array(map_array) {
 
 describe('A* test', () => {
   it('should find a path', () => {
-    var pathfind = require('../src/pathfind');
-
     const map_array = [
       ". @ .",
        ". # .",
@@ -87,7 +77,6 @@ describe('A* test', () => {
   });
 
   it('should fail with no path', () => {
-    var pathfind = require('../src/pathfind');
 
     const map_array = [
       ". @ .",
@@ -101,9 +90,7 @@ describe('A* test', () => {
     expect(path.status).to.equal('noPath');
   });
 
-  it('should find a path when needs to turn to squeeze (I expect this to fail)', () => {
-    var pathfind = require('../src/pathfind');
-
+  it('should find a path when needs to turn to squeeze', () => {
     const map_array = [
       ". @ *",
        "# . #",
@@ -120,8 +107,6 @@ describe('A* test', () => {
   });
 
   it('should find a path with pivot outside of the glass', () => {
-    var pathfind = require('../src/pathfind');
-
     const map_array = [
       "+ . * .",
        ". # # #",
@@ -137,8 +122,6 @@ describe('A* test', () => {
   });
 
   it('should find a path rotating different ways', () => {
-    var pathfind = require('../src/pathfind');
-
     const map_array = [
       "* + * .",
        ". . . .",
@@ -162,8 +145,6 @@ describe('A* test', () => {
 
 
   it('should find a path on a harder map', () => {
-    var pathfind = require('../src/pathfind');
-
     const map_array = [
       ". @ . . . . .",
        ". . . . . . .",
@@ -184,8 +165,6 @@ describe('A* test', () => {
   });
 
   it('should have some rollercoaster', () => {
-    var pathfind = require('../src/pathfind');
-
     const map_array = [
       ". @ . . . . .",
        ". # # # # # #",
@@ -204,6 +183,52 @@ describe('A* test', () => {
     //console.log(path.commands);
     expect(path.status).to.equal('success');
     expect(path.cost).to.equal(21);
-  })
+  });
 
+  it.only('should return correct path for empty map (regression: problem_0)', () => {
+    const map_array = [
+      ". . . . @ . . . . .",
+       ". . . . . . . . . .",
+      ". . . . . . . . . .",
+       ". . . . . . . . . .",
+      ". . . . . . . . . .",
+       ". . . . . . . . . .",
+      ". . . . . . . . . .",
+       ". . . . . . . . . .",
+      ". . . . . . . . . .",
+       ". . . . . . . . . X"
+    ];
+    const [board, start, finish] = parse_map_array(map_array);
+    const unit = new Unit(start, [start]);
+    const path = pathfind(board, unit, start, finish).path;
+
+    for (var i = 0; i < 10; i++) {
+      for (var j = 0; j < 10; j++) {
+
+      };
+    };
+
+    console.log(path);
+  });
+
+  it.skip('should close path', () => {
+    const map_array = [
+      ". @ . . . . .",
+       ". . . . . . .",
+      ". . . . . . .",
+       "# . . . . . .",
+      "# # . . . . .",
+       "# # . . . . .",
+      "# # # . . . .",
+       "# # # . . . ."
+    ];
+    const [board, start, finish] = parse_map_array(map_array);
+    const unit = new Unit(start, [start]);
+    const path = pathfind(board, unit, start, finish);
+
+    //console.log(path.commands);
+    expect(path.status).to.equal('success');
+    expect(path.cost).to.equal(21);
+    assert.fail();
+  })
 });
