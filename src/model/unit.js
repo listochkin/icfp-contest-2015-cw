@@ -90,10 +90,8 @@ class Unit {
   }
 
   getGreedyDirection(target) {
-    var dir = (this.pivot.y%2) 
-      ? this.pivot.x > target.pivot.x ? "W" : "E"
-      : this.pivot.x >= target.pivot.x ? "W" : "E";
-    console.log(this.pivot.x > target.pivot.x);
+    var dir = this.pivot.x > target.pivot.x ? "W" : "E";
+    //console.log()
     if(Math.abs(this.pivot.x - target.pivot.x) <=1)
       dir = "S" + dir;
     return dir;
