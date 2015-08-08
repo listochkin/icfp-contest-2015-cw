@@ -216,12 +216,12 @@ describe('A* test', () => {
     // expect(path.commands).to.deep.equal([ 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'SE', 'E' ]);
   });
 
-  it.skip('should close path', () => {
+  it('should close path', () => {
     const map_array = [
       ". @ . . . . .",
        ". . . . . . .",
       ". . . . . . .",
-       "# . . . . . .",
+       "# X . . . . .",
       "# # . . . . .",
        "# # . . . . .",
       "# # # . . . .",
@@ -229,11 +229,10 @@ describe('A* test', () => {
     ];
     const [board, start, finish] = parse_map_array(map_array);
     const unit = new Unit(start, [start]);
-    const path = pathfind(board, unit, start, finish);
+    const path = pathfind(board, unit, start, finish, 'close');
 
-    //console.log(path.commands);
+    console.log(path.commands);
+    expect(path.commands).to.deep.equal([ 'SE', 'SW', 'SE', 'W' ]);
     expect(path.status).to.equal('success');
-    expect(path.cost).to.equal(21);
-    assert.fail();
   })
 });

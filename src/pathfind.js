@@ -2,8 +2,9 @@ const aStar = require('a-star');
 const Hex = require('./hex');
 const { Game } = require('./model');
 
-function path (board, unit, start, finish) {
+function path (board, unit, start, finish, shouldClose) {
   const game = new Game(board, unit);
+  const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
 
   return [aStar({
       start: {
@@ -15,7 +16,6 @@ function path (board, unit, start, finish) {
       },
 
       neighbor (node) {
-        const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
         const temp_unit = node.unit;
         // console.log(temp_unit);
         // Yes, rotation increases the branching, but it has a low priority and
@@ -54,6 +54,23 @@ function path (board, unit, start, finish) {
       timeout: 20000
   })].map(function (result) {
     if (result.status === 'success') {
+      if (shouldClose) {
+        const lastStep = result.path[result.path.length - 1];
+        const illegalMoves = [0,3,4,5,6,7].filter(d => {
+          const next_unit = lastStep.unit.move(icfpc_directions[d]);
+          const isValid = game.isValidPosition(board, next_unit);
+          return !isValid;
+        });
+        if (illegalMoves.length === 0) {
+          throw new Error("can't close the path");
+        }
+        const direction = icfpc_directions[illegalMoves[0]];
+        result.path.push({
+          unit: lastStep.unit.move(direction),
+          direction
+        });
+      }
+
       const path = result.path.map(a => a.unit.pivot);
       const commands = result.path.filter(a => a.direction).map(a => a.direction);
       result.path = path;
