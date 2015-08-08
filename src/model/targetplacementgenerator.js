@@ -19,7 +19,7 @@ class TargetPlacementGenerator {
 
   next() {
     if (this._pq.size() == 0)
-      _fetchBatch(this._lastFetched);
+      this._fetchBatch();
 
     return this._pq.deq()[1];
   }
