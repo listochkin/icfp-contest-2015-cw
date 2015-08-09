@@ -18,7 +18,7 @@ var initialC = -0.35;
 
 var ga = new GA();
 
-var bestSummaryScore = -1;
+var bestSummaryScore = 0;
 while(1) {
   //console.log(task.units.length);
   var summaryScore = 0;
@@ -30,11 +30,11 @@ while(1) {
       var task = JSON.parse(data);
       var game = read(task);
       var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
+      var taskScore = 0;
+      game.clearScore();
 //      console.log("file: " + fileName);
-    var bestSeedScore = 0;
     task.sourceSeeds.forEach(function(seed, i, arr)
     {
-      game.clearScore();
       var euristicParameters = ga.getItem();
 
 //      console.log("attempt #next");
@@ -118,17 +118,15 @@ while(1) {
         game.unit = undefined;
 
       }
-      var thisAttemptScore = game.moveScoreGet().move_scores;
+      taskScore += game.moveScoreGet().move_scores;
+//      var thisAttemptScore = game.moveScoreGet().move_scores;
 //      console.log('score for this attempt: ' + thisAttemptScore);
-      ga.setItemTargetValue(thisAttemptScore);
-      if(thisAttemptScore > bestSeedScore) {
-        bestSeedScore = thisAttemptScore;
 //        console.log("new best score: " + bestScore);
 //        ga.dumpPopulation();
-      }
     });
-    summaryScore += bestSeedScore;
+    summaryScore += taskScore;
   });
+  ga.setItemTargetValue(summaryScore);
   if(summaryScore > bestSummaryScore) {
     bestSummaryScore = summaryScore;
         console.log("new best score: " + bestSummaryScore + "; please review population");
