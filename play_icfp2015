@@ -9,8 +9,7 @@ var nopt = require("nopt")
                 , "mem" : Number
                 , "time" : Number
                 , "cores" : Number
-                , "file" : [String, Array]
-                , "storm" : Boolean
+                , "file" : [String, Array]                  
                 , "log" : Boolean
                 , "perflog" : Boolean
                 , "depth" : Number // how deep to look for potential target unit positions
@@ -23,8 +22,7 @@ var nopt = require("nopt")
                  , "m" : ["--mem"]
                  , "t" : ["--time"]
                  , "c" : ["--cores"]
-                 , "f" : ["--file"]
-                 , "s" : ["--storm"]
+                 , "f" : ["--file"]                 
                  , "l" : ["--log"]
                  , "i" : ["--improve"]
                  , "e" : ["--perflog"]

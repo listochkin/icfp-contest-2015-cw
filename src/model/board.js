@@ -217,13 +217,13 @@ class Board {
           hist[y].filled++;
       }
     }
-    var k = 1;
+    var k = 2.5;
+    var width = this.width;
     var height = this.height;
     hist.sort(function(a, b) {
-      //return a.filled+k*a.y/height > b.filled+k*b.y/height 
-//        ? -1 : (a.filled+k*a.y/height < b.filled+k*b.y/height ? 1 : 0); 
-      return k*a.y/height > k*b.y/height 
-        ? -1 : (k*a.y/height < k*b.y/height ? 1 : 0); 
+      var acost = a.y/height + k*a.filled/width;
+      var bcost = b.y/height + k*b.filled/width;
+      return acost > bcost ? -1 : (acost < bcost ? 1 : 0); 
     })    
     return hist;
   }
