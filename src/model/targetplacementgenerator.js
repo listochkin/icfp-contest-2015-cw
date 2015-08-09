@@ -3,7 +3,7 @@ const Unit = require('./unit');
 
 class TargetPlacementGenerator {
 
-  constructor (board, startingUnit, queueLen, rotate = 0) {
+  constructor (board, startingUnit, queueLen, rotate = false) {
     this.created = true;
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
@@ -21,7 +21,7 @@ class TargetPlacementGenerator {
     }
     var heuristic = board.boardHeuristic(target);
 
-    this._pq.enq([heuristic, target]);
+    this._enq(heuristic, target);
     this._lastFetched = target;
 
     this._fetchBatch();
@@ -38,18 +38,24 @@ class TargetPlacementGenerator {
     return this._pq.deq()[1];
   }
 
+  _enq(heuristic, unit) {
+    this._pq.enq([heuristic, unit]);
+    //console.log('Target ' + JSON.stringify(unit) + ', heuristic ' + heuristic);
+  }
+
   _fetchBatch() {
     var target = this._lastFetched;
     var heuristic;
     var itemsEnqueued = 0;
-    for (var i = 0; i < this._queueLen; i++) {
+    var batchSize = this._queueLen - this._pq.size();
+
+    for (var i = 0; i < batchSize; i++) {
       target = this._findNext(this._board, target);
       if (!target)
         break;
       heuristic = this._board.boardHeuristic(target);
-      this._pq.enq([heuristic, target]);
+      this._enq(heuristic, target);
       itemsEnqueued++;
-      // console.log('Target ' + JSON.stringify(target.pivot) + ', heuristic ' + heuristic);
     }
     this._lastFetched = target;
     if(itemsEnqueued == 0)
@@ -63,12 +69,14 @@ class TargetPlacementGenerator {
     var size = unit.getSize();
     //var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
     var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};
-    var targetUnit = unit.moveBy(offset);
+    var target = unit.moveBy(offset);
 
-    if (board.isValidPositionPlusFlood(targetUnit))
-      return targetUnit;
+    this._lastMoved = target;
 
-    return this._findNext(board, targetUnit);
+    if (board.isValidPositionPlusFlood(target))
+      return target;
+
+    return this._findNext(board, target);
   }
 
 
@@ -77,15 +85,43 @@ class TargetPlacementGenerator {
     if (!unit)
       return null;
 
+    var target = this._nextRotation(board, unit);
+
+    if (!target) {
+      target = this._nextLocation(board, this._lastMoved);
+      // store moved unit in non-rotated state
+      this._lastMoved = target;
+    }
+
+    return target;
+  }
+
+  _nextRotation(board, unit) {
+    if (!this._rotate || unit.rotation == 5)
+      return null;
+
+    var target = unit.rotate('CW');
+
+    while (!board.isValidPositionPlusFlood(target)) {
+      if (target.rotation == 5)
+        return null;
+
+      target = target.rotate('CW');
+    }
+    return target;
+  }
+
+  _nextLocation(board, unit) {
     var target = unit.move('W');
 
     while (!board.isValidPositionPlusFlood(target)) {
+
       // console.log("skip " + target);
 
-      if (target.rotation < 5) {
-        target = target.move('CW');
-        continue;
-      }
+      // if (target.rotation < 5) {
+      //   target = target.move('CW');
+      //   continue;
+      // }
       var size = target.getSize();
       if (size.min.x > 0)
         target = target.move('W')

@@ -6,17 +6,35 @@ const { Board, Unit, Game, TargetPlacementGenerator } = require('../src/model');
 
 const parse_map_array = require('./test-map-parser');
 
+describe('find target unit placement', () => {
+  it('should move to bottom right 1 member unit', () => {
+    const map_array = [
+      ". @ . . .",
+       ". . . . .",
+      ". . . . ."
+    ];
 
-  describe('find target unit placement', () => {
-    it('should move to bottom right corner', () => {
-      const board = new Board(8, 5);
-      const unit = new Unit({x: 1, y: 1}, [{x: 3, y: 2}]);
+    const [board, start, finish, unit] = parse_map_array(map_array);
+
+    var generator = new TargetPlacementGenerator(board, unit, 1);
+    var targetUnit = generator.next();
+
+    expect(targetUnit.members).to.deep.equal([{x: 4, y: 2}]);
+  });
+
+    it('should move to bottom right 2 members unit', () => {
+      const map_array = [
+        ". @ * . .",
+         ". . . . .",
+        ". . . . ."
+      ];
+
+      const [board, start, finish, unit] = parse_map_array(map_array);
 
       var generator = new TargetPlacementGenerator(board, unit, 1);
       var targetUnit = generator.next();
 
-      expect(targetUnit.pivot).to.deep.equal({x: 5, y: 3});
-      expect(targetUnit.members).to.deep.equal([{x: 7, y: 4}]);
+      expect(targetUnit.members).to.deep.equal([{x: 3, y: 2}, {x: 4, y: 2}]);
     });
 
     it('should skip occupied cells', () => {
@@ -82,6 +100,42 @@ const parse_map_array = require('./test-map-parser');
 
       expect(targetUnit.pivot).to.deep.equal({x: 0, y: 4});
       expect(targetUnit.members).to.deep.equal([{x: 0, y: 4}]);
+    });
+
+    it('rotate unit', () => {
+      const map_array = [
+        ". @ * . . . .",
+         ". . . . . . .",
+        ". . . . . . .",
+         "# # # # # . #",
+        ". . . . . # ."
+      ];
+
+      const [board, start, finish, unit] = parse_map_array(map_array);
+
+      var generator = new TargetPlacementGenerator(board, unit, 20, true);
+      var targetUnit = generator.next();
+
+      expect(targetUnit.members).to.deep.equal([{x: 5, y: 3}, {x: 6 ,y: 4}]);
+
+    });
+
+    it('rotate unit 2', () => {
+      const map_array = [
+        ". @ * . . . .",
+         ". . . . . . .",
+        ". . . . . . .",
+         "# . # # # . #",
+        ". . . . . # ."
+      ];
+
+      const [board, start, finish, unit] = parse_map_array(map_array);
+
+      var generator = new TargetPlacementGenerator(board, unit, 20, true);
+      var targetUnit = generator.next();
+
+      expect(targetUnit.members).to.deep.equal([{x: 3, y: 4}, {x: 4 ,y: 4}]);
+
     });
 
   });

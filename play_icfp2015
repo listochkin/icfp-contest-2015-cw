@@ -107,7 +107,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 
         var failed = false;
         // Find best reachable position and path there
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true);
         if(targetGenerator.created == false) {
           failed = true;
           break;
