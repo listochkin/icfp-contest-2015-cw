@@ -12,7 +12,6 @@ describe('T9', () => {
 
   it('should find power words', () => {
     const a = t9.reverseT9('ei!');
-    console.log(t9.reversePowerWords);
     const path = 'daaakamakmmmaamaambbb';
     expect(t9(path)).to.equal('digitalismmmialialbbb')
   })
