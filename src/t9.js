@@ -1,9 +1,6 @@
 function t9(path, priorityWords) {
-  console.log(priorityWords);
   var words = [...byLength(priorityWords), ...byLength(powerWords)];
-  console.log(words);
   var reverse = reversePowerWords(words);
-  console.log(words);
   for (let word in reverse) {
     path = replaceAll(word, reverse[word], path);
   }
