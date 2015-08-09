@@ -386,7 +386,7 @@ describe('A* test', () => {
     var map_array = [
         ". . . . @ * . . . .",
          ". . . . . . . . . .",
-        "# # # # # # # # # @",
+        "# # # # # # # # # X",
          ". . . . . . . . # #"
       ];
 
@@ -394,7 +394,7 @@ describe('A* test', () => {
     const path = pathfind(board, unit, start, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal([ 'E', 'E', 'E', 'E', 'SE', 'CCW', 'CCW', 'SE' ]);
-  });  
+    expect(path.commands).to.deep.equal([ 'E', 'E', 'E', 'SE', 'E', 'CCW', 'SE' ]);
+  });
 
 });
