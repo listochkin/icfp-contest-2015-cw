@@ -82,6 +82,10 @@ class TargetPlacementGenerator {
     while (!board.isValidPositionPlusFlood(target)) {
       // console.log("skip " + target);
 
+      if (target.rotation < 5) {
+        target = target.move('CW');
+        continue;
+      }
       var size = target.getSize();
       if (size.min.x > 0)
         target = target.move('W')
