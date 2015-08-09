@@ -53,7 +53,7 @@ while(1) {
 //        console.log("for/queueSize: " + euristicParameters.queueSize);
         var currentUnit = rand()%task.units.length;
         //console.log(currentUnit);
-        var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
+        var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members, currentUnit);
         game.unit = game.spawn(game.board, unit);
 
         // check for endgame

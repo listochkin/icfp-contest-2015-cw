@@ -75,6 +75,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
   task = JSON.parse(data);
 
   var game = read(task);
+
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
   //console.log(task.units.length);
 
@@ -98,7 +99,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
         var currentUnit = rand()%task.units.length;
         //console.log(currentUnit);
 
-        var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members);
+        var unit = new Unit(task.units[currentUnit].pivot, task.units[currentUnit].members, currentUnit);
         game.unit = game.spawn(game.board, unit);
 
         if(parsed.log) {

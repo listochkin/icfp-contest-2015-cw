@@ -14,7 +14,13 @@ function read (problem) {
   game.sourceLength = problem.sourceLength;
   game.sourceSeeds = problem.sourceSeeds;
 
-  game.units = problem.units.map(({ pivot, members }) => new Unit(pivot, members));
+
+  var units = [];
+  for (var i = 0; i < problem.units.length; i++) {
+    units.push(new Unit(problem.units[i].pivot, problem.units[i].members, i));
+  }
+  game.setUnits(units);
+
 
   return game;
 }

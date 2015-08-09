@@ -9,12 +9,13 @@ function _coords_partial_cmp(a, b) {
 }
 
 class Unit {
-  constructor (pivot, members, rotation = 0) {
+  constructor (pivot, members, id = -1, rotation = 0) {
     // NOTE: Why cloning? Do these ever get modified?
     this.pivot = JSON.parse(JSON.stringify(pivot));
     this.members = JSON.parse(JSON.stringify(members));
     this.rotation = rotation;
     this.hashValue = null;
+    this.id = id;
   }
 
   hash () {
@@ -84,7 +85,7 @@ class Unit {
       members.push({ x: item.x + ((item.y%2) ? deltaXOdd : deltaXEven), y: item.y + deltaY} );
     });
 
-    return new Unit(pivot, members);
+    return new Unit(pivot, members, this.id, this.rotation);
   }
 
   moveNc (direction) {
@@ -143,7 +144,7 @@ class Unit {
 
     var new_members = move_back.map(p => Hex.offset_from_cube(p));
 
-    return new Unit(this.pivot, new_members, rotation);
+    return new Unit(this.pivot, new_members, this.id, rotation);
   }
 
   getMembers () {
@@ -169,17 +170,17 @@ class Unit {
     return {x: (max_x - min_x + 1), y: (max_y - min_y + 1), min: {x: min_x, y: min_y}, max: {x: max_x, y: max_y}};
   }
 
-  moveBy (from, to) {
+  moveBy (from, to) { // FIXME: there are issues when moving between odd and even lines. It's recommended to move by y first, then recompute what is needed for x and move by separate moveBy
     var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(to), Hex.offset_to_cube(from));
     var newPivot = Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(this.pivot)));
     var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
-    return new Unit(newPivot, newMembers, this.rotation);
+    return new Unit(newPivot, newMembers, this.id, this.rotation);
   }
 
   moveTo (newPivot) {
     var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(newPivot), Hex.offset_to_cube(this.pivot));
     var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
-    return new Unit(newPivot, newMembers, this.rotation);
+    return new Unit(newPivot, newMembers, this.id, this.rotation);
   }
 
   minPivotDistance () {

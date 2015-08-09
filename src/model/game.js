@@ -6,6 +6,8 @@ class Game {
     this.ls_old = 0;
     this.move_score = 0;
     this.old_score = 0;
+
+    this.unitRotations = []; // for each unit known for this problem, keep track of possible unit rotations
   }
 
   isValidPosition (board, unit) {
@@ -15,6 +17,34 @@ class Game {
   lock (board, unit) {
     board.fillByUnit(unit);
     return board;
+  }
+
+  setUnits(units) {
+    this.units = units;
+    units.forEach(u => {
+      this.unitRotations[u.id] = [];
+      var rotations = [];
+      for(var rot = 0; rot < 6; rot++) {
+
+        var rotated = rot == 0 ? u : rotations[rot-1].rotate('CW');
+        var size = rotated.getSize();
+        var normalizedByY = rotated.moveBy(size.min, {x: size.min.x, y: 0});
+        var sizeForX = normalizedByY.getSize();
+        var normalized = normalizedByY.moveBy(sizeForX.min, {x: 0, y: 0});
+
+//        console.log(JSON.stringify(normalized));
+
+        rotations.push(normalized);
+
+        // compare with all previous
+        var unique = true;
+        for(var prev = 0; prev < rot && unique; prev++) {
+          unique = unique && !rotations[prev].equalMembers(normalized);
+        }
+        this.unitRotations[u.id].push(unique);
+      }
+
+    });
   }
 
   display() {
