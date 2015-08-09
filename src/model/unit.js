@@ -1,5 +1,13 @@
 const Hex = require('../hex');
 
+function _coords_partial_cmp(a, b) {
+  const ydiff = a.y-b.y;
+  if (ydiff != 0) {
+    return ydiff;
+  }
+  return a.x - b.x;
+}
+
 class Unit {
   constructor (pivot, members, rotation = 0) {
     // NOTE: Why cloning? Do these ever get modified?
@@ -27,10 +35,17 @@ class Unit {
     if (this.members.length != other.members.length) {
       return false
     }
-    for (var i=0; i<this.members.length; i++) {
-      var t = this.members[i];
-      var o = other.members[i];
-      if ((t.x != o.x) || (t.y != o.y)) {
+    return this.equalMembers(other)
+  }
+
+  equalMembers(other) {
+    if (this.members.length != other.members.length) {
+      return false
+    }
+    const m = this.members.concat().sort(_coords_partial_cmp);
+    const o = other.members.concat().sort(_coords_partial_cmp);
+    for (var i=0; i<m.length; i++) {
+      if ((m[i].x != o[i].x) || (m[i].y != o[i].y)) {
         return false
       }
     }

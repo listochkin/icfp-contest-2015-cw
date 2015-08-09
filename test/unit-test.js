@@ -209,3 +209,19 @@ describe('Finding path to figure', () => {
   });
 });
 
+describe('Unit equality', () => {
+  it('should compare units regarding and disregarding the pivot point', () => {
+    var u1 = new Unit({ x: 4, y: 2 }, [{ x: 4, y: 2 }, { x: 1, y: 3 }]);
+    var u2 = new Unit({ x: 4, y: 2 }, [{ x: 4, y: 2 }, { x: 1, y: 3 }]);
+    expect(u1.equals(u2)).to.equal(true);
+    expect(u1.equalMembers(u2)).to.equal(true);
+
+    u1 = new Unit({ x: 4, y: 2 }, [{ x: 4, y: 2 }, { x: 2, y: 8 }]);
+    expect(u1.equals(u2)).to.equal(false);
+    expect(u1.equalMembers(u2)).to.equal(false);
+
+    u1 = new Unit({ x: 0, y: 0 }, [{ x: 1, y: 3 }, { x: 4, y: 2 }]);
+    expect(u1.equals(u2)).to.equal(false);
+    expect(u1.equalMembers(u2)).to.equal(true);
+  });
+});
