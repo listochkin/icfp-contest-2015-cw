@@ -211,9 +211,13 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
           for( var i = 0; i < seedScores.length; i++ ) scoresSum += seedScores[i];
           seedScoresAvg = seedScores.length ? scoresSum/seedScores.length : 0;
 
-          console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length
-            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length
-            + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength
+          var executionTime = new Date() - startTime;
+
+          console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length 
+            + ' Task id: ' + task.id
+            + ' Time: ' + (executionTime / 1000)
+            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length 
+            + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength 
             + ' Sum: ' +  totalScoresSum
             + ' Avg: ' + seedScoresAvg.toFixed(1)
             + ' Score: ',  JSON.stringify(game.moveScoreGet()));
