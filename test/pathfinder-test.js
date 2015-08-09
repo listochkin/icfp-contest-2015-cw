@@ -273,10 +273,10 @@ describe('A* test', () => {
 
   it('should rotate and find a path', () => {
     const map_array = [
-       ". * + *",
-      ". . . .",
-       "X # # #",
-      ". . . ."
+      ". * + *",
+       ". . . .",
+      "# X # #",
+       ". . . ."
     ];
 
     const [board, start, finish, unit] = parse_map_array(map_array);
@@ -285,7 +285,7 @@ describe('A* test', () => {
     //console.log(path.commands);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'SW']);
+    expect(path.commands).to.deep.equal(['SW', 'CCW', 'SW']);
   });
 
   it('should prefer filling the gaps (regression problem_17)', () => {
