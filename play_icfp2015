@@ -66,7 +66,8 @@ if (parsed.depth) {
 
 var startTime = new Date();
 
-parsed.file.forEach(function(fileName, i, arr) {
+parsed.file.forEach(function(fileName, fileIndex, arr) {
+  var seedScoresAvg = 0;
 	data = fs.readFileSync(fileName);
   task = JSON.parse(data);
 
@@ -83,7 +84,7 @@ parsed.file.forEach(function(fileName, i, arr) {
           CCW : "k"
         };
 
-  task.sourceSeeds.forEach(function(seed, i, arr) {
+  task.sourceSeeds.forEach(function(seed, seedIndex, arr) {
       var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       game.clearScore();
@@ -191,7 +192,7 @@ parsed.file.forEach(function(fileName, i, arr) {
 
         if(parsed.log) {
            game.display();
-           console.log(solution);
+           console.log();
          }
          //solution += ' ';
 
@@ -199,7 +200,16 @@ parsed.file.forEach(function(fileName, i, arr) {
         game.board.fillByUnit(game.unit);
         game.moveScoreCount(game);
         if(parsed.log) {
-          console.log('Score so far: ', game.moveScoreGet());
+
+          var sum = 0;
+          for( var i = 0; i < seedScores.length; i++ ) sum += seedScores[i];
+          seedScoresAvg = seedScores.length ? sum/seedScores.length : 0;
+
+          console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length 
+            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length 
+            + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength 
+            + ' Avg: ' + seedScoresAvg.toFixed(1)
+            + ' Score: ',  JSON.stringify(game.moveScoreGet()));
         }
         game.board.clearLines();
         game.unit = undefined;
@@ -218,7 +228,7 @@ parsed.file.forEach(function(fileName, i, arr) {
     var entry = {
       problemId : task.id,
       seed : seed,
-      tag : 'cw_v14_pathfind' + task.id,
+      tag : 'cw_v18_pathfind' + task.id,
       solution : t9solution
     };
     answer.push(entry);
@@ -235,12 +245,10 @@ if (!parsed.suppress)
 
 if (parsed.perflog) {
   var sum = 0;
-  for( var i = 0; i < seedScores.length; i++ ){
-      sum += seedScores[i];
-  }
-  var avg = sum/seedScores.length;
+  for( var i = 0; i < seedScores.length; i++ ) sum += seedScores[i];
+  var seedScoresAvg = seedScores.length ? sum/seedScores.length : 0;
 
   console.log('Lookup depth: ' + lookupDepth
-    + ', Seed scores: ' + JSON.stringify(seedScores) + " Avg=" + avg
+    + ', Seed scores: ' + JSON.stringify(seedScores) + " Avg: " + seedScoresAvg
     + ', Execution time sec: ' + (executionTime / 1000));
 }

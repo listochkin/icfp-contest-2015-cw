@@ -66,9 +66,9 @@ class TargetPlacementGenerator {
 
 
   _findInitial(board, unit) {
-    var size = unit.getSize();
-    //var offset = {x: board.width - size.max.x, y: this.hist[this.currentYIndex].y - size.max.y};
-    var target = unit.moveBy(size.max, {x: board.width - 1, y: board.height - 1});
+    var size = unit.getSize();    
+    var target = unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y});
+
 
     this._lastMoved = target;
 
@@ -120,12 +120,10 @@ class TargetPlacementGenerator {
         return null;
 
       // goto next best row
-      this.currentYIndex++;
-      //var offset = {x: board.width - size.max.x, y: this.hist[this.currentYIndex].y - size.max.y};
-      return unit.moveBy(size.max, {x: board.width - 1, y: size.max.y - 1});
+      this.currentYIndex++;      
+      return unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y - size.max.y});
     }
   }
-
 }
 
 

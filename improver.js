@@ -23,8 +23,9 @@ while(1) {
   //console.log(task.units.length);
   var summaryScore = 0;
   [
-    "problems/problem_0.json"
-//    "problems/problem_2.json"
+    "problems/problem_0.json",
+    "problems/problem_1.json",
+    "problems/problem_2.json"
   ].forEach(function(fileName, i, arr) {
       var data = fs.readFileSync(fileName);
       var task = JSON.parse(data);
