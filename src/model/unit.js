@@ -2,6 +2,7 @@ const Hex = require('../hex');
 
 class Unit {
   constructor (pivot, members, rotation = 0) {
+    // NOTE: Why cloning? Do these ever get modified?
     this.pivot = JSON.parse(JSON.stringify(pivot));
     this.members = JSON.parse(JSON.stringify(members));
     this.rotation = rotation;
@@ -17,6 +18,23 @@ class Unit {
       this.hashValue = h;
     }
     return this.hashValue;
+  }
+
+  equals(other) {
+    if ((this.pivot.x != other.pivot.x) || (this.pivot.y != other.pivot.y)) {
+      return false
+    }
+    if (this.members.length != other.members.length) {
+      return false
+    }
+    for (var i=0; i<this.members.length; i++) {
+      var t = this.members[i];
+      var o = other.members[i];
+      if ((t.x != o.x) || (t.y != o.y)) {
+        return false
+      }
+    }
+    return true;
   }
 
   move (direction) {

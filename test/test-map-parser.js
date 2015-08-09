@@ -39,9 +39,12 @@ function parse_map_array(map_array) {
     }
   }
 
-  var unit = null;
+  var start_unit = null;
   if (pivot && members) {
-    unit = new Unit(pivot, members);
+    start_unit = new Unit(pivot, members);
+  }
+  if (finish) {
+    finish = start_unit.moveTo(finish);
   }
   //return {
   //  board: board,
@@ -49,7 +52,7 @@ function parse_map_array(map_array) {
   //  finish: finish
   //  unit: unit;
   //}
-  return [board, start, finish, unit]
+  return [board, start_unit, finish]
 }
 
 module.exports = parse_map_array;

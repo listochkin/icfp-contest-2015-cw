@@ -129,7 +129,7 @@ parsed.file.forEach(function(fileName, i, arr) {
              game.unit = tmp;
            }
 
-          var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
+          var path = pathfind(game.board, game.unit, unitDest);
           // if(parsed.log) {
           //   console.log(path.commands);
           // }

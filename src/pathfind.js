@@ -2,16 +2,16 @@ const aStar = require('a-star');
 const Hex = require('./hex');
 const { Game } = require('./model');
 
-function path (board, unit, start, finish, shouldClose) {
+function path (board, start_unit, finish_unit, shouldClose) {
   const icfpc_directions = [ 'E', 'NE', 'NW', 'W', 'SW', 'SE', 'CW', 'CCW' ];
 
   return [aStar({
       start: {
-        unit: unit.moveTo(start)
+        unit: start_unit
       },
 
       isEnd (node) {
-        return node.unit.pivot.x === finish.x && node.unit.pivot.y === finish.y;
+        return node.unit.equals(finish_unit);
       },
 
       neighbor (node) {
@@ -39,7 +39,12 @@ function path (board, unit, start, finish, shouldClose) {
       },
 
       heuristic (node) {
-        return Hex.hex_distance(Hex.offset_to_cube(finish), Hex.offset_to_cube(node.unit.pivot));
+        // TODO: hex_distance may be optimized with a dumb, more specialized
+        // replacement: hex_offset_distance(EVEN/ODD, {x1, y1}, {x2, y2})
+        return Hex.hex_distance(
+          // NOTE: unit.members[0] will add no overhead at all, but is less precise.
+          Hex.offset_to_cube(finish_unit.getSize().min),
+          Hex.offset_to_cube(node.unit.getSize().min));
       },
 
       hash (node) {

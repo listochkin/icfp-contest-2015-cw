@@ -17,8 +17,8 @@ describe('A* test', () => {
       ". X ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     //console.log(path.commands);
     expect(path.status).to.equal('success');
@@ -33,8 +33,8 @@ describe('A* test', () => {
       ". X ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     //console.log(path.commands);
     expect(path.status).to.equal('success');
@@ -49,8 +49,8 @@ describe('A* test', () => {
       ". X ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('noPath');
   });
@@ -63,12 +63,12 @@ describe('A* test', () => {
        ". . ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['CW', 'SE', 'SW']);
-    expect(path.cost).to.equal(3);
+    expect(path.commands).to.deep.equal(['CW', 'SE', 'SW', 'CCW']);
+    expect(path.cost).to.equal(4);
   });
 
   it('should find a path with pivot outside of the glass', () => {
@@ -78,8 +78,8 @@ describe('A* test', () => {
       ". X . ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
     expect(path.commands).to.deep.equal(['W', 'SW', 'SE', 'E', 'E']);
@@ -100,8 +100,8 @@ describe('A* test', () => {
        ". X . #"
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
     expect(path.commands).to.deep.equal(['SE', 'CW', 'SE', 'SE', 'SE', 'SW', 'SW', 'SW', 'SW', 'CCW', 'SE']);
@@ -121,8 +121,8 @@ describe('A* test', () => {
        ". . . . . . ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     //console.log(path.commands);
     expect(path.status).to.equal('success');
@@ -141,9 +141,8 @@ describe('A* test', () => {
        ". . . . X # #"
     ];
 
-    const [board, start, finish] = parse_map_array(map_array);
-    const unit = new Unit(start, [start]);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     //console.log(path.commands);
     expect(path.status).to.equal('success');
@@ -163,9 +162,8 @@ describe('A* test', () => {
       ". . . . . . . . . .",
        ". . . . . . . . . X"
     ];
-    const [board, start, finish] = parse_map_array(map_array);
-    const unit = new Unit(start, [start]);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     for (var i = 0; i < 10; i++) {
       var line = i % 2 ? ' ' : '';
@@ -194,8 +192,8 @@ describe('A* test', () => {
       "# # # . . . .",
        "# # # . . . ."
     ];
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish, 'close');
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish, 'close');
 
     expect(path.commands).to.deep.equal([ 'SE', 'SE', 'SW', 'W' ]);
     expect(path.status).to.equal('success');
@@ -214,8 +212,8 @@ describe('A* test', () => {
         ". . . . . . . . . . "
       ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
     expect(path.commands).to.deep.equal([ 'W', 'W', 'SW', 'CCW', 'SW', 'SW' ]);
@@ -225,17 +223,19 @@ describe('A* test', () => {
     const map_array = [
       ". * + *",
        ". . . .",
-      "# X # #",
+      "# . # #",
+       ". . . .",
+      ". X . .",
        ". . . ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish);
 
     //console.log(path.commands);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal(['SW', 'CCW', 'SW']);
+    expect(path.commands).to.deep.equal(['SW', 'CCW', 'SW', 'SW', 'SE', 'CW']);
   });
 
   it('should prefer filling the gaps (regression problem_17)', () => {
@@ -257,8 +257,8 @@ describe('A* test', () => {
       '# # # # # # # # # # # # # # .'
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish, 'close');
+    const [board, unit, finish] = parse_map_array(map_array);
+    const path = pathfind(board, unit, finish, 'close');
 
     // console.log(path.commands);
 
@@ -308,9 +308,9 @@ describe('A* test', () => {
 '. . . . . . . . . . . . . . . . . . . . # . # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . X . . . . . . . . . . . . . . . . . . . . . . .'
 ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
+    const [board, unit, finish] = parse_map_array(map_array);
 
-    const path = pathfind(board, unit, start, finish);
+    const path = pathfind(board, unit, finish);
 
     // console.log(path.commands);
 
@@ -325,11 +325,12 @@ describe('A* test', () => {
          ". . . . . . . . # #"
       ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, pre_finish] = parse_map_array(map_array);
+    const finish = pre_finish.move('CCW');
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal([ 'W', 'W', 'W', 'SW', 'CCW', 'SW' ]);
+    expect(path.commands).to.deep.equal(['SW', 'W', 'CCW', 'W', 'W', 'SW']);
   });
 
   it('should solve problem 22 vol2', () => {
@@ -340,8 +341,9 @@ describe('A* test', () => {
          ". . . . . . . . # #"
       ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
-    const path = pathfind(board, unit, start, finish);
+    const [board, unit, pre_finish] = parse_map_array(map_array);
+    const finish = pre_finish.move('CCW');
+    const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
     expect(path.commands).to.deep.equal([ 'E', 'E', 'E', 'SE', 'E', 'CCW', 'SE' ]);

@@ -14,7 +14,7 @@ describe('find target unit placement', () => {
       ". . . . ."
     ];
 
-    const [board, start, finish, unit] = parse_map_array(map_array);
+    const [board, unit] = parse_map_array(map_array);
 
     var generator = new TargetPlacementGenerator(board, unit, 1);
     var targetUnit = generator.next();
@@ -29,7 +29,7 @@ describe('find target unit placement', () => {
         ". . . . ."
       ];
 
-      const [board, start, finish, unit] = parse_map_array(map_array);
+      const [board, unit] = parse_map_array(map_array);
 
       var generator = new TargetPlacementGenerator(board, unit, 1);
       var targetUnit = generator.next();
@@ -52,11 +52,6 @@ describe('find target unit placement', () => {
     });
 
     it('should skip occupied rows', () => {
-      //const board = new Board(8, 5);
-      //[0, 1, 2, 3, 4, 5, 6, 7].forEach(x => board.fill(x, 4));
-      //
-      //const unit = new Unit({x: 1, y: 1}, [{x: 3, y: 2}]);
-
       const map_array = [
         ". . . . . . . .",
          ". + . . . . . .",
@@ -65,12 +60,10 @@ describe('find target unit placement', () => {
         "# # # # # # # #"
       ];
 
-      const [board, start, finish, unit] = parse_map_array(map_array);
+      const [board, unit] = parse_map_array(map_array);
 
       var generator = new TargetPlacementGenerator(board, unit, 1);
       var targetUnit = generator.next();
-
-      //console.log(targetUnit);
 
       expect(targetUnit.pivot).to.deep.equal({x: 5, y: 2});
       expect(targetUnit.members).to.deep.equal([{x: 6, y: 3}]);
@@ -111,7 +104,7 @@ describe('find target unit placement', () => {
         ". . . . . # ."
       ];
 
-      const [board, start, finish, unit] = parse_map_array(map_array);
+      const [board, unit] = parse_map_array(map_array);
 
       var generator = new TargetPlacementGenerator(board, unit, 20, true);
       var targetUnit = generator.next();
@@ -129,7 +122,7 @@ describe('find target unit placement', () => {
         ". . . . . # ."
       ];
 
-      const [board, start, finish, unit] = parse_map_array(map_array);
+      const [board, unit] = parse_map_array(map_array);
 
       var generator = new TargetPlacementGenerator(board, unit, 20, true);
       var targetUnit = generator.next();

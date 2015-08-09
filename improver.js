@@ -82,7 +82,7 @@ while(1) {
 //          game.display();
 //          game.unit = tmp;
 //          console.log("------------");
-          var path = pathfind(game.board, game.unit, game.unit.pivot, unitDest.pivot);
+          var path = pathfind(game.board, game.unit, unitDest);
           if(path.status == 'success')
             break;
 
