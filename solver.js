@@ -8,15 +8,6 @@ var read = require('./src/reader');
 var pathfind = require('./src/pathfind');
 var t9 = require('./src/t9');
 
-var encoding = {
-  W : "p",
-  E : "b",
-  SW : "a",
-  SE : "m",
-  CW : "d",
-  CCW : "k"
-};
-
 function solveSeed (task, seed, lookupDepth, shouldLog) {
   var solution = "";
   var game = read(task);
@@ -91,7 +82,7 @@ function solveSeed (task, seed, lookupDepth, shouldLog) {
       //  console.log(" i=" + i + " of "+path.commands.length);
       //  console.log(dir);
       //}
-      solution += encoding[dir];
+      solution += t9.encoding[dir];
       var moved = game.unit.move(dir);
       if(game.isValidPosition(game.board, moved)) {
         game.unit = moved;
@@ -116,7 +107,7 @@ function solveSeed (task, seed, lookupDepth, shouldLog) {
       while(1) {
         var dir = "E";
         var moved = game.unit.move(dir);
-        solution += encoding[dir];
+        solution += t9.encoding[dir];
         if(game.isValidPosition(game.board, moved)) {
           game.unit = moved;
         }
