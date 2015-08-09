@@ -212,11 +212,12 @@ describe('A* test', () => {
         ". . . . . . . . . . "
       ];
 
-    const [board, unit, finish] = parse_map_array(map_array);
+    const [board, unit, pre_finish] = parse_map_array(map_array);
+    const finish = pre_finish.move('CCW');
     const path = pathfind(board, unit, finish);
 
     expect(path.status).to.equal('success');
-    expect(path.commands).to.deep.equal([ 'W', 'W', 'SW', 'CCW', 'SW', 'SW' ]);
+    expect(path.commands).to.deep.equal([ 'W', 'W', 'SW', 'SW', 'CCW', 'SW' ]);
   });
 
   it('should rotate and find a path', () => {
