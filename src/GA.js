@@ -60,8 +60,20 @@ class GA {
     }
     var res1 = '';
     var res2 = '';
+
+    var crossPoint = this.getRandomInt(1, str1.length - 2);
+
     for(var k = 0; k < str1.length; k++) {
-      if((k % 2) == 0) {
+/*      if(this.getRandomInt(0, 1) == 0) {
+        res1 += str1[k];
+        res2 += str2[k];
+      }
+      else {
+        res1 += str2[k];
+        res2 += str1[k];
+      }*/
+
+      if(k < crossPoint) {
         res1 += str1[k];
         res2 += str2[k];
       }
@@ -96,7 +108,8 @@ class GA {
     //console.log("starting crossover. length" + this.population.length);
     var itemsToCrossover = this.population.length / 2;
     for(var i = 0; i < itemsToCrossover; i++) {
-      var j = i + itemsToCrossover;
+      //var j = i + itemsToCrossover;
+      var j = this.getRandomInt(itemsToCrossover, this.population.length - 1);
 
 //      console.log("item " + i + " + item " + j);
 
