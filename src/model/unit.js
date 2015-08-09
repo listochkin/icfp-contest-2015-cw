@@ -42,8 +42,8 @@ class Unit {
     if (this.members.length != other.members.length) {
       return false
     }
-    const m = this.members.concat().sort(_coords_partial_cmp);
-    const o = other.members.concat().sort(_coords_partial_cmp);
+    const m = this.members.slice(0).sort(_coords_partial_cmp);
+    const o = other.members.slice(0).sort(_coords_partial_cmp);
     for (var i=0; i<m.length; i++) {
       if ((m[i].x != o[i].x) || (m[i].y != o[i].y)) {
         return false
