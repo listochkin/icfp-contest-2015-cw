@@ -16,6 +16,7 @@ var nopt = require("nopt")
                 , "depth" : Number // how deep to look for potential target unit positions
                 , "improve" : Boolean
                 , "suppress" : Boolean // suppress output of problem answer
+                , "oneseed" : Boolean // calc only one seed
                 }
   , shortHands = { "p" : ["--phrase"]
                  , "m" : ["--mem"]
@@ -28,6 +29,7 @@ var nopt = require("nopt")
                  , "e" : ["--perflog"]
                  , "d" : ["--depth"]
                  , "s" : ["--suppress"]
+                 , "os" : ["--oneseed"]
                  }
   , parsed = nopt(knownOpts, shortHands, process.argv, 2)
 
@@ -64,6 +66,7 @@ if (parsed.depth) {
   lookupDepth = parsed.depth;
 }
 
+var totalScoresSum = 0;
 var startTime = new Date();
 
 parsed.file.forEach(function(fileName, fileIndex, arr) {
@@ -84,7 +87,8 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
           CCW : "k"
         };
 
-  task.sourceSeeds.forEach(function(seed, seedIndex, arr) {
+  for(seedIndex = 0; seedIndex < task.sourceSeeds.length; seedIndex++) {
+      var seed = task.sourceSeeds[seedIndex];
       var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       game.clearScore();
@@ -200,15 +204,16 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
         // apply unit and find score
         game.board.fillByUnit(game.unit);
         game.moveScoreCount(game);
-        if(parsed.log) {
+        if(parsed.perflog) {
 
-          var sum = 0;
-          for( var i = 0; i < seedScores.length; i++ ) sum += seedScores[i];
-          seedScoresAvg = seedScores.length ? sum/seedScores.length : 0;
+          var scoresSum = 0;
+          for( var i = 0; i < seedScores.length; i++ ) scoresSum += seedScores[i];
+          seedScoresAvg = seedScores.length ? scoresSum/seedScores.length : 0;
 
           console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length 
             + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length 
             + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength 
+            + ' Sum: ' +  totalScoresSum
             + ' Avg: ' + seedScoresAvg.toFixed(1)
             + ' Score: ',  JSON.stringify(game.moveScoreGet()));
         }
@@ -235,8 +240,11 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
     answer.push(entry);
 
     seedScores.push(game.moveScoreGet().move_scores);
+    totalScoresSum += game.moveScoreGet().move_scores;
 
-  });
+    if(parsed.oneseed)
+      break;
+  }
 });
 
 var executionTime = new Date() - startTime;
@@ -245,9 +253,9 @@ if (!parsed.suppress)
   console.log(JSON.stringify(answer));
 
 if (parsed.perflog) {
-  var sum = 0;
-  for( var i = 0; i < seedScores.length; i++ ) sum += seedScores[i];
-  var seedScoresAvg = seedScores.length ? sum/seedScores.length : 0;
+  var scoresSum = 0;
+  for( var i = 0; i < seedScores.length; i++ ) scoresSum += seedScores[i];
+  var seedScoresAvg = seedScores.length ? scoresSum/seedScores.length : 0;
 
   console.log('Lookup depth: ' + lookupDepth
     + ', Seed scores: ' + JSON.stringify(seedScores) + " Avg: " + seedScoresAvg
