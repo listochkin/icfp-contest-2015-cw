@@ -32,9 +32,6 @@ class Unit {
     if ((this.pivot.x != other.pivot.x) || (this.pivot.y != other.pivot.y)) {
       return false
     }
-    if (this.members.length != other.members.length) {
-      return false
-    }
     return this.equalMembers(other)
   }
 
