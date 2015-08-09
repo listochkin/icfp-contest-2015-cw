@@ -227,3 +227,29 @@ describe('Unit equality', () => {
     expect(u1.equalMembers(u2)).to.equal(true);
   });
 });
+
+describe('Calculate Unit passing size', () => {
+  it('should calculate minimum number of empty points to pass throw line 1', () => {
+    const unit = new Unit({x: 1, y: 0}, [
+      {x: 0, y: 2},
+      {x: 0, y: 1},
+      {x: 1, y: 0},
+      {x: 2, y: 0},
+      {x: 2, y: 1}
+    ]);
+    expect(unit.getPassingSize()).to.equal(4);
+  });
+
+  it('should calculate minimum number of empty points to pass throw line 2', () => {
+    const unit = new Unit({x: 4, y: 2}, [
+      {x: 3, y: 3},
+      {x: 3, y: 2},
+      {x: 3, y: 1},
+      {x: 4, y: 0},
+      {x: 4, y: 1},
+      {x: 5, y: 0},
+      {x: 5, y: 1}
+    ]);
+    expect(unit.getPassingSize()).to.equal(4);
+  });
+});

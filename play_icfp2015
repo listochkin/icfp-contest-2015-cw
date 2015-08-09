@@ -140,6 +140,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
              game.unit = unitDest;
              game.display();
              console.log("placement found");
+             console.log('Unit passing size: ', game.unit.getPassingSize());
              game.unit = tmp;
            }
 

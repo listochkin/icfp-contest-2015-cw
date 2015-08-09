@@ -232,6 +232,25 @@ class Unit {
     return JSON.stringify(this);
   }
 
+  getPassingSize(){
+    var x = {max: null, min: null}, y = {max: null, min: null}, se, sw, member_c;
+    this.members.forEach(function(member){
+      member_c = Hex.offset_to_cube(member);
+      if(x.max != null){
+        (x.max > member_c.q) && (x.max = member_c.q);
+        (x.min < member_c.q) && (x.min = member_c.q);
+        (y.max > member_c.s) && (y.max = member_c.s);
+        (y.min < member_c.s) && (y.min = member_c.s);
+      } else {
+        x.max = x.min = member_c.q;
+        y.max = y.min = member_c.s;
+      }
+    });
+    se = Math.abs(x.max - x.min) + 1;
+    sw = Math.abs(y.max - y.min) + 1;
+    return (sw >= se) ? sw : se;
+  }
+
 }
 
 Unit.rotate_cell = (c, direction) => {
