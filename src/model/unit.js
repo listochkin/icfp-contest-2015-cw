@@ -194,6 +194,10 @@ class Unit {
     return false;
   }
 
+  toString() {
+    return JSON.stringify(this, null, 4);
+  }
+
 }
 
 Unit.rotate_cell = (c, direction) => {
