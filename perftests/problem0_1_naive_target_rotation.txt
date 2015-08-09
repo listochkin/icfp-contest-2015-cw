@@ -1,0 +1,8 @@
+Lookup depth: 1, Seed scores: [1271] Avg=1271, Execution time sec: 1.541
+Lookup depth: 2, Seed scores: [399] Avg=399, Execution time sec: 0.969
+Lookup depth: 3, Seed scores: [391] Avg=391, Execution time sec: 0.753
+Lookup depth: 4, Seed scores: [609] Avg=609, Execution time sec: 1.264
+Lookup depth: 5, Seed scores: [1922] Avg=1922, Execution time sec: 1.926
+Lookup depth: 6, Seed scores: [1501] Avg=1501, Execution time sec: 1.861
+Lookup depth: 7, Seed scores: [1501] Avg=1501, Execution time sec: 1.894
+Lookup depth: 8, Seed scores: [944] Avg=944, Execution time sec: 1.32
