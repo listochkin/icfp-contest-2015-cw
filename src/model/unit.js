@@ -195,7 +195,7 @@ class Unit {
   }
 
   toString() {
-    return JSON.stringify(this, null, 4);
+    return JSON.stringify(this);
   }
 
 }
