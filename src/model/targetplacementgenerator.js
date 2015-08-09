@@ -3,10 +3,12 @@ const Unit = require('./unit');
 
 class TargetPlacementGenerator {
 
-  constructor (board, startingUnit, queueLen, rotate = false, game = null) {
+  constructor (board, startingUnit, queueLen, rotate = false, game = null, queueThreshold = 1) {
     this.created = true;
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
+    this._queueItemsToPick = queueLen * queueThreshold >= 1 ? queueLen * queueThreshold : 1;
+    this._pickedItemsCount = 0;
     this._rotate = rotate;
     this._board = board;
     this._game = game;
@@ -30,13 +32,23 @@ class TargetPlacementGenerator {
 
   next() {
     var hasItems = true;
-    if (this._pq.size() == 0) {
+    if (this._pq.size() == 0 || this._pickedItemsCount == this._queueItemsToPick) {
+      this._removeQueueRemainingItems();
+      this._pickedItemsCount = 0;
       hasItems = this._fetchBatch();
     }
 
     if(!hasItems)
       return null;
+
+    this._pickedItemsCount++;
     return this._pq.deq()[1];
+  }
+
+  _removeQueueRemainingItems() {
+    while(this._pq.size() > 0) {
+      this._pq.deq();
+    }
   }
 
   _enq(heuristic, unit) {

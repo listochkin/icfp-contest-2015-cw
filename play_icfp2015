@@ -14,6 +14,7 @@ var nopt = require("nopt")
                 , "log" : Boolean
                 , "perflog" : Boolean
                 , "depth" : Number // how deep to look for potential target unit positions
+                , "threshold" : Number // what percentage of potential target unit positions queue to use
                 , "improve" : Boolean
                 , "suppress" : Boolean // suppress output of problem answer
                 , "oneseed" : Boolean // calc only one seed
@@ -28,6 +29,7 @@ var nopt = require("nopt")
                  , "i" : ["--improve"]
                  , "e" : ["--perflog"]
                  , "d" : ["--depth"]
+                 , "t" : ["--threshold"]
                  , "s" : ["--suppress"]
                  , "os" : ["--oneseed"]
                  }
@@ -62,8 +64,12 @@ if(!parsed.file) {
 }
 
 var lookupDepth = 1;
+var lookupThreshold = 0.5;
 if (parsed.depth) {
   lookupDepth = parsed.depth;
+}
+if(parsed.threshold) {
+  lookupThreshold = parsed.threshold;
 }
 
 var totalScoresSum = 0;
@@ -113,7 +119,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
 
         // Find best reachable position and path there
         var generatorFailed = false;
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true, game);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true, game, lookupThreshold);
         if(targetGenerator.created == false) {
           generatorFailed = true;
         }

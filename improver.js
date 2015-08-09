@@ -66,7 +66,7 @@ while(1) {
           ga.dumpPopulation();
 
         }
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize, true, game);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize, true, game, 1);
         if(targetGenerator.created == false) {
           break;
         }
