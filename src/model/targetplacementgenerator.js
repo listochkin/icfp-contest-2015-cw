@@ -3,12 +3,13 @@ const Unit = require('./unit');
 
 class TargetPlacementGenerator {
 
-  constructor (board, startingUnit, queueLen, rotate = false) {
+  constructor (board, startingUnit, queueLen, rotate = false, game = null) {
     this.created = true;
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
     this._rotate = rotate;
     this._board = board;
+    this._game = game;
     this._board.floodFill();
     this.hist = this._board.findLinesHistogram();
     this.currentYIndex = 0;
@@ -66,7 +67,7 @@ class TargetPlacementGenerator {
 
 
   _findInitial(board, unit) {
-    var size = unit.getSize();    
+    var size = unit.getSize();
     var target = unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y});
 
 
@@ -102,10 +103,19 @@ class TargetPlacementGenerator {
   }
 
   _nextRotation(board, unit) {
-    if (!this._rotate || unit.rotation == 5)
+    if (!this._rotate)
       return null;
 
-    return unit.rotate('CW');
+    var nextRotation = unit;
+    do {
+      if (nextRotation.rotation >= 5)
+        return null;
+
+      nextRotation = nextRotation.rotate('CW');
+
+    } while(this._game && !this._game.unitRotations[nextRotation.id][nextRotation.rotation] && nextRotation.rotation < 6);
+
+    return nextRotation;
   }
 
   _nextLocation(board, unit) {
@@ -121,7 +131,7 @@ class TargetPlacementGenerator {
 
       // goto next best row
 
-      this.currentYIndex++;      
+      this.currentYIndex++;
       //console.log("Hist curind: " + this.currentYIndex+ " y="+this.hist[this.currentYIndex].y);
       return unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y});
     }

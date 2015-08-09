@@ -113,9 +113,9 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
 
         // Find best reachable position and path there
         var generatorFailed = false;
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true);
+        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true, game);
         if(targetGenerator.created == false) {
-          generatorFailed = true;          
+          generatorFailed = true;
         }
         else {
           var unitDest = targetGenerator.next();
@@ -125,7 +125,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
             //break;
           }
         }
-        
+
         while(!generatorFailed) {
           // using pathfinder
 
@@ -211,9 +211,9 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
           for( var i = 0; i < seedScores.length; i++ ) scoresSum += seedScores[i];
           seedScoresAvg = seedScores.length ? scoresSum/seedScores.length : 0;
 
-          console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length 
-            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length 
-            + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength 
+          console.log('File: ' + (fileIndex + 1) + "/" + parsed.file.length
+            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length
+            + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength
             + ' Sum: ' +  totalScoresSum
             + ' Avg: ' + seedScoresAvg.toFixed(1)
             + ' Score: ',  JSON.stringify(game.moveScoreGet()));
