@@ -84,7 +84,7 @@ class TargetPlacementGenerator {
 
       var size = target.getSize();
       if (size.min.x > 0)
-        target = target.move('W');
+        target = target.move('W')
       else {
         if (size.min.y <= 0)
           return null;

@@ -38,7 +38,7 @@ class Game {
     }
   }
 
-spawn (board, unit) {
+  spawn (board, unit) {
     var unit_size = unit.getSize();
     var shift = {x: 0};
     shift.x = math.floor((board.width - unit_size.x)/2);
