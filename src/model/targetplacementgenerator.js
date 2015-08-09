@@ -4,6 +4,7 @@ const Unit = require('./unit');
 class TargetPlacementGenerator {
 
   constructor (board, startingUnit, queueLen, rotate = 0) {
+    this.created = true;
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
     this._rotate = rotate;
@@ -14,6 +15,10 @@ class TargetPlacementGenerator {
     //console.log("Hist: " + JSON.stringify(this.hist));
 
     var target = this._findInitial(board, startingUnit);
+    if(target == null) {
+      this.created = false;
+      return;
+    }
     var heuristic = board.boardHeuristic(target);
 
     this._pq.enq([heuristic, target]);
@@ -83,7 +88,7 @@ class TargetPlacementGenerator {
       else {
         if (size.min.y <= 0)
           return null;
-        
+
         // goto next best row
         this.currentYIndex++;
         var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};

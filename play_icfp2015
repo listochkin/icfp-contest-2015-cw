@@ -105,8 +105,13 @@ parsed.file.forEach(function(fileName, i, arr) {
         if(!game.isValidPosition(game.board, game.unit))
           break;
 
+        var failed = false;
         // Find best reachable position and path there
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth);
+        if(targetGenerator.created == false) {
+          failed = true;
+          break;
+        }
         var unitDest = targetGenerator.next();
         if(!unitDest) {
           solution += 'a';
@@ -139,7 +144,6 @@ parsed.file.forEach(function(fileName, i, arr) {
         }
 
         // safe-trace returned path and generate answer sequence
-        var failed = false;
         if(path == null || path.commands == null) {
           failed = true;
           break;
@@ -174,11 +178,11 @@ parsed.file.forEach(function(fileName, i, arr) {
         // finish path to locking
         if(!failed) {
           while(1) {
-            var dir = "E";            
+            var dir = "E";
             var moved = game.unit.move(dir);
             solution += encoding[dir];
             if(game.isValidPosition(game.board, moved)) {
-              game.unit = moved;              
+              game.unit = moved;
             }
             else
               break;

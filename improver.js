@@ -23,7 +23,8 @@ while(1) {
   //console.log(task.units.length);
   var summaryScore = 0;
   [
-    "problems/problem_0.json"
+    "problems/problem_0.json",
+    "problems/problem_1.json"
   ].forEach(function(fileName, i, arr) {
       var data = fs.readFileSync(fileName);
       var task = JSON.parse(data);
@@ -65,6 +66,9 @@ while(1) {
 
         }
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, euristicParameters.queueSize);
+        if(targetGenerator.created == false) {
+          break;
+        }
         var unitDest = targetGenerator.next();
         if(!unitDest) {
           break;
