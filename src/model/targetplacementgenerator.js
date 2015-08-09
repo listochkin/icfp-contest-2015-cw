@@ -67,9 +67,8 @@ class TargetPlacementGenerator {
 
   _findInitial(board, unit) {
     var size = unit.getSize();
-    //var offset = {x: board.width - size.max.x - 1, y: board.height - size.max.y - 1};
-    var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};
-    var target = unit.moveBy(offset);
+    //var offset = {x: board.width - size.max.x, y: this.hist[this.currentYIndex].y - size.max.y};
+    var target = unit.moveBy(size.max, {x: board.width - 1, y: board.height - 1});
 
     this._lastMoved = target;
 
@@ -85,13 +84,19 @@ class TargetPlacementGenerator {
     if (!unit)
       return null;
 
-    var target = this._nextRotation(board, unit);
+    var target = unit;
 
-    if (!target) {
-      target = this._nextLocation(board, this._lastMoved);
-      // store moved unit in non-rotated state
-      this._lastMoved = target;
+    do {
+      target = this._nextRotation(board, target);
+
+      if (!target) {
+        target = this._nextLocation(board, this._lastMoved);
+        // store moved unit in non-rotated state
+        this._lastMoved = target;
+        //console.log('Moved ' + JSON.stringify(target));
+      }
     }
+    while (target != null && !board.isValidPositionPlusFlood(target));
 
     return target;
   }
@@ -100,42 +105,25 @@ class TargetPlacementGenerator {
     if (!this._rotate || unit.rotation == 5)
       return null;
 
-    var target = unit.rotate('CW');
-
-    while (!board.isValidPositionPlusFlood(target)) {
-      if (target.rotation == 5)
-        return null;
-
-      target = target.rotate('CW');
-    }
-    return target;
+    return unit.rotate('CW');
   }
 
   _nextLocation(board, unit) {
-    var target = unit.move('W');
 
-    while (!board.isValidPositionPlusFlood(target)) {
+    var size = unit.getSize();
 
-      // console.log("skip " + target);
+    if (size.min.x > 0)
+      return unit.move('W')
 
-      // if (target.rotation < 5) {
-      //   target = target.move('CW');
-      //   continue;
-      // }
-      var size = target.getSize();
-      if (size.min.x > 0)
-        target = target.move('W')
-      else {
-        if (size.min.y <= 0)
-          return null;
+    else {
+      if (size.min.y <= 0)
+        return null;
 
-        // goto next best row
-        this.currentYIndex++;
-        var offset = {x: board.width - size.max.x - 1, y: this.hist[this.currentYIndex].y - size.max.y};
-        target = target.moveBy(offset);
-      }
+      // goto next best row
+      this.currentYIndex++;
+      //var offset = {x: board.width - size.max.x, y: this.hist[this.currentYIndex].y - size.max.y};
+      return unit.moveBy(size.max, {x: board.width - 1, y: size.max.y - 1});
     }
-    return target;
   }
 
 }

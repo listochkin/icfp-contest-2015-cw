@@ -73,11 +73,15 @@ describe('Unit Movement without copy', () => {
 
 describe('Unit Move By', () => {
   it('move unit by 1 down', () => {
-    expect({x: 0, y: 0}).to.deep.equal({ y: 0, x: 0 });
-    const unit = new Unit({ x: 0, y: 0}, [{ x: 0, y: 1}]);
-    const moved = unit.moveBy({x: 0, y: 1});
-    expect(moved.pivot).to.deep.equal({ x: 0, y: 1 });
-    expect(moved.members).to.deep.equal([{ x: 1, y: 2}]);
+    var unit = new Unit({ x: 0, y: 0}, [{ x: 1, y: 1}]);
+    var moved = unit.moveBy({x: 0, y: 0}, {x: 1, y: 1});
+    expect(moved.pivot).to.deep.equal({ x: 1, y: 1 });
+    expect(moved.members).to.deep.equal([{ x: 3, y: 2}]);
+
+    var moved = unit.moveBy({x: 1, y: 1}, {x: 3, y: 2});
+    expect(moved.pivot).to.deep.equal({ x: 1, y: 1 });
+    expect(moved.members).to.deep.equal([{ x: 3, y: 2}]);
+
   });
 });
 

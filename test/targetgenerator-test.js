@@ -65,8 +65,8 @@ describe('find target unit placement', () => {
       var generator = new TargetPlacementGenerator(board, unit, 1);
       var targetUnit = generator.next();
 
-      expect(targetUnit.pivot).to.deep.equal({x: 5, y: 2});
-      expect(targetUnit.members).to.deep.equal([{x: 6, y: 3}]);
+      expect(targetUnit.pivot).to.deep.equal({x: 6, y: 2});
+      expect(targetUnit.members).to.deep.equal([{x: 7, y: 3}]);
     });
 
     it('complete line first', () => {
@@ -127,7 +127,7 @@ describe('find target unit placement', () => {
       var generator = new TargetPlacementGenerator(board, unit, 20, true);
       var targetUnit = generator.next();
 
-      expect(targetUnit.members).to.deep.equal([{x: 3, y: 4}, {x: 4 ,y: 4}]);
+      expect(targetUnit.members).to.deep.equal([{x: 4, y: 4}, {x: 3 ,y: 4}]);
 
     });
 

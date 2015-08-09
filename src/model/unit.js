@@ -172,8 +172,11 @@ class Unit {
     return {x: (max_x - min_x + 1), y: (max_y - min_y + 1), min: {x: min_x, y: min_y}, max: {x: max_x, y: max_y}};
   }
 
-  moveBy (offset) {
-    return this.moveTo({x: this.pivot.x + offset.x, y: this.pivot.y + offset.y});
+  moveBy (from, to) {
+    var hexOffset = Hex.hex_subtract(Hex.offset_to_cube(to), Hex.offset_to_cube(from));
+    var newPivot = Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(this.pivot)));
+    var newMembers = this.members.map(m => Hex.offset_from_cube(Hex.hex_add(hexOffset, Hex.offset_to_cube(m))));
+    return new Unit(newPivot, newMembers, this.rotation);
   }
 
   moveTo (newPivot) {
