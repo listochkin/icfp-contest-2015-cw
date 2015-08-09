@@ -12,7 +12,7 @@ class TargetPlacementGenerator {
     this._board.floodFill();
     this.hist = this._board.findLinesHistogram();
     this.currentYIndex = 0;
-    //console.log("Hist: " + JSON.stringify(this.hist));
+    console.log("Hist: " + JSON.stringify(this.hist));
 
     var target = this._findInitial(board, startingUnit);
     if(target == null) {
@@ -120,8 +120,10 @@ class TargetPlacementGenerator {
         return null;
 
       // goto next best row
+
       this.currentYIndex++;      
-      return unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y - size.max.y});
+      console.log("Hist curind: " + this.currentYIndex+ " y="+this.hist[this.currentYIndex].y);
+      return unit.moveBy(size.max, {x: board.width - 1, y: this.hist[this.currentYIndex].y});
     }
   }
 }

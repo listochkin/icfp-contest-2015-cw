@@ -106,19 +106,21 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
         if(!game.isValidPosition(game.board, game.unit))
           break;
 
-        var failed = false;
         // Find best reachable position and path there
+        var generatorFailed = false;
         var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true);
         if(targetGenerator.created == false) {
-          failed = true;
-          break;
+          generatorFailed = true;          
         }
-        var unitDest = targetGenerator.next();
-        if(!unitDest) {
-          solution += 'a';
-          break;
+        else {
+          var unitDest = targetGenerator.next();
+          if(!unitDest) {
+            if(parsed.log) console.log('targetGenerator.next() returned null');
+            //solution += 'a';
+            //break;
+          }
         }
-        var generatorFailed = false;
+        
         while(!generatorFailed) {
           // using pathfinder
 
@@ -139,45 +141,44 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
 
           unitDest = targetGenerator.next();
           if(!unitDest) {
-            solution += 'a';
+            if(parsed.log) console.log('targetGenerator.next() returned null #2');
+            //solution += 'a';
             generatorFailed = true;
           }
         }
 
         // safe-trace returned path and generate answer sequence
-        if(path == null || path.commands == null) {
-          failed = true;
-          break;
-        }
-        for(var i=0; i < path.commands.length; i++) {
-          var dir = path.commands[i];
+        traceFailed = false;
+        if(!generatorFailed && path && path.commands ) {
+          for(var i=0; i < path.commands.length; i++) {
+            var dir = path.commands[i];
+            //if(parsed.log) {
+            //  console.log(" i=" + i + " of "+path.commands.length);
+            //  console.log(dir);
+            //}
+            solution += encoding[dir];
+            var moved = game.unit.move(dir);
+            if(game.isValidPosition(game.board, moved)) {
+              game.unit = moved;
 
-          //if(parsed.log) {
-          //  console.log(" i=" + i + " of "+path.commands.length);
-          //  console.log(dir);
-          //}
-          solution += encoding[dir];
-          var moved = game.unit.move(dir);
-          if(game.isValidPosition(game.board, moved)) {
-            game.unit = moved;
-
-            // if(parsed.log) {
-            //   game.display();
-            //   console.log("valid move ");
-            // }
-          }
-          else {
-            failed = true;
-             if(parsed.log) {
-               game.display();
-               console.log("invalid move ");
-             }
-            break;
+              // if(parsed.log) {
+              //   game.display();
+              //   console.log("valid move ");
+              // }
+            }
+            else {
+              traceFailed = true;
+               if(parsed.log) {
+                 game.display();
+                 console.log("invalid move ");
+               }
+              break;
+            }
           }
         }
 
         // finish path to locking
-        if(!failed) {
+        if(!traceFailed) {
           while(1) {
             var dir = "E";
             var moved = game.unit.move(dir);
