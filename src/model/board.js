@@ -3,9 +3,10 @@ var math = require('mathjs');
 class Board {
   constructor (width, height) {
     this.a = -0.51;
-//    const b = 0.76;
-    this.b = 2.00;
+    this.b = 0.76;
+    //this.b = 2.00;
     this.c = -0.35;
+    this.d = -0.18;
 
     this.width = width;
     this.height = height;
@@ -45,6 +46,7 @@ class Board {
     this.cells[y][x] = 0;
     return this;
   }
+
   clearLine (y) {
     this.cells.splice(y, 1);
     this.cells.unshift([]);
@@ -52,6 +54,7 @@ class Board {
       this.cells[0].push(0);
     };
   }
+
   getLines () {
     var res = [];
     for (var y = 0; y < this.height; y++) {
@@ -68,6 +71,7 @@ class Board {
     };
     return res;
   }
+
   clearLines () {
     var lines = this.getLines();
     for (var i = 0; i < lines.length; i++) {
@@ -208,6 +212,27 @@ class Board {
     return holes;
   }
 
+  bumpiness() {
+    var bumps = 0;
+    var height = 0
+    var prevHeight = 0
+    for (var x = 0; x < this.width; x++) {
+      height = 0;
+      for (var y = 0; y < this.height; y++) {
+        if (this.get(x, y)) {
+          height = this.height - y;
+          break;
+        }
+      }
+      if (x > 0) {
+        bumps += Math.abs(height - prevHeight);
+      }
+
+      prevHeight = height;
+    }
+    return bumps;
+  }
+
   findLinesHistogram() {
     var hist = [];
     for (var y = 0; y < this.height; y++) {
@@ -223,8 +248,8 @@ class Board {
     hist.sort(function(a, b) {
       var acost = a.y/height + k*a.filled/width;
       var bcost = b.y/height + k*b.filled/width;
-      return acost > bcost ? -1 : (acost < bcost ? 1 : 0); 
-    })    
+      return acost > bcost ? -1 : (acost < bcost ? 1 : 0);
+    })
     return hist;
   }
 
@@ -237,11 +262,16 @@ class Board {
 
   boardHeuristic(targetUnit) {
 
-    this.fillByUnit(targetUnit);
-    var heuristic = this.a*this.aggregateHeight() + this.b*this.completeLines() + this.c*this.holes();
-    this.clearByUnit(targetUnit);
+    var boardCells = JSON.stringify(this.cells);
 
-//    console.log(heuristic);
+    this.fillByUnit(targetUnit);
+    this.clearLines();
+
+    var heuristic = this.a*this.aggregateHeight() + this.b*this.completeLines()
+      + this.c*this.holes() + this.d*this.bumpiness();
+
+    this.cells = JSON.parse(boardCells);
+
     return heuristic;
   }
 

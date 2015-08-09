@@ -177,6 +177,14 @@ describe('Game Functions', () => {
       expect(game.unitRotations[unit.id]).to.deep.equal([true, false, false, false, false, false]);
     });
 
+    it('should have three unique rotations for 2 cell unit |', () => {
+      var game = new Game();
+      var unit = new Unit({x: -120, y: 75}, [{x: 0, y: 0}, {x: 1, y: 0}], 0);
+
+      game.setUnits([unit]);
+      expect(game.unitRotations[unit.id]).to.deep.equal([true, true, true, true, true, true]);
+    });
+
     it('should have three unique rotations for 3 cell unit |', () => {
       var game = new Game();
       var unit = new Unit({x: -120, y: 75}, [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0} ], 0);

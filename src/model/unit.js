@@ -137,14 +137,38 @@ class Unit {
 
     // move hex coordinates so pivot is a center of coordinates
     var centered_members = hex_members.map(p => Hex.hex_subtract(p, hex_pivot));
-
     var rotated = centered_members.map(p => Unit.rotate_hex_cell(p, direction));
-
     var move_back = rotated.map(p => Hex.hex_add(p, hex_pivot));
-
     var new_members = move_back.map(p => Hex.offset_from_cube(p));
 
     return new Unit(this.pivot, new_members, this.id, rotation);
+  }
+
+  // rotates unit around specified point
+  rotateWithCenter (point, direction) {
+    var rotation = this.rotation + (direction == 'CW' ? 1 : -1);
+
+    if (rotation >=6)
+      rotation -= 6;
+
+    if (rotation < 0)
+      rotation += 6;
+
+    var hex_center = Hex.offset_to_cube(point);
+
+    var new_members = this.members.map(p => Hex.offset_to_cube(p))
+      .map(p => Hex.hex_subtract(p, hex_center))
+      .map(p => Unit.rotate_hex_cell(p, direction))
+      .map(p => Hex.hex_add(p, hex_center))
+      .map(p => Hex.offset_from_cube(p));
+
+    var new_pivot = [this.pivot].map(p => Hex.offset_to_cube(p))
+      .map(p => Hex.hex_subtract(p, hex_center))
+      .map(p => Unit.rotate_hex_cell(p, direction))
+      .map(p => Hex.hex_add(p, hex_center))
+      .map(p => Hex.offset_from_cube(p))[0];
+
+    return new Unit(new_pivot, new_members, this.id, rotation);
   }
 
   getMembers () {
@@ -167,7 +191,13 @@ class Unit {
         min_y = this.members[i].y;
     }
 
-    return {x: (max_x - min_x + 1), y: (max_y - min_y + 1), min: {x: min_x, y: min_y}, max: {x: max_x, y: max_y}};
+    return {
+        x: (max_x - min_x + 1),
+        y: (max_y - min_y + 1),
+        min: {x: min_x, y: min_y},
+        max: {x: max_x, y: max_y},
+        center: {x: (min_x + (max_x - min_x) / 2) | 0, y: (min_y + (max_y - min_y) / 2) | 0}
+      };
   }
 
   moveBy (from, to) { // FIXME: there are issues when moving between odd and even lines. It's recommended to move by y first, then recompute what is needed for x and move by separate moveBy

@@ -26,20 +26,23 @@ class Game {
       var rotations = [];
       for(var rot = 0; rot < 6; rot++) {
 
-        var rotated = rot == 0 ? u : rotations[rot-1].rotate('CW');
-        var size = rotated.getSize();
-        var normalizedByY = rotated.moveBy(size.min, {x: size.min.x, y: 0});
-        var sizeForX = normalizedByY.getSize();
-        var normalized = normalizedByY.moveBy(sizeForX.min, {x: 0, y: 0});
+        var size = u.getSize();
+        var rotated = rot == 0 ? u : rotations[rot-1].rotateWithCenter(size.center, 'CW');
+
+        // var size = rotated.getSize();
+        // var rotated = rot == 0 ? u : rotations[rot-1].rotate('CW');
+        // var normalizedByY = rotated.moveBy(size.min, {x: size.min.x, y: 0});
+        // var sizeForX = normalizedByY.getSize();
+        // var normalized = normalizedByY.moveBy(sizeForX.min, {x: 0, y: 0});
 
 //        console.log(JSON.stringify(normalized));
 
-        rotations.push(normalized);
+        rotations.push(rotated);
 
         // compare with all previous
         var unique = true;
         for(var prev = 0; prev < rot && unique; prev++) {
-          unique = unique && !rotations[prev].equalMembers(normalized);
+          unique = unique && !rotations[prev].equalMembers(rotated);
         }
         this.unitRotations[u.id].push(unique);
       }

@@ -135,6 +135,23 @@ describe('Board holes', () => {
 
 });
 
+describe('Board bumpiness', () => {
+  it('small bumps', () => {
+    var board = new Board(3, 7);
+    board.fill(0, 6);
+    board.fill(1, 6);
+    expect(board.bumpiness()).to.equal(1);
+  });
+
+  it('heavy bumps', () => {
+    var board = new Board(3, 7);
+    board.fill(0, 6);
+    board.fill(1, 4);
+    expect(board.bumpiness()).to.equal(5);
+  });
+});
+
+
 describe('Flood fill', () => {
   it('should fill initial spawn', () => {
     var board = new Board(3, 3);
