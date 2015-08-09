@@ -1,4 +1,16 @@
-const encoding = {
+function t9(path, priorityWords) {
+  console.log(priorityWords);
+  var words = [...byLength(priorityWords), ...byLength(powerWords)];
+  console.log(words);
+  var reverse = reversePowerWords(words);
+  console.log(words);
+  for (let word in reverse) {
+    path = replaceAll(word, reverse[word], path);
+  }
+  return path;
+}
+
+t9.encoding = {
   W : "p",
   E : "b",
   SW : "a",
@@ -6,6 +18,8 @@ const encoding = {
   CW : "d",
   CCW : "k"
 };
+
+module.exports = t9;
 
 const moves = {
   p: ['p', "'", '!', '.', '0', '3'],
@@ -23,13 +37,15 @@ const powerWords = [
   "r'lyeh",
   'yuggoth',
   'digitalis'
-].sort((a, b) => b.length - a.length);
+];
 
-const reversePowerWords = powerWords.reduce((words, word) => {
-  const rw = reverseT9(word);
-  words[rw] = word;
-  return words;
-}, {});
+function reversePowerWords (powerWords) {
+  return powerWords.reduce((words, word) => {
+    const rw = reverseT9(word);
+    words[rw] = word;
+    return words;
+  }, {});
+}
 
 function reverseT9(s) {
   return s.split('').map(c => Object.keys(moves).filter(key => moves[key].indexOf(c) >= 0)).join('');
@@ -39,17 +55,8 @@ function replaceAll(find, replace, str) {
   return str.replace(new RegExp(find, 'g'), replace);
 }
 
-function t9 (path) {
-  for (let word in reversePowerWords) {
-    path = replaceAll(word, reversePowerWords[word], path);
-  }
-  return path;
+function byLength (array) {
+  if (!array) return [];
+  return array.sort((a, b) => b.length - a.length);
 }
 
-t9.encoding = encoding;
-t9.powerWords = powerWords;
-t9.reversePowerWords = reversePowerWords;
-t9.reverseT9 = reverseT9;
-
-
-module.exports = t9;

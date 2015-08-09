@@ -5,7 +5,7 @@ require("babel/register"); // don't put anything above this line!
 var nopt = require("nopt")
   , Stream = require("stream").Stream
   , path = require("path")
-  , knownOpts = { "phrase" : [String, null]
+  , knownOpts = { "phrase" : [String, Array]
                 , "mem" : Number
                 , "time" : Number
                 , "cores" : Number
@@ -223,7 +223,7 @@ parsed.file.forEach(function(fileName, fileIndex, arr) {
       }
 
     var t9 = require('./src/t9');
-    var t9solution = t9(solution);
+    var t9solution = t9(solution, parsed.phrase || []);
 
     //solution = solution.substring(0, solution.length-1);
     var entry = {
