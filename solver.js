@@ -6,32 +6,30 @@ var model = require('./src/model'),
 
 var read = require('./src/reader');
 var pathfind = require('./src/pathfind');
+var t9 = require('./src/t9');
 
 
 
 // ------
 
-function solver (problems, lookupDepth, shouldLog) {
+function solver(problems, lookupDepth, shouldLog) {
 
 // ++++++++++++
-var answer = [];
-var seedScores = [];
-
-problems.forEach(function(task, i, arr) {
+var results = problems.map(function(task) {
   var game = read(task);
   var initialBoardCells = JSON.parse(JSON.stringify(game.board.cells));
   //console.log(task.units.length);
 
   var encoding = {
-          W : "p",
-          E : "b",
-          SW : "a",
-          SE : "m",
-          CW : "d",
-          CCW : "k"
-        };
+    W : "p",
+    E : "b",
+    SW : "a",
+    SE : "m",
+    CW : "d",
+    CCW : "k"
+  };
 
-  task.sourceSeeds.forEach(function(seed, i, arr) {
+  var taskResult = task.sourceSeeds.map(function(seed) {
       var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       game.clearScore();
@@ -91,7 +89,7 @@ problems.forEach(function(task, i, arr) {
           }
         }
 
-        // safe-trace returned path and generate answer sequence
+        // safe-trace returned path and generate answers sequence
         if(path == null || path.commands == null) {
           failed = true;
           break;
@@ -159,7 +157,6 @@ problems.forEach(function(task, i, arr) {
         }
       }
 
-    var t9 = require('./src/t9');
     var t9solution = t9(solution);
 
     //solution = solution.substring(0, solution.length-1);
@@ -169,18 +166,20 @@ problems.forEach(function(task, i, arr) {
       tag : 'cw_v14_pathfind' + task.id,
       solution : t9solution
     };
-    answer.push(entry);
+    var seedScore = game.moveScoreGet().move_scores;
 
-    seedScores.push(game.moveScoreGet().move_scores);
-
+    return {
+      answer: entry,
+      seedScore: seedScore
+    }
   });
+
+  // console.log(taskResult);
+
+  return taskResult;
 });
 
-return {
-  answers: answer,
-  seedScores: seedScores
-}
-
+return results;
 // ++++++++++++
 }
 

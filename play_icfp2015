@@ -61,12 +61,20 @@ var shouldLog = parsed.log;
 
 // START
 var startTime = new Date();
-var result = solver(problems, lookupDepth, shouldLog);
+var results = solver(problems, lookupDepth, shouldLog);
 var executionTime = new Date() - startTime;
 // DONE
 
-var answers = result.answers;
-var seedScores = result.seedScores;
+var answers = results.reduce(function (allAnswers, resultsForTask) {
+  return allAnswers.concat(resultsForTask.map(function (r) {
+    return r.answer;
+  }));
+}, []);
+var seedScores = results.reduce(function (allSeedScores, resultsForTask) {
+  return allSeedScores.concat(resultsForTask.map(function (r) {
+    return r.seedScore;
+  }));
+}, []);
 
 if (!parsed.suppress)
   console.log(JSON.stringify(answers));
