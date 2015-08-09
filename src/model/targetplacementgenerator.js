@@ -7,7 +7,7 @@ class TargetPlacementGenerator {
     this.created = true;
     this._pq = new PriorityQueue((a, b) => a[0] - b[0]);
     this._queueLen = queueLen;
-    this._queueItemsToPick = queueLen * queueThreshold >= 1 ? queueLen * queueThreshold : 1;
+    this._queueItemsToPick = queueLen * queueThreshold >= 1 ? queueLen * queueThreshold : 1;    
     this._pickedItemsCount = 0;
     this._rotate = rotate;
     this._board = board;
