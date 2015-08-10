@@ -24,8 +24,42 @@ var answer = [];
 var seedScores = [];
 var totalScoresSum = 0;
 
-tasks.forEach(function(task, fileIndex, arr) {
+function taskComplexity (task) {
+  const fieldLevelFactor = 1;
+  const fieldFillFactor = 3;
+  const unitsFactor = 1;
+  const lengthFactor = 1
 
+  return fieldLevelFactor * (task.height * task.width) +
+    fieldFillFactor * task.filled.length +
+    unitsFactor * task.units.length * (task.sourceLength * lengthFactor);
+}
+
+function compareRuns(r1, r2) {
+  return taskComplexity(r1.task) - taskComplexity(r2.task);
+}
+
+const firstRun = tasks.map((task, fileIndex) => ({
+  task,
+  seed: task.sourceSeeds[0],
+  seedIndex: 0,
+  fileIndex
+})).sort(compareRuns);
+
+const otherRuns = tasks.reduce((runs, task, fileIndex) => {
+  return runs.concat(task.sourceSeeds.filter((seed, i) => i !== 0).map((seed, i) => ({
+    task,
+    seed,
+    seedIndex: i + 1, // 0th is in firstRun
+    fileIndex
+  })));
+}, []).sort(compareRuns);
+
+const combinedRuns = [...firstRun, ...otherRuns];
+
+
+for (let currentRun of combinedRuns) {
+  let task = currentRun.task;
   var seedScoresAvg = 0;
 
   var game = read(task);
@@ -42,8 +76,8 @@ tasks.forEach(function(task, fileIndex, arr) {
           CCW : "k"
         };
 
-  for(let seedIndex = 0; seedIndex < task.sourceSeeds.length; seedIndex++) {
-      var seed = task.sourceSeeds[seedIndex];
+  // for(let seedIndex = 0; seedIndex < task.sourceSeeds.length; seedIndex++) {
+      var seed = currentRun.seed;
       var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
       game.clearScore();
@@ -168,10 +202,10 @@ tasks.forEach(function(task, fileIndex, arr) {
 
           var executionTime = new Date() - startTime;
 
-          console.log('File: ' + (fileIndex + 1) + "/" + tasks.length
+          console.log('File: ' + (currentRun.fileIndex + 1) + "/" + tasks.length
             + ' Task id: ' + task.id
             + ' Time: ' + (executionTime / 1000)
-            + ' Seed: ' + (seedIndex + 1) + "/" + task.sourceSeeds.length
+            + ' Seed: ' + (currentRun.seedIndex + 1) + "/" + task.sourceSeeds.length
             + ' Unit: ' + (unitIndex + 1) + "/" + task.sourceLength
             + ' Sum: ' +  totalScoresSum
             + ' Avg: ' + seedScoresAvg.toFixed(1)
@@ -204,8 +238,7 @@ tasks.forEach(function(task, fileIndex, arr) {
 
     if(singleSeedRun)
       break;
-  }
-});
+}
 
 return {
   answer,
