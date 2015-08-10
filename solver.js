@@ -16,7 +16,8 @@ function solve({
   lookupThreshold,
   logEnabled,
   perflogEnabled,
-  startTime
+  startTime,
+  timeLimit
 }) {
 //+++++++++++++
 
@@ -57,7 +58,7 @@ const otherRuns = tasks.reduce((runs, task, fileIndex) => {
 
 const combinedRuns = [...firstRun, ...otherRuns];
 
-
+let useSimpleStartegy = false;
 for (let currentRun of combinedRuns) {
   let task = currentRun.task;
   var seedScoresAvg = 0;
@@ -76,7 +77,6 @@ for (let currentRun of combinedRuns) {
           CCW : "k"
         };
 
-  // for(let seedIndex = 0; seedIndex < task.sourceSeeds.length; seedIndex++) {
       var seed = currentRun.seed;
       var solution = "";
       game.board.cells = JSON.parse(JSON.stringify(initialBoardCells));
@@ -101,17 +101,22 @@ for (let currentRun of combinedRuns) {
 
         // Find best reachable position and path there
         var generatorFailed = false;
-        var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true, game, lookupThreshold);
-        if(targetGenerator.created == false) {
-          generatorFailed = true;
-        }
-        else {
-          var unitDest = targetGenerator.next();
-          if(!unitDest) {
-            if(logEnabled) console.log('targetGenerator.next() returned null');
-            //solution += 'a';
-            //break;
+
+        if (!useSimpleStartegy) {
+          var targetGenerator = new TargetPlacementGenerator(game.board, game.unit, lookupDepth, true, game, lookupThreshold);
+          if(targetGenerator.created == false) {
+            generatorFailed = true;
           }
+          else {
+            var unitDest = targetGenerator.next();
+            if(!unitDest) {
+              if(logEnabled) console.log('targetGenerator.next() returned null');
+              //solution += 'a';
+              //break;
+            }
+          }
+        } else {
+          generatorFailed = true; // trigger basic tracer;
         }
 
         while(!generatorFailed) {
@@ -235,6 +240,16 @@ for (let currentRun of combinedRuns) {
 
     seedScores.push(game.moveScoreGet().move_scores);
     totalScoresSum += game.moveScoreGet().move_scores;
+
+    if (timeLimit) {
+      let now = Date.now();
+      if (now - (startTime + timeLimit) < 1000) {
+        if (!useSimpleStartegy)
+        useSimpleStartegy = true;
+      } else if (now - (startTime + timeLimit) < 100) {
+        break; // need time to record the results;
+      }
+    }
 
     if(singleSeedRun)
       break;

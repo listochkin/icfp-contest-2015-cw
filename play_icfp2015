@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-var startTime = Date.now()
+'use strict';
+var startTime = Date.now();
 require("babel/register"); // don't put anything above this line!
 
 // parse command line
@@ -28,7 +29,7 @@ var nopt = require("nopt")
                  , "i" : ["--improve"]
                  , "e" : ["--perflog"]
                  , "d" : ["--depth"]
-                 , "t" : ["--threshold"]
+                 , "th" : ["--threshold"]
                  , "s" : ["--suppress"]
                  , "os" : ["--oneseed"]
                  }
@@ -60,8 +61,6 @@ if(parsed.threshold) {
   lookupThreshold = parsed.threshold;
 }
 
-var startTime = new Date();
-
 // +++++++++
 
 var tasks = parsed.file.map(function (fileName) {
@@ -83,7 +82,8 @@ var result = solve({
   lookupThreshold: lookupThreshold,
   logEanbled: parsed.log,
   perflogEnabled: parsed.perflog,
-  startTime: startTime
+  startTime: startTime,
+  timeLimit: parsed.time ? parsed.time * 1000 : null // time in seconds
 });
 
 answer = result.answer;
