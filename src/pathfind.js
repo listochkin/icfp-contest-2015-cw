@@ -62,6 +62,7 @@ function path (board, start_unit, finish_unit, shouldClose) {
         const next = dots[i + 1];
         const deltaX = next.x - prev.x;
         const deltaY = next.y - prev.y;
+        const deltaR = next.rotation - prev.rotation;
         // console.log(prev, next, deltaX, deltaY);
 
         let action;
@@ -70,9 +71,9 @@ function path (board, start_unit, finish_unit, shouldClose) {
         if (deltaX === 0 && deltaY === 0) {
           // console.log(result.path[i].unit);
           // console.log(result.path[i+1].unit);
-          if (result.path[i].unit.rotation === 1) {
+          if (deltaR === 1) {
             action = 'CW';
-          } else if (result.path[i].unit.rotation === -1) {
+          } else if (deltaR === -1) {
             action = 'CCW';
           } else {
             // no rotation data saved, need to recreate
